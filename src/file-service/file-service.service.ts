@@ -17,6 +17,7 @@ import * as fs from 'fs/promises'
 export class FileServiceService {
 	private readonly uploadDir: string
 	private readonly avatarDir: string
+	private readonly teacherPicturesDir: string
 	private readonly maxFileSize: number = 5 * 1024 * 1024
 	private readonly allowedMimeTypes: string[] = [
 		'image/jpeg',
@@ -32,6 +33,7 @@ export class FileServiceService {
 		this.uploadDir =
 			this.configService.get<string>('UPLOAD_DIR') || 'uploads'
 		this.avatarDir = join(this.uploadDir, 'avatars')
+		this.teacherPicturesDir = join(this.uploadDir, 'teacherPictures')
 		this.baseUrl =
 			this.configService.get<string>('APPLICATION_URL') ||
 			'http://localhost:4000'
@@ -42,6 +44,10 @@ export class FileServiceService {
 
 		if (!existsSync(this.avatarDir)) {
 			mkdirSync(this.avatarDir, { recursive: true })
+		}
+
+		if (!existsSync(this.teacherPicturesDir)) {
+			mkdirSync(this.teacherPicturesDir, { recursive: true })
 		}
 	}
 
@@ -86,6 +92,52 @@ export class FileServiceService {
 		return avatarUrl
 	}
 
+	async uploadTeacherPicture(
+		file: Express.Multer.File,
+		teacherId: string,
+	): Promise<string> {
+		this.validateFile(file)
+
+		const teacher = await this.prismaService.teacher.findUnique({
+			where: { id: teacherId },
+		})
+
+		if (!teacher) {
+			throw new NotFoundException('Teacher not found')
+		}
+
+		if (teacher.picture) {
+			try {
+				const oldTeacherPictureFilename = teacher.picture
+					.split('/')
+					.pop()
+				if (oldTeacherPictureFilename) {
+					await this.deleteTeacherPictureFile(
+						oldTeacherPictureFilename,
+					)
+				}
+			} catch (error) {
+				console.error('Error deleting old picture:', error)
+			}
+		}
+
+		const filename = `${teacherId}-${uuidv4()}`
+		const extension = 'webp'
+		const fullFilename = `${filename}.${extension}`
+		const filePath = join(this.teacherPicturesDir, fullFilename)
+
+		await this.processAndSaveImage(file.buffer, filePath)
+
+		const teacherPictureUrl = `${this.baseUrl}/files/teacher-picture/${filename}.${extension}`
+
+		await this.prismaService.teacher.update({
+			where: { id: teacherId },
+			data: { picture: teacherPictureUrl },
+		})
+
+		return teacherPictureUrl
+	}
+
 	async getAvatar(filename: string): Promise<Buffer> {
 		const filePath = join(this.avatarDir, filename)
 
@@ -96,8 +148,30 @@ export class FileServiceService {
 		}
 	}
 
+	async getTeacherPicture(filename: string): Promise<Buffer> {
+		const filePath = join(this.teacherPicturesDir, filename)
+
+		try {
+			return await fs.readFile(filePath)
+		} catch (error) {
+			throw new NotFoundException('Picture not found')
+		}
+	}
+
 	private async deleteAvatarFile(filename: string): Promise<void> {
 		const filePath = join(this.avatarDir, filename)
+
+		try {
+			await fs.unlink(filePath)
+		} catch (error) {
+			if (error.code !== 'ENOENT') {
+				throw error
+			}
+		}
+	}
+
+	private async deleteTeacherPictureFile(filename: string): Promise<void> {
+		const filePath = join(this.teacherPicturesDir, filename)
 
 		try {
 			await fs.unlink(filePath)

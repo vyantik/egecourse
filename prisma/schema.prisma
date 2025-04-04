@@ -46,6 +46,25 @@ model Token {
   @@map("tokens")
 }
 
+model Teacher {
+  id String @id @default(uuid())
+
+  name       String
+  surname    String
+  patronymic String
+
+  picture String?
+
+  experience String
+  egeScore   Int
+  direction  String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("teachers")
+}
+
 enum UserRole {
   REGULAR
   ADMIN

@@ -4,7 +4,7 @@ A modern backend application built with NestJS and Bun runtime.
 
 ## Description
 
-SpermaMassiveGames is a robust backend service that provides authentication, user management, and other core functionalities for gaming applications. Built with NestJS and powered by Bun for enhanced performance.
+EgeCourse is a robust backend service that provides authentication, user management, and other core functionalities for applications. Built with NestJS and powered by Bun for enhanced performance.
 
 ## Features
 

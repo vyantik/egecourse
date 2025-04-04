@@ -5,10 +5,12 @@ import { AuthModule } from './auth/auth.module'
 import { EmailConfirmationModule } from './auth/email-confirmation/email-confirmation.module'
 import { PasswordRecoveryModule } from './auth/password-recovery/password-recovery.module'
 import { TwoFactorAuthModule } from './auth/two-factor-auth/two-factor-auth.module'
+import { FaqModule } from './faq/faq.module'
 import { FileServiceModule } from './file-service/file-service.module'
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.util'
 import { MailModule } from './libs/mail/mail.module'
 import { PrismaModule } from './prisma/prisma.module'
+import { TeacherModule } from './teacher/teacher.module'
 import { UserModule } from './user/user.module'
 
 @Module({
@@ -25,6 +27,8 @@ import { UserModule } from './user/user.module'
 		PasswordRecoveryModule,
 		TwoFactorAuthModule,
 		FileServiceModule,
+		TeacherModule,
+		FaqModule,
 	],
 })
 export class AppModule {}
