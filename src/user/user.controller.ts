@@ -55,7 +55,7 @@ export class UserController {
 	@ApiBearerAuth()
 	@Authorization(UserRole.ADMIN)
 	@HttpCode(HttpStatus.OK)
-	@Get(':id')
+	@Get('/by-id/:id')
 	public async findById(@Param('id') id: string) {
 		return this.userService.findById(id)
 	}

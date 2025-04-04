@@ -63,6 +63,9 @@ async function bootstrap() {
 			.build()
 		const document = SwaggerModule.createDocument(app, documentConfig)
 		SwaggerModule.setup('docs', app, document)
+		app.getHttpAdapter().get('/', (req, res) => {
+			res.redirect('/docs')
+		})
 	}
 
 	await app.listen(config.getOrThrow<number>('APPLICATION_PORT'))
