@@ -19,7 +19,7 @@ export class TeacherController {
 		status: 400,
 		description: 'Bad request - validation error',
 	})
-	@Post('/create')
+	@Post()
 	async createTeacher(@Body() dto: TeacherDto) {
 		return this.teacherService.createTeacher(dto)
 	}

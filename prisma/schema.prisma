@@ -65,6 +65,18 @@ model Teacher {
   @@map("teachers")
 }
 
+model Faq {
+  id String @id @default(uuid())
+
+  question String
+  answer   String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("faqs")
+}
+
 enum UserRole {
   REGULAR
   ADMIN
