@@ -7,6 +7,9 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
+import { UserRole } from '@prisma/__generated__'
+
+import { Authorization } from '@/auth/decorators/auth.decorator'
 
 import { CourseService } from './course.service'
 import { CoursePaginationResponseDto } from './dto/course-pagination-response.dto'
@@ -29,6 +32,7 @@ export class CourseController {
 		status: 400,
 		description: 'Bad request - validation error',
 	})
+	@Authorization(UserRole.ADMIN)
 	@Post()
 	async createCourse(@Body() dto: CourseDto) {
 		return this.courseService.createCourse(dto)
