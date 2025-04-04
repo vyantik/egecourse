@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { UserRole } from '@prisma/__generated__'
 
-import { faqDto, FaqPaginationResponseDto } from './dto/faq.dto'
+import { Authorization } from '@/auth/decorators/auth.decorator'
+
+import { FaqPaginationResponseDto } from './dto/faq-pagination-response.dto'
+import { faqDto } from './dto/faq.dto'
 import { FaqService } from './faq.service'
 
 @ApiTags('faqs')
@@ -19,6 +23,7 @@ export class FaqController {
 		status: 400,
 		description: 'Bad request - validation error',
 	})
+	@Authorization(UserRole.ADMIN)
 	@Post()
 	async createFaq(@Body() dto: faqDto) {
 		return this.faqService.createFaq(dto)
@@ -46,6 +51,6 @@ export class FaqController {
 	})
 	@Get()
 	async getFaq(@Query('page') page?: number, @Query('limit') limit?: number) {
-		return this.faqService.getFaq(page, limit)
+		return this.faqService.getFaqs(page, limit)
 	}
 }

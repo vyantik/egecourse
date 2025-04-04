@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { UserRole } from '@prisma/__generated__'
 
-import { TeacherDto, TeacherPaginationResponseDto } from './dto/teacher.dto'
+import { Authorization } from '@/auth/decorators/auth.decorator'
+
+import { TeacherPaginationResponseDto } from './dto/teacher-pagination-response.dto'
+import { TeacherDto } from './dto/teacher.dto'
 import { TeacherService } from './teacher.service'
 
 @ApiTags('teachers')
@@ -19,6 +23,7 @@ export class TeacherController {
 		status: 400,
 		description: 'Bad request - validation error',
 	})
+	@Authorization(UserRole.ADMIN)
 	@Post()
 	async createTeacher(@Body() dto: TeacherDto) {
 		return this.teacherService.createTeacher(dto)

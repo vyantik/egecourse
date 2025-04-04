@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
+import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
 
 import { TeacherDto } from './dto/teacher.dto'
@@ -8,7 +9,7 @@ import { TeacherDto } from './dto/teacher.dto'
 export class TeacherService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async createTeacher(dto: TeacherDto) {
+	async createTeacher(dto: TeacherDto): Promise<TeacherDto> {
 		return this.prismaService.teacher.create({
 			data: {
 				...dto,
@@ -16,7 +17,10 @@ export class TeacherService {
 		})
 	}
 
-	async getTeachers(page?: number, limit?: number) {
+	async getTeachers(
+		page?: number,
+		limit?: number,
+	): Promise<TeacherDto[] | { data: TeacherDto[]; meta: Meta }> {
 		if (!page || !limit) {
 			return this.prismaService.teacher.findMany({
 				orderBy: {

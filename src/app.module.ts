@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module'
 import { EmailConfirmationModule } from './auth/email-confirmation/email-confirmation.module'
 import { PasswordRecoveryModule } from './auth/password-recovery/password-recovery.module'
 import { TwoFactorAuthModule } from './auth/two-factor-auth/two-factor-auth.module'
+import { CourseModule } from './course/course.module'
 import { FaqModule } from './faq/faq.module'
 import { FileServiceModule } from './file-service/file-service.module'
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.util'
@@ -29,6 +30,7 @@ import { UserModule } from './user/user.module'
 		FileServiceModule,
 		TeacherModule,
 		FaqModule,
+		CourseModule,
 	],
 })
 export class AppModule {}

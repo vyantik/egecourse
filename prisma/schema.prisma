@@ -77,6 +77,24 @@ model Faq {
   @@map("faqs")
 }
 
+model Course {
+  id String @id @default(uuid())
+
+  name        String
+  description String
+
+  studyFormat String @map("study_format")
+  document    String
+  studyStart  String @map("study_start")
+
+  priceOptions Json? @map("price_options")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("courses")
+}
+
 enum UserRole {
   REGULAR
   ADMIN
