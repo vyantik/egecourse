@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { faqDto } from './faq.dto'
+import { FaqDto } from './faq.dto'
 
-export class FaqTransferDto extends faqDto {
+export class FaqTransferDto extends FaqDto {
 	@ApiProperty({
 		example: '550e8400-e29b-41d4-a716-446655440000',
 		description: 'Unique identifier',

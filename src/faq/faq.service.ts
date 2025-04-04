@@ -1,15 +1,16 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
 
-import { faqDto } from './dto/faq.dto'
+import { FaqDto } from './dto/faq.dto'
+import { UpdateFaqDto, UpdateFullFaqDto } from './dto/update-faq.dto'
 
 @Injectable()
 export class FaqService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async createFaq(dto: faqDto): Promise<faqDto> {
+	async createFaq(dto: FaqDto): Promise<FaqDto> {
 		return this.prismaService.faq.create({
 			data: {
 				...dto,
@@ -20,7 +21,7 @@ export class FaqService {
 	async getFaqs(
 		page?: number,
 		limit?: number,
-	): Promise<faqDto[] | { data: faqDto[]; meta: Meta }> {
+	): Promise<FaqDto[] | { data: FaqDto[]; meta: Meta }> {
 		if (!page || !limit) {
 			return this.prismaService.faq.findMany({
 				orderBy: {
@@ -51,5 +52,35 @@ export class FaqService {
 				lastPage: Math.ceil(total / limit),
 			},
 		}
+	}
+
+	async updateFaq(id: string, dto: UpdateFaqDto) {
+		const faq = await this.prismaService.faq.findUnique({
+			where: { id },
+		})
+
+		if (!faq) {
+			throw new NotFoundException('FAQ not found')
+		}
+
+		return this.prismaService.faq.update({
+			where: { id },
+			data: dto,
+		})
+	}
+
+	async replaceFaq(id: string, dto: UpdateFullFaqDto) {
+		const faq = await this.prismaService.faq.findUnique({
+			where: { id },
+		})
+
+		if (!faq) {
+			throw new NotFoundException('FAQ not found')
+		}
+
+		return this.prismaService.faq.update({
+			where: { id },
+			data: dto,
+		})
 	}
 }

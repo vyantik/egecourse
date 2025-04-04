@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Get,
+	Param,
+	Patch,
+	Post,
+	Put,
+	Query,
+} from '@nestjs/common'
 import {
 	ApiBody,
 	ApiOperation,
@@ -15,6 +24,7 @@ import { CourseService } from './course.service'
 import { CoursePaginationResponseDto } from './dto/course-pagination-response.dto'
 import { CourseTransferDto } from './dto/course-transfer.dto'
 import { CourseDto } from './dto/course.dto'
+import { UpdateCourseDto } from './dto/update-course.dto'
 
 @ApiTags('courses')
 @Controller('courses')
@@ -85,5 +95,59 @@ export class CourseController {
 	@Get('/by-id/:id')
 	async getCourseById(@Param('id') id: string) {
 		return this.courseService.getCourseById(id)
+	}
+
+	@ApiOperation({ summary: 'Update part of a course' })
+	@ApiParam({
+		name: 'id',
+		required: true,
+		description: 'Course ID',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiBody({ type: UpdateCourseDto })
+	@ApiResponse({
+		status: 200,
+		description: 'Course successfully updated',
+		type: CourseTransferDto,
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'Course not found',
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Bad request - validation error',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Patch(':id')
+	async updateCourse(@Param('id') id: string, @Body() dto: UpdateCourseDto) {
+		return this.courseService.updateCourse(id, dto)
+	}
+
+	@ApiOperation({ summary: 'Replace an entire course' })
+	@ApiParam({
+		name: 'id',
+		required: true,
+		description: 'Course ID',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiBody({ type: CourseDto })
+	@ApiResponse({
+		status: 200,
+		description: 'Course successfully replaced',
+		type: CourseTransferDto,
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'Course not found',
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Bad request - validation error',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Put(':id')
+	async replaceCourse(@Param('id') id: string, @Body() dto: CourseDto) {
+		return this.courseService.replaceCourse(id, dto)
 	}
 }

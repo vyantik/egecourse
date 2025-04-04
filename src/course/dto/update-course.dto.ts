@@ -1,65 +1,54 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
-import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator'
+import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator'
 
-export class PriceOptionDto {
-	@ApiProperty({
-		example: '3 months',
-		description: 'Duration of the study period',
-	})
-	@IsString({ message: 'Study time must be a string' })
-	@IsNotEmpty({ message: 'Study time is required' })
-	studyTime: string
+import { PriceOptionDto } from './course.dto'
 
-	@ApiProperty({
-		example: '10000',
-		description: 'Price for the specified study period',
-	})
-	@IsString({ message: 'Price must be a string' })
-	@IsNotEmpty({ message: 'Price is required' })
-	price: string
-}
-
-export class CourseDto {
+export class UpdateCourseDto {
 	@ApiProperty({
 		example: 'Mathematics for EGE',
 		description: 'Name of the course',
+		required: false,
 	})
 	@IsString({ message: 'Name must be a string' })
-	@IsNotEmpty({ message: 'Name is required' })
-	name: string
+	@IsOptional()
+	name?: string
 
 	@ApiProperty({
 		example: 'Comprehensive course covering all EGE mathematics topics',
 		description: 'Detailed description of the course',
+		required: false,
 	})
 	@IsString({ message: 'Description must be a string' })
-	@IsNotEmpty({ message: 'Description is required' })
-	description: string
+	@IsOptional()
+	description?: string
 
 	@ApiProperty({
 		example: 'Online',
 		description: 'Format of study (Online, Offline, Hybrid)',
+		required: false,
 	})
 	@IsString({ message: 'Study format must be a string' })
-	@IsNotEmpty({ message: 'Study format is required' })
-	studyFormat: string
+	@IsOptional()
+	studyFormat?: string
 
 	@ApiProperty({
 		example: 'Certificate of completion',
 		description: 'Document provided upon completion',
+		required: false,
 	})
 	@IsString({ message: 'Document must be a string' })
-	@IsNotEmpty({ message: 'Document is required' })
-	document: string
+	@IsOptional()
+	document?: string
 
 	@ApiProperty({
 		example: 'September 2023',
 		description: 'When the course starts',
+		required: false,
 	})
 	@IsString({ message: 'Study start must be a string' })
-	@IsNotEmpty({ message: 'Study start is required' })
-	studyStart: string
+	@IsOptional()
+	studyStart?: string
 
 	@ApiProperty({
 		type: [PriceOptionDto],
@@ -68,9 +57,11 @@ export class CourseDto {
 			{ studyTime: '3 months', price: '10000' },
 			{ studyTime: '6 months', price: '18000' },
 		],
+		required: false,
 	})
 	@IsArray({ message: 'Price options must be an array' })
 	@ValidateNested({ each: true })
 	@Type(() => PriceOptionDto)
-	priceOptions: PriceOptionDto[]
+	@IsOptional()
+	priceOptions?: PriceOptionDto[]
 }

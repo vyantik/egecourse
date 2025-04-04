@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsString } from 'class-validator'
 
-export class faqDto {
+export class FaqDto {
 	@ApiProperty({
 		example: 'How do I reset my password?',
 		description: 'The question for the FAQ entry',

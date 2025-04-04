@@ -5,6 +5,7 @@ import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
 
 import { CourseDto } from './dto/course.dto'
+import { UpdateCourseDto } from './dto/update-course.dto'
 
 @Injectable()
 export class CourseService {
@@ -79,5 +80,53 @@ export class CourseService {
 		}
 
 		return course
+	}
+
+	async updateCourse(id: string, dto: UpdateCourseDto): Promise<Course> {
+		if (!id) throw new NotFoundException('id is required')
+
+		const course = await this.prismaService.course.findUnique({
+			where: { id },
+		})
+
+		if (!course) {
+			throw new NotFoundException('Course not found')
+		}
+
+		const { priceOptions, ...courseData } = dto
+
+		return this.prismaService.course.update({
+			where: { id },
+			data: {
+				...courseData,
+				...(priceOptions && {
+					priceOptions: JSON.parse(JSON.stringify(priceOptions)),
+				}),
+			},
+		})
+	}
+
+	async replaceCourse(id: string, dto: CourseDto): Promise<Course> {
+		if (!id) throw new NotFoundException('id is required')
+
+		const course = await this.prismaService.course.findUnique({
+			where: { id },
+		})
+
+		if (!course) {
+			throw new NotFoundException('Course not found')
+		}
+
+		const { priceOptions, ...courseData } = dto
+
+		return this.prismaService.course.update({
+			where: { id },
+			data: {
+				...courseData,
+				priceOptions: priceOptions
+					? JSON.parse(JSON.stringify(priceOptions))
+					: null,
+			},
+		})
 	}
 }
