@@ -214,12 +214,6 @@ export class TeacherController {
 		description: 'Teacher ID',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
-	@ApiParam({
-		name: 'picture',
-		required: true,
-		description: 'Current picture filename to replace',
-		example: 'teacher-id-uuid.webp',
-	})
 	@ApiConsumes('multipart/form-data')
 	@ApiBody({
 		schema: {
