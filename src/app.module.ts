@@ -7,7 +7,7 @@ import { PasswordRecoveryModule } from './auth/password-recovery/password-recove
 import { TwoFactorAuthModule } from './auth/two-factor-auth/two-factor-auth.module'
 import { CourseModule } from './course/course.module'
 import { FaqModule } from './faq/faq.module'
-import { FileServiceModule } from './file-service/file-service.module'
+import { FileSystemModule } from './file-system/file-system.module'
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.util'
 import { MailModule } from './libs/mail/mail.module'
 import { PrismaModule } from './prisma/prisma.module'
@@ -27,7 +27,7 @@ import { UserModule } from './user/user.module'
 		EmailConfirmationModule,
 		PasswordRecoveryModule,
 		TwoFactorAuthModule,
-		FileServiceModule,
+		FileSystemModule,
 		TeacherModule,
 		FaqModule,
 		CourseModule,

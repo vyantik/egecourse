@@ -1,6 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Teacher } from '@prisma/__generated__'
+import { existsSync, mkdirSync } from 'fs'
+import { join } from 'path'
 
+import { FileSystemService } from '@/file-system/file-system.service'
 import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
 
@@ -12,14 +20,58 @@ import {
 
 @Injectable()
 export class TeacherService {
-	constructor(private readonly prismaService: PrismaService) {}
+	private readonly uploadDir: string
+	private readonly teacherPicturesDir: string
+	private readonly baseUrl: string
 
-	async createTeacher(dto: TeacherDto): Promise<Teacher> {
-		return this.prismaService.teacher.create({
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly configService: ConfigService,
+		private readonly fileService: FileSystemService,
+	) {
+		this.uploadDir =
+			this.configService.get<string>('UPLOAD_DIR') || 'uploads'
+		this.teacherPicturesDir = join(this.uploadDir, 'teacherPictures')
+		this.baseUrl = this.configService.get<string>('APPLICATION_URL')
+
+		if (!existsSync(this.teacherPicturesDir)) {
+			mkdirSync(this.teacherPicturesDir, { recursive: true })
+		}
+	}
+
+	async createTeacher(
+		dto: TeacherDto,
+		file?: Express.Multer.File,
+	): Promise<Teacher> {
+		const teacher = await this.prismaService.teacher.create({
 			data: {
-				...dto,
+				name: dto.name,
+				surname: dto.surname,
+				patronymic: dto.patronymic,
+				experience: dto.experience,
+				direction: dto.direction,
+				egeScore: dto.egeScore,
+				picture: '',
 			},
 		})
+
+		if (file) {
+			const picture = await this.fileService.uploadPicture(
+				file,
+				this.teacherPicturesDir,
+			)
+
+			const url = `${this.baseUrl}/teachers/${teacher.id}/picture/${picture}`
+
+			return this.prismaService.teacher.update({
+				where: { id: teacher.id },
+				data: {
+					picture: url,
+				},
+			})
+		}
+
+		return teacher
 	}
 
 	async getTeachers(
@@ -114,5 +166,47 @@ export class TeacherService {
 				picture: teacher.picture,
 			},
 		})
+	}
+
+	async getPicture(teacherId: string, pictureName: string): Promise<Buffer> {
+		const teacher = await this.prismaService.teacher.findUnique({
+			where: { id: teacherId },
+		})
+
+		if (!teacher) {
+			throw new NotFoundException('Teacher not found')
+		}
+
+		return this.fileService.getPicture(this.teacherPicturesDir, pictureName)
+	}
+
+	async deleteTeacherPicture(
+		teacherId: string,
+		pictureName: string,
+	): Promise<void> {
+		const teacher = await this.prismaService.teacher.findUnique({
+			where: { id: teacherId },
+		})
+
+		if (!teacher) {
+			throw new NotFoundException('Teacher not found')
+		}
+
+		await this.fileService.deleteFile(this.teacherPicturesDir, pictureName)
+
+		await this.prismaService.teacher.update({
+			where: { id: teacherId },
+			data: {
+				picture: '',
+			},
+		})
+	}
+
+	async deleteTeacher(id: string): Promise<void> {
+		if (!id) throw new BadRequestException('id is required')
+
+		return this.prismaService.teacher.delete({
+			where: { id },
+		}) as unknown as void
 	}
 }

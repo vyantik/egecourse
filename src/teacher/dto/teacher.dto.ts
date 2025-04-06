@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
 
 export class TeacherDto {
@@ -40,6 +41,7 @@ export class TeacherDto {
 	})
 	@IsNumber({}, { message: 'EGE score must be a number' })
 	@IsNotEmpty({ message: 'EGE score is required' })
+	@Type(() => Number)
 	egeScore: number
 
 	@ApiProperty({

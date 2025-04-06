@@ -1,15 +1,22 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	Param,
+	ParseFilePipe,
 	Patch,
 	Post,
 	Put,
 	Query,
+	Res,
+	UploadedFile,
+	UseInterceptors,
 } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import {
 	ApiBody,
+	ApiConsumes,
 	ApiOperation,
 	ApiParam,
 	ApiQuery,
@@ -17,8 +24,11 @@ import {
 	ApiTags,
 } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__'
+import { Response } from 'express'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
+import { TransformTeacherDtoPipe } from '@/common/pipes/transform-teacher-dto.pipe'
+import { parseFileConfig } from '@/config/parse-file.config'
 
 import { TeacherPaginationResponseDto } from './dto/teacher-pagination-response.dto'
 import { TeacherTransferDto } from './dto/teacher-transfer.dto'
@@ -44,10 +54,44 @@ export class TeacherController {
 		status: 400,
 		description: 'Bad request - validation error',
 	})
+	@ApiConsumes('multipart/form-data')
+	@ApiBody({
+		schema: {
+			type: 'object',
+			properties: {
+				name: { type: 'string', example: 'John' },
+				surname: { type: 'string', example: 'Doe' },
+				patronymic: { type: 'string', example: 'Smith' },
+				experience: { type: 'string', example: '10 years' },
+				egeScore: { type: 'number', example: 95 },
+				direction: { type: 'string', example: 'Mathematics' },
+				file: {
+					type: 'string',
+					format: 'binary',
+					description: 'Teacher picture file (JPG, PNG, WebP)',
+				},
+			},
+			required: [
+				'name',
+				'surname',
+				'patronymic',
+				'experience',
+				'egeScore',
+				'direction',
+			],
+		},
+	})
 	@Authorization(UserRole.ADMIN)
+	@UseInterceptors(FileInterceptor('file'))
 	@Post()
-	async createTeacher(@Body() dto: TeacherDto) {
-		return this.teacherService.createTeacher(dto)
+	async createTeacher(
+		@Body(new TransformTeacherDtoPipe()) dto: TeacherDto,
+		@UploadedFile(
+			new ParseFilePipe({ ...parseFileConfig, fileIsRequired: false }),
+		)
+		file?: Express.Multer.File,
+	) {
+		return this.teacherService.createTeacher(dto, file)
 	}
 
 	@ApiOperation({ summary: 'Get all teachers with pagination' })
@@ -161,5 +205,99 @@ export class TeacherController {
 		@Body() dto: UpdateFullTeacherDto,
 	) {
 		return this.teacherService.replaceTeacher(id, dto)
+	}
+
+	@ApiOperation({ summary: 'Get teacher picture' })
+	@ApiParam({
+		name: 'teacherId',
+		required: true,
+		description: 'Teacher ID',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiParam({
+		name: 'picture',
+		required: true,
+		description: 'Picture filename',
+		example: 'teacher-id-uuid.webp',
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Returns the teacher picture',
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'Picture or Teacher not found',
+	})
+	@Get('/:teacherId/picture/:picture')
+	async getPicture(
+		@Param('teacherId') teacherId: string,
+		@Param('picture') picture: string,
+		@Res() res: Response,
+	) {
+		const file = await this.teacherService.getPicture(teacherId, picture)
+
+		const extension = picture.split('.').pop().toLowerCase()
+		const mimeTypes = {
+			jpg: 'image/jpeg',
+			jpeg: 'image/jpeg',
+			png: 'image/png',
+			webp: 'image/webp',
+		}
+
+		res.setHeader('Content-Type', mimeTypes[extension] || 'image/webp')
+		res.setHeader('Cache-Control', 'max-age=31536000')
+
+		return res.send(file)
+	}
+
+	@ApiOperation({ summary: 'Delete teacher picture' })
+	@ApiParam({
+		name: 'teacherId',
+		required: true,
+		description: 'Teacher ID',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiParam({
+		name: 'picture',
+		required: true,
+		description: 'Picture filename',
+		example: 'teacher-id-uuid.webp',
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Picture successfully deleted',
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'Picture or Teacher not found',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Delete('/:teacherId/picture/:picture')
+	async deleteTeacherPicture(
+		@Param('teacherId') teacherId: string,
+		@Param('picture') picture: string,
+	) {
+		return this.teacherService.deleteTeacherPicture(teacherId, picture)
+	}
+
+	@ApiOperation({ summary: 'Delete teacher' })
+	@ApiParam({
+		name: 'id',
+		required: true,
+		description: 'Teacher ID',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Teacher successfully deleted',
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'Teacher not found',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Delete(':id')
+	async deleteTeacher(@Param('id') id: string) {
+		return this.teacherService.deleteTeacher(id)
 	}
 }
