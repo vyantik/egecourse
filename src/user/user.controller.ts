@@ -5,18 +5,26 @@ import {
 	HttpCode,
 	HttpStatus,
 	Param,
+	ParseFilePipe,
 	Patch,
+	Res,
+	UploadedFile,
+	UseInterceptors,
 } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import {
-	ApiBearerAuth,
+	ApiBody,
+	ApiConsumes,
 	ApiOperation,
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__'
+import { Response } from 'express'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
 import { Authorized } from '@/auth/decorators/authorized.decorator'
+import { parseFileConfig } from '@/config/parse-file.config'
 
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserResponseEntity } from './entities/user-response.entity'
@@ -33,7 +41,6 @@ export class UserController {
 		description: 'Returns the current user profile',
 		type: UserResponseEntity,
 	})
-	@ApiBearerAuth()
 	@Authorization()
 	@HttpCode(HttpStatus.OK)
 	@Get('profile')
@@ -52,7 +59,6 @@ export class UserController {
 		description: 'Forbidden - Insufficient permissions',
 	})
 	@ApiResponse({ status: 404, description: 'User not found' })
-	@ApiBearerAuth()
 	@Authorization(UserRole.ADMIN)
 	@HttpCode(HttpStatus.OK)
 	@Get('/by-id/:id')
@@ -66,7 +72,6 @@ export class UserController {
 		description: 'User profile updated successfully',
 		type: UserResponseEntity,
 	})
-	@ApiBearerAuth()
 	@Authorization()
 	@HttpCode(HttpStatus.OK)
 	@Patch('profile')
@@ -75,5 +80,65 @@ export class UserController {
 		@Body() dto: UpdateUserDto,
 	) {
 		return this.userService.update(userId, dto)
+	}
+
+	@ApiOperation({ summary: 'Update user avatar' })
+	@ApiConsumes('multipart/form-data')
+	@ApiBody({
+		schema: {
+			type: 'object',
+			properties: {
+				file: {
+					type: 'string',
+					format: 'binary',
+					description: 'New user picture file (JPG, PNG, WebP)',
+				},
+			},
+			required: ['file'],
+		},
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'User avatar updated successfully',
+		type: UserResponseEntity,
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Bad request - invalid file format or size',
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'User not found',
+	})
+	@Authorization()
+	@UseInterceptors(FileInterceptor('file'))
+	@Patch('/profile/picture')
+	public async updateUserPicture(
+		@Authorized('id') userId: string,
+		@UploadedFile(new ParseFilePipe(parseFileConfig))
+		file: Express.Multer.File,
+	) {
+		return this.userService.updateAvatar(userId, file)
+	}
+
+	@Get('/:userId/picture/:picture')
+	async getPicture(
+		@Param('userId') userId: string,
+		@Param('picture') picture: string,
+		@Res() res: Response,
+	) {
+		const file = await this.userService.getAvatar(userId, picture)
+
+		const extension = picture.split('.').pop().toLowerCase()
+		const mimeTypes = {
+			jpg: 'image/jpeg',
+			jpeg: 'image/jpeg',
+			png: 'image/png',
+			webp: 'image/webp',
+		}
+
+		res.setHeader('Content-Type', mimeTypes[extension] || 'image/webp')
+
+		return res.send(file)
 	}
 }

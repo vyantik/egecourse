@@ -1,29 +1,8 @@
-import {
-	Controller,
-	Delete,
-	Get,
-	Param,
-	ParseFilePipe,
-	Post,
-	Res,
-	UploadedFile,
-	UseInterceptors,
-} from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
-import {
-	ApiBody,
-	ApiConsumes,
-	ApiOperation,
-	ApiParam,
-	ApiResponse,
-	ApiTags,
-} from '@nestjs/swagger'
+import { Controller, Delete, Param } from '@nestjs/common'
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__'
-import { Response } from 'express'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
-import { Authorized } from '@/auth/decorators/authorized.decorator'
-import { parseFileConfig } from '@/config/parse-file.config'
 
 import { FileSystemService } from './file-system.service'
 
@@ -31,79 +10,6 @@ import { FileSystemService } from './file-system.service'
 @Controller('files')
 export class FileSystemController {
 	constructor(private readonly fileService: FileSystemService) {}
-
-	@ApiOperation({ summary: 'Upload user avatar' })
-	@ApiConsumes('multipart/form-data')
-	@ApiBody({
-		schema: {
-			type: 'object',
-			properties: {
-				file: {
-					type: 'string',
-					format: 'binary',
-					description: 'Avatar image file (JPG, PNG, WebP)',
-				},
-			},
-		},
-	})
-	@ApiResponse({
-		status: 201,
-		description: 'Avatar uploaded successfully',
-		schema: {
-			type: 'object',
-			properties: {
-				url: {
-					type: 'string',
-					example: 'http://example.com/avatars/user-id-uuid.webp',
-				},
-			},
-		},
-	})
-	@Post('avatar')
-	@Authorization()
-	@UseInterceptors(FileInterceptor('file'))
-	async uploadAvatar(
-		@UploadedFile(new ParseFilePipe(parseFileConfig))
-		file: Express.Multer.File,
-		@Authorized('id') userId: string,
-	) {
-		const url = await this.fileService.uploadAvatar(file, userId)
-		return { url }
-	}
-
-	@ApiOperation({ summary: 'Get avatar by filename' })
-	@ApiParam({
-		name: 'filename',
-		description: 'Avatar filename',
-		example: 'user-id-uuid.webp',
-	})
-	@ApiResponse({ status: 200, description: 'Returns the avatar image' })
-	@ApiResponse({ status: 404, description: 'Avatar not found' })
-	@Get('avatar/:filename')
-	async getAvatar(@Param('filename') filename: string, @Res() res: Response) {
-		const file = await this.fileService.getAvatar(filename)
-
-		const extension = filename.split('.').pop().toLowerCase()
-		const mimeTypes = {
-			jpg: 'image/jpeg',
-			jpeg: 'image/jpeg',
-			png: 'image/png',
-			webp: 'image/webp',
-		}
-
-		res.setHeader('Content-Type', mimeTypes[extension] || 'image/webp')
-		res.setHeader('Cache-Control', 'max-age=31536000')
-		return res.send(file)
-	}
-
-	@ApiOperation({ summary: 'Remove current user avatar' })
-	@ApiResponse({ status: 200, description: 'Avatar removed successfully' })
-	@Delete('avatar')
-	@Authorization()
-	async removeAvatar(@Authorized('id') userId: string) {
-		await this.fileService.removeUserAvatar(userId)
-		return { message: 'success' }
-	}
 
 	@ApiOperation({ summary: 'Remove user avatar (Admin only)' })
 	@ApiParam({

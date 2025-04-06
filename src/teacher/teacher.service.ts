@@ -170,7 +170,6 @@ export class TeacherService {
 
 	async updateTeacherPicture(
 		teacherId: string,
-		pictureName: string,
 		file: Express.Multer.File,
 	): Promise<Teacher> {
 		const teacher = await this.prismaService.teacher.findUnique({
@@ -181,7 +180,12 @@ export class TeacherService {
 			throw new NotFoundException('Teacher not found')
 		}
 
-		await this.fileService.deleteFile(this.teacherPicturesDir, pictureName)
+		if (teacher.picture) {
+			await this.fileService.deletePicture(
+				this.teacherPicturesDir,
+				teacher.picture.split('/').pop(),
+			)
+		}
 
 		const picture = await this.fileService.uploadPicture(
 			file,
@@ -207,6 +211,10 @@ export class TeacherService {
 			throw new NotFoundException('Teacher not found')
 		}
 
+		if (!teacher.picture) {
+			throw new NotFoundException('Teacher picture not found')
+		}
+
 		return this.fileService.getPicture(this.teacherPicturesDir, pictureName)
 	}
 
@@ -222,7 +230,10 @@ export class TeacherService {
 			throw new NotFoundException('Teacher not found')
 		}
 
-		await this.fileService.deleteFile(this.teacherPicturesDir, pictureName)
+		await this.fileService.deletePicture(
+			this.teacherPicturesDir,
+			pictureName,
+		)
 
 		await this.prismaService.teacher.update({
 			where: { id: teacherId },

@@ -23,7 +23,6 @@ export class FileSystemService {
 		'image/png',
 		'image/webp',
 	]
-	private readonly baseUrl: string
 
 	constructor(
 		private readonly configService: ConfigService,
@@ -31,59 +30,10 @@ export class FileSystemService {
 	) {
 		this.uploadDir =
 			this.configService.get<string>('UPLOAD_DIR') || 'uploads'
-		this.avatarDir = join(this.uploadDir, 'avatars')
-		this.baseUrl =
-			this.configService.get<string>('APPLICATION_URL') ||
-			'http://localhost:4000'
 
 		if (!existsSync(this.uploadDir)) {
 			mkdirSync(this.uploadDir, { recursive: true })
 		}
-
-		if (!existsSync(this.avatarDir)) {
-			mkdirSync(this.avatarDir, { recursive: true })
-		}
-	}
-
-	async uploadAvatar(
-		file: Express.Multer.File,
-		userId: string,
-	): Promise<string> {
-		this.validateFile(file)
-		const user = await this.prismaService.user.findUnique({
-			where: { id: userId },
-		})
-
-		if (!user) {
-			throw new NotFoundException('User not found')
-		}
-
-		if (user.picture) {
-			try {
-				const oldAvatarFilename = user.picture.split('/').pop()
-				if (oldAvatarFilename) {
-					await this.deleteAvatarFile(oldAvatarFilename)
-				}
-			} catch (error) {
-				console.error('Error deleting old avatar:', error)
-			}
-		}
-
-		const filename = `${userId}-${uuidv4()}`
-		const extension = 'webp'
-		const fullFilename = `${filename}.${extension}`
-		const filePath = join(this.avatarDir, fullFilename)
-
-		await this.processAndSaveImage(file.buffer, filePath)
-
-		const avatarUrl = `${this.baseUrl}/files/avatar/${filename}.${extension}`
-
-		await this.prismaService.user.update({
-			where: { id: userId },
-			data: { picture: avatarUrl },
-		})
-
-		return avatarUrl
 	}
 
 	async uploadPicture(
@@ -102,16 +52,6 @@ export class FileSystemService {
 		return `${filename}.${extension}`
 	}
 
-	async getAvatar(filename: string): Promise<Buffer> {
-		const filePath = join(this.avatarDir, filename)
-
-		try {
-			return await fs.readFile(filePath)
-		} catch (error) {
-			throw new NotFoundException('Avatar not found')
-		}
-	}
-
 	async getPicture(pictureDir: string, filename: string): Promise<Buffer> {
 		const filePath = join(pictureDir, filename)
 
@@ -122,7 +62,7 @@ export class FileSystemService {
 		}
 	}
 
-	async deleteFile(path: string, filename: string): Promise<void> {
+	async deletePicture(path: string, filename: string): Promise<void> {
 		const filePath = join(path, filename)
 
 		try {

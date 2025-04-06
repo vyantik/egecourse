@@ -249,18 +249,13 @@ export class TeacherController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@UseInterceptors(FileInterceptor('file'))
-	@Patch('/:teacherId/picture/:picture')
+	@Patch('/:teacherId/picture')
 	async updateTeacherPicture(
 		@Param('teacherId') teacherId: string,
-		@Param('picture') picture: string,
 		@UploadedFile(new ParseFilePipe(parseFileConfig))
 		file: Express.Multer.File,
 	) {
-		return this.teacherService.updateTeacherPicture(
-			teacherId,
-			picture,
-			file,
-		)
+		return this.teacherService.updateTeacherPicture(teacherId, file)
 	}
 
 	@ApiOperation({ summary: 'Get teacher picture' })
