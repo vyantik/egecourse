@@ -7,6 +7,7 @@ import {
 	Param,
 	ParseFilePipe,
 	Patch,
+	Post,
 	Res,
 	UploadedFile,
 	UseInterceptors,
@@ -26,6 +27,7 @@ import { Authorization } from '@/auth/decorators/auth.decorator'
 import { Authorized } from '@/auth/decorators/authorized.decorator'
 import { parseFileConfig } from '@/config/parse-file.config'
 
+import { CreateReviewDto } from './dto/create-review.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserResponseEntity } from './entities/user-response.entity'
 import { UserService } from './user.service'
@@ -121,6 +123,15 @@ export class UserController {
 		return this.userService.updateAvatar(userId, file)
 	}
 
+	@ApiOperation({ summary: 'Get user avatar image' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns the user avatar image',
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'User or avatar not found',
+	})
 	@Get('/:userId/picture/:picture')
 	public async getPicture(
 		@Param('userId') userId: string,
@@ -140,5 +151,24 @@ export class UserController {
 		res.setHeader('Content-Type', mimeTypes[extension] || 'image/webp')
 
 		return res.send(file)
+	}
+
+	@ApiOperation({ summary: 'Create a new review' })
+	@ApiResponse({
+		status: 201,
+		description: 'Review created successfully',
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'User not found',
+	})
+	@Authorization()
+	@HttpCode(HttpStatus.CREATED)
+	@Post('/profile/review')
+	public async createReview(
+		@Authorized('id') userId: string,
+		@Body() dto: CreateReviewDto,
+	) {
+		return this.userService.createReview(userId, dto.text)
 	}
 }

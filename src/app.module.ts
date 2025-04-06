@@ -11,6 +11,7 @@ import { FileSystemModule } from './file-system/file-system.module'
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.util'
 import { MailModule } from './libs/mail/mail.module'
 import { PrismaModule } from './prisma/prisma.module'
+import { ReviewModule } from './review/review.module'
 import { TeacherModule } from './teacher/teacher.module'
 import { UserModule } from './user/user.module'
 
@@ -31,6 +32,7 @@ import { UserModule } from './user/user.module'
 		TeacherModule,
 		FaqModule,
 		CourseModule,
+		ReviewModule,
 	],
 })
 export class AppModule {}

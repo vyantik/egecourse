@@ -27,6 +27,8 @@ model User {
 
   method AuthMethod
 
+  Review Review[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -93,6 +95,17 @@ model Course {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("courses")
+}
+
+model Review {
+  id String @id @default(uuid())
+
+  text String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  @@map("reviews")
 }
 
 enum UserRole {

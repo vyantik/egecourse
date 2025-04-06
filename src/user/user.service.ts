@@ -10,6 +10,7 @@ import { FileSystemService } from '@/file-system/file-system.service'
 import { PrismaService } from '@/prisma/prisma.service'
 
 import { UpdateUserDto } from './dto/update-user.dto'
+import { ReviewResponseEntity } from './entities/review-response.entity'
 import { UserResponseEntity } from './entities/user-response.entity'
 
 @Injectable()
@@ -149,5 +150,29 @@ export class UserService {
 		}
 
 		return this.fileService.getPicture(this.avatarsDir, pictureName)
+	}
+
+	public async createReview(userId: string, text: string) {
+		const user = await this.prismaService.user.findUnique({
+			where: { id: userId },
+		})
+
+		if (!user) {
+			throw new NotFoundException('User not found')
+		}
+
+		const review = await this.prismaService.review.create({
+			data: {
+				text,
+				userId,
+			},
+			include: {
+				user: true,
+			},
+		})
+
+		return plainToInstance(ReviewResponseEntity, review, {
+			excludeExtraneousValues: false,
+		})
 	}
 }
