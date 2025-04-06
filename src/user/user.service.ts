@@ -9,8 +9,9 @@ import { join } from 'path'
 import { FileSystemService } from '@/file-system/file-system.service'
 import { PrismaService } from '@/prisma/prisma.service'
 
+import { ReviewResponseEntity } from '../review/entities/review-response.entity'
+
 import { UpdateUserDto } from './dto/update-user.dto'
-import { ReviewResponseEntity } from './entities/review-response.entity'
 import { UserResponseEntity } from './entities/user-response.entity'
 
 @Injectable()

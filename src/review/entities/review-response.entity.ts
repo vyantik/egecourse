@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Exclude, Type } from 'class-transformer'
+import { Exclude, Transform, Type } from 'class-transformer'
 
-import { UserResponseEntity } from './user-response.entity'
+import { omit } from '@/libs/common/utils/omit'
+
+import { UserResponseEntity } from '../../user/entities/user-response.entity'
 
 export class ReviewResponseEntity {
 	@ApiProperty({
@@ -18,9 +20,21 @@ export class ReviewResponseEntity {
 
 	@ApiProperty({
 		description: 'User who created the review',
-		type: UserResponseEntity,
 	})
 	@Type(() => UserResponseEntity)
+	@Transform(({ value }) => {
+		if (value) {
+			const rest = omit(value, [
+				'method',
+				'isTwoFactorEnabled',
+				'isVerified',
+				'role',
+				'email',
+			])
+			return rest
+		}
+		return value
+	})
 	user: UserResponseEntity
 
 	@Exclude()
