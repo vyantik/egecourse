@@ -14,7 +14,7 @@ import { UserResponseEntity } from '@/user/entities/user-response.entity'
 import { ConfirmationDto } from './dto/confirmation.dto'
 import { EmailConfirmationService } from './email-confirmation.service'
 
-@ApiTags('email-confirmation')
+@ApiTags('Email-Confirmation')
 @Controller('auth/email-confirmation')
 export class EmailConfirmationController {
 	constructor(

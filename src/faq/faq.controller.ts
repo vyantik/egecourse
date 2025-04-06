@@ -26,7 +26,7 @@ import { FaqDto } from './dto/faq.dto'
 import { UpdateFaqDto, UpdateFullFaqDto } from './dto/update-faq.dto'
 import { FaqService } from './faq.service'
 
-@ApiTags('faqs')
+@ApiTags('FAQ')
 @Controller('faqs')
 export class FaqController {
 	constructor(private readonly faqService: FaqService) {}

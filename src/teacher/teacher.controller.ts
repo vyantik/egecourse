@@ -39,7 +39,7 @@ import {
 } from './dto/update-teacher.dto'
 import { TeacherService } from './teacher.service'
 
-@ApiTags('teachers')
+@ApiTags('Teachers')
 @Controller('teachers')
 export class TeacherController {
 	constructor(private readonly teacherService: TeacherService) {}

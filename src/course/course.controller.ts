@@ -26,7 +26,7 @@ import { CourseTransferDto } from './dto/course-transfer.dto'
 import { CourseDto } from './dto/course.dto'
 import { UpdateCourseDto } from './dto/update-course.dto'
 
-@ApiTags('courses')
+@ApiTags('Courses')
 @Controller('courses')
 export class CourseController {
 	constructor(private readonly courseService: CourseService) {}

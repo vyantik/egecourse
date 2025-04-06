@@ -18,7 +18,7 @@ import { NewPasswordDto } from './dto/new-password.dto'
 import { ResetPasswordDto } from './dto/reset-password.dto'
 import { PasswordRecoveryService } from './password-recovery.service'
 
-@ApiTags('password-recovery')
+@ApiTags('Password-Recovery')
 @Controller('auth/password-recovery')
 export class PasswordRecoveryController {
 	constructor(

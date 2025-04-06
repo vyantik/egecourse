@@ -6,7 +6,7 @@ import { Authorization } from '@/auth/decorators/auth.decorator'
 
 import { FileSystemService } from './file-system.service'
 
-@ApiTags('files')
+@ApiTags('File System')
 @Controller('files')
 export class FileSystemController {
 	constructor(private readonly fileService: FileSystemService) {}
