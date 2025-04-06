@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Exclude } from 'class-transformer'
+import { Exclude, Type } from 'class-transformer'
 
 import { UserResponseEntity } from './user-response.entity'
 
@@ -20,6 +20,7 @@ export class ReviewResponseEntity {
 		description: 'User who created the review',
 		type: UserResponseEntity,
 	})
+	@Type(() => UserResponseEntity)
 	user: UserResponseEntity
 
 	@Exclude()
