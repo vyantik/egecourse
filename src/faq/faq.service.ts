@@ -10,7 +10,7 @@ import { UpdateFaqDto, UpdateFullFaqDto } from './dto/update-faq.dto'
 export class FaqService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async createFaq(dto: FaqDto): Promise<FaqDto> {
+	public async createFaq(dto: FaqDto): Promise<FaqDto> {
 		return this.prismaService.faq.create({
 			data: {
 				...dto,
@@ -18,7 +18,7 @@ export class FaqService {
 		})
 	}
 
-	async getFaqs(
+	public async getFaqs(
 		page?: number,
 		limit?: number,
 	): Promise<FaqDto[] | { data: FaqDto[]; meta: Meta }> {
@@ -54,7 +54,7 @@ export class FaqService {
 		}
 	}
 
-	async updateFaq(id: string, dto: UpdateFaqDto) {
+	public async updateFaq(id: string, dto: UpdateFaqDto) {
 		const faq = await this.prismaService.faq.findUnique({
 			where: { id },
 		})
@@ -69,7 +69,7 @@ export class FaqService {
 		})
 	}
 
-	async replaceFaq(id: string, dto: UpdateFullFaqDto) {
+	public async replaceFaq(id: string, dto: UpdateFullFaqDto) {
 		const faq = await this.prismaService.faq.findUnique({
 			where: { id },
 		})

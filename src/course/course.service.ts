@@ -11,7 +11,7 @@ import { UpdateCourseDto } from './dto/update-course.dto'
 export class CourseService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async createCourse(dto: CourseDto): Promise<Course> {
+	public async createCourse(dto: CourseDto): Promise<Course> {
 		const { priceOptions, ...courseData } = dto
 
 		return this.prismaService.course.create({
@@ -24,7 +24,7 @@ export class CourseService {
 		})
 	}
 
-	async getCourses(
+	public async getCourses(
 		page?: number,
 		limit?: number,
 	): Promise<
@@ -66,7 +66,7 @@ export class CourseService {
 		}
 	}
 
-	async getCourseById(id: string): Promise<Course> {
+	public async getCourseById(id: string): Promise<Course> {
 		if (!id) throw new NotFoundException('id is required')
 
 		const course = await this.prismaService.course.findUnique({
@@ -82,7 +82,10 @@ export class CourseService {
 		return course
 	}
 
-	async updateCourse(id: string, dto: UpdateCourseDto): Promise<Course> {
+	public async updateCourse(
+		id: string,
+		dto: UpdateCourseDto,
+	): Promise<Course> {
 		if (!id) throw new NotFoundException('id is required')
 
 		const course = await this.prismaService.course.findUnique({
@@ -106,7 +109,7 @@ export class CourseService {
 		})
 	}
 
-	async replaceCourse(id: string, dto: CourseDto): Promise<Course> {
+	public async replaceCourse(id: string, dto: CourseDto): Promise<Course> {
 		if (!id) throw new NotFoundException('id is required')
 
 		const course = await this.prismaService.course.findUnique({

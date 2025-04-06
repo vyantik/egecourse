@@ -43,7 +43,7 @@ export class FaqController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Post()
-	async createFaq(@Body() dto: FaqDto) {
+	public async createFaq(@Body() dto: FaqDto) {
 		return this.faqService.createFaq(dto)
 	}
 
@@ -68,7 +68,10 @@ export class FaqController {
 		type: FaqPaginationResponseDto,
 	})
 	@Get()
-	async getFaq(@Query('page') page?: number, @Query('limit') limit?: number) {
+	public async getFaq(
+		@Query('page') page?: number,
+		@Query('limit') limit?: number,
+	) {
 		return this.faqService.getFaqs(page, limit)
 	}
 
@@ -95,7 +98,7 @@ export class FaqController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Patch(':id')
-	async updateFaq(@Param('id') id: string, @Body() dto: UpdateFaqDto) {
+	public async updateFaq(@Param('id') id: string, @Body() dto: UpdateFaqDto) {
 		return this.faqService.updateFaq(id, dto)
 	}
 
@@ -122,7 +125,10 @@ export class FaqController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Put(':id')
-	async replaceFaq(@Param('id') id: string, @Body() dto: UpdateFullFaqDto) {
+	public async replaceFaq(
+		@Param('id') id: string,
+		@Body() dto: UpdateFullFaqDto,
+	) {
 		return this.faqService.replaceFaq(id, dto)
 	}
 }

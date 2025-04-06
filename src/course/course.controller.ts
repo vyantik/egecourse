@@ -44,7 +44,7 @@ export class CourseController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Post()
-	async createCourse(@Body() dto: CourseDto) {
+	public async createCourse(@Body() dto: CourseDto) {
 		return this.courseService.createCourse(dto)
 	}
 
@@ -69,7 +69,7 @@ export class CourseController {
 		type: CoursePaginationResponseDto,
 	})
 	@Get()
-	async getCourses(
+	public async getCourses(
 		@Query('page') page?: number,
 		@Query('limit') limit?: number,
 	) {
@@ -93,7 +93,7 @@ export class CourseController {
 		description: 'Course not found',
 	})
 	@Get(':id')
-	async getCourseById(@Param('id') id: string) {
+	public async getCourseById(@Param('id') id: string) {
 		return this.courseService.getCourseById(id)
 	}
 
@@ -120,7 +120,10 @@ export class CourseController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Patch(':id')
-	async updateCourse(@Param('id') id: string, @Body() dto: UpdateCourseDto) {
+	public async updateCourse(
+		@Param('id') id: string,
+		@Body() dto: UpdateCourseDto,
+	) {
 		return this.courseService.updateCourse(id, dto)
 	}
 
@@ -147,7 +150,10 @@ export class CourseController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Put(':id')
-	async replaceCourse(@Param('id') id: string, @Body() dto: CourseDto) {
+	public async replaceCourse(
+		@Param('id') id: string,
+		@Body() dto: CourseDto,
+	) {
 		return this.courseService.replaceCourse(id, dto)
 	}
 }

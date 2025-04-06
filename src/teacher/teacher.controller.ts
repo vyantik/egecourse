@@ -84,7 +84,7 @@ export class TeacherController {
 	@Authorization(UserRole.ADMIN)
 	@UseInterceptors(FileInterceptor('file'))
 	@Post()
-	async createTeacher(
+	public async createTeacher(
 		@Body(new TransformTeacherDtoPipe()) dto: TeacherDto,
 		@UploadedFile(
 			new ParseFilePipe({ ...parseFileConfig, fileIsRequired: false }),
@@ -115,7 +115,7 @@ export class TeacherController {
 		type: TeacherPaginationResponseDto,
 	})
 	@Get()
-	async getTeachers(
+	public async getTeachers(
 		@Query('page') page?: number,
 		@Query('limit') limit?: number,
 	) {
@@ -139,7 +139,7 @@ export class TeacherController {
 		description: 'Teacher not found',
 	})
 	@Get(':id')
-	async getTeacherById(@Param('id') id: string) {
+	public async getTeacherById(@Param('id') id: string) {
 		return this.teacherService.getTeacherById(id)
 	}
 
@@ -168,7 +168,7 @@ export class TeacherController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Patch(':id')
-	async updateTeacher(
+	public async updateTeacher(
 		@Param('id') id: string,
 		@Body() dto: UpdateTeacherDto,
 	) {
@@ -200,7 +200,7 @@ export class TeacherController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Put(':id')
-	async replaceTeacher(
+	public async replaceTeacher(
 		@Param('id') id: string,
 		@Body() dto: UpdateFullTeacherDto,
 	) {
@@ -250,7 +250,7 @@ export class TeacherController {
 	@Authorization(UserRole.ADMIN)
 	@UseInterceptors(FileInterceptor('file'))
 	@Patch('/:teacherId/picture')
-	async updateTeacherPicture(
+	public async updateTeacherPicture(
 		@Param('teacherId') teacherId: string,
 		@UploadedFile(new ParseFilePipe(parseFileConfig))
 		file: Express.Multer.File,
@@ -280,7 +280,7 @@ export class TeacherController {
 		description: 'Picture or Teacher not found',
 	})
 	@Get('/:teacherId/picture/:picture')
-	async getPicture(
+	public async getPicture(
 		@Param('teacherId') teacherId: string,
 		@Param('picture') picture: string,
 		@Res() res: Response,
@@ -324,7 +324,7 @@ export class TeacherController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Delete('/:teacherId/picture/:picture')
-	async deleteTeacherPicture(
+	public async deleteTeacherPicture(
 		@Param('teacherId') teacherId: string,
 		@Param('picture') picture: string,
 	) {
@@ -348,7 +348,7 @@ export class TeacherController {
 	})
 	@Authorization(UserRole.ADMIN)
 	@Delete(':id')
-	async deleteTeacher(@Param('id') id: string) {
+	public async deleteTeacher(@Param('id') id: string) {
 		return this.teacherService.deleteTeacher(id)
 	}
 }

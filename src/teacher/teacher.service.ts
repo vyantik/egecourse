@@ -39,7 +39,7 @@ export class TeacherService {
 		}
 	}
 
-	async createTeacher(
+	public async createTeacher(
 		dto: TeacherDto,
 		file?: Express.Multer.File,
 	): Promise<Teacher> {
@@ -74,7 +74,7 @@ export class TeacherService {
 		return teacher
 	}
 
-	async getTeachers(
+	public async getTeachers(
 		page?: number,
 		limit?: number,
 	): Promise<Teacher[] | { data: Teacher[]; meta: Meta }> {
@@ -110,7 +110,7 @@ export class TeacherService {
 		}
 	}
 
-	async getTeacherById(id: string): Promise<Teacher> {
+	public async getTeacherById(id: string): Promise<Teacher> {
 		if (!id) throw new NotFoundException('id is required')
 
 		const teacher = await this.prismaService.teacher.findUnique({
@@ -126,7 +126,10 @@ export class TeacherService {
 		return teacher
 	}
 
-	async updateTeacher(id: string, dto: UpdateTeacherDto): Promise<Teacher> {
+	public async updateTeacher(
+		id: string,
+		dto: UpdateTeacherDto,
+	): Promise<Teacher> {
 		if (!id) throw new NotFoundException('id is required')
 
 		const teacher = await this.prismaService.teacher.findUnique({
@@ -145,7 +148,7 @@ export class TeacherService {
 		})
 	}
 
-	async replaceTeacher(
+	public async replaceTeacher(
 		id: string,
 		dto: UpdateFullTeacherDto,
 	): Promise<Teacher> {
@@ -168,7 +171,7 @@ export class TeacherService {
 		})
 	}
 
-	async updateTeacherPicture(
+	public async updateTeacherPicture(
 		teacherId: string,
 		file: Express.Multer.File,
 	): Promise<Teacher> {
@@ -202,7 +205,10 @@ export class TeacherService {
 		})
 	}
 
-	async getPicture(teacherId: string, pictureName: string): Promise<Buffer> {
+	public async getPicture(
+		teacherId: string,
+		pictureName: string,
+	): Promise<Buffer> {
 		const teacher = await this.prismaService.teacher.findUnique({
 			where: { id: teacherId },
 		})
@@ -218,7 +224,7 @@ export class TeacherService {
 		return this.fileService.getPicture(this.teacherPicturesDir, pictureName)
 	}
 
-	async deleteTeacherPicture(
+	public async deleteTeacherPicture(
 		teacherId: string,
 		pictureName: string,
 	): Promise<void> {
@@ -243,7 +249,7 @@ export class TeacherService {
 		})
 	}
 
-	async deleteTeacher(id: string): Promise<void> {
+	public async deleteTeacher(id: string): Promise<void> {
 		if (!id) throw new BadRequestException('id is required')
 
 		return this.prismaService.teacher.delete({

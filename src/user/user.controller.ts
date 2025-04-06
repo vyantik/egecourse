@@ -122,7 +122,7 @@ export class UserController {
 	}
 
 	@Get('/:userId/picture/:picture')
-	async getPicture(
+	public async getPicture(
 		@Param('userId') userId: string,
 		@Param('picture') picture: string,
 		@Res() res: Response,
