@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Exclude } from 'class-transformer'
 
 import { UserResponseEntity } from './user-response.entity'
 
@@ -20,6 +21,15 @@ export class ReviewResponseEntity {
 		type: UserResponseEntity,
 	})
 	user: UserResponseEntity
+
+	@Exclude()
+	userId: string
+
+	@Exclude()
+	createdAt: Date
+
+	@Exclude()
+	updatedAt: Date
 
 	constructor(partial: Partial<ReviewResponseEntity>) {
 		Object.assign(this, partial)
