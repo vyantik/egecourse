@@ -92,7 +92,7 @@ export class CourseController {
 		status: 404,
 		description: 'Course not found',
 	})
-	@Get('/by-id/:id')
+	@Get(':id')
 	async getCourseById(@Param('id') id: string) {
 		return this.courseService.getCourseById(id)
 	}

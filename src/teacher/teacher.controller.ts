@@ -27,8 +27,8 @@ import { UserRole } from '@prisma/__generated__'
 import { Response } from 'express'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
-import { TransformTeacherDtoPipe } from '@/common/pipes/transform-teacher-dto.pipe'
 import { parseFileConfig } from '@/config/parse-file.config'
+import { TransformTeacherDtoPipe } from '@/libs/common/pipes/transform-teacher-dto.pipe'
 
 import { TeacherPaginationResponseDto } from './dto/teacher-pagination-response.dto'
 import { TeacherTransferDto } from './dto/teacher-transfer.dto'
@@ -205,6 +205,62 @@ export class TeacherController {
 		@Body() dto: UpdateFullTeacherDto,
 	) {
 		return this.teacherService.replaceTeacher(id, dto)
+	}
+
+	@ApiOperation({ summary: 'Update teacher picture' })
+	@ApiParam({
+		name: 'teacherId',
+		required: true,
+		description: 'Teacher ID',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiParam({
+		name: 'picture',
+		required: true,
+		description: 'Current picture filename to replace',
+		example: 'teacher-id-uuid.webp',
+	})
+	@ApiConsumes('multipart/form-data')
+	@ApiBody({
+		schema: {
+			type: 'object',
+			properties: {
+				file: {
+					type: 'string',
+					format: 'binary',
+					description: 'New teacher picture file (JPG, PNG, WebP)',
+				},
+			},
+			required: ['file'],
+		},
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Teacher picture successfully updated',
+		type: TeacherTransferDto,
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'Teacher or picture not found',
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Bad request - invalid file format or size',
+	})
+	@Authorization(UserRole.ADMIN)
+	@UseInterceptors(FileInterceptor('file'))
+	@Patch('/:teacherId/picture/:picture')
+	async updateTeacherPicture(
+		@Param('teacherId') teacherId: string,
+		@Param('picture') picture: string,
+		@UploadedFile(new ParseFilePipe(parseFileConfig))
+		file: Express.Multer.File,
+	) {
+		return this.teacherService.updateTeacherPicture(
+			teacherId,
+			picture,
+			file,
+		)
 	}
 
 	@ApiOperation({ summary: 'Get teacher picture' })

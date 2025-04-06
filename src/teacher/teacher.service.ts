@@ -168,6 +168,36 @@ export class TeacherService {
 		})
 	}
 
+	async updateTeacherPicture(
+		teacherId: string,
+		pictureName: string,
+		file: Express.Multer.File,
+	): Promise<Teacher> {
+		const teacher = await this.prismaService.teacher.findUnique({
+			where: { id: teacherId },
+		})
+
+		if (!teacher) {
+			throw new NotFoundException('Teacher not found')
+		}
+
+		await this.fileService.deleteFile(this.teacherPicturesDir, pictureName)
+
+		const picture = await this.fileService.uploadPicture(
+			file,
+			this.teacherPicturesDir,
+		)
+
+		const url = `${this.baseUrl}/teachers/${teacher.id}/picture/${picture}`
+
+		return this.prismaService.teacher.update({
+			where: { id: teacher.id },
+			data: {
+				picture: url,
+			},
+		})
+	}
+
 	async getPicture(teacherId: string, pictureName: string): Promise<Buffer> {
 		const teacher = await this.prismaService.teacher.findUnique({
 			where: { id: teacherId },
