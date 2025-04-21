@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	ConflictException,
 	forwardRef,
 	Inject,
@@ -20,6 +21,7 @@ import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service'
 import { TwoFactorAuthService } from './two-factor-auth/two-factor-auth.service'
+import validate from 'deep-email-validator'
 
 @Injectable()
 export class AuthService {
@@ -32,6 +34,12 @@ export class AuthService {
 	) {}
 
 	public async register(req: Request, dto: RegisterDto) {
+		const validateEmail = await validate(dto.email)
+		
+		if(!validateEmail.valid){
+			throw new BadRequestException('Invalid email address')
+		}
+
 		const isExists = await this.userService.findByEmail(dto.email)
 
 		if (isExists) {
