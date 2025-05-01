@@ -13,7 +13,7 @@ export class ApplicationController {
 	constructor(private readonly applicationService: ApplicationService) {}
 
 	@Post()
-	@Authorization(UserRole.ADMIN)
+	@Authorization()
 	@ApiOperation({ summary: 'Создание заявки' })
 	@ApiResponse({ status: 201, description: 'Заявка успешно создана' })
 	@ApiBody({ type: ApplicationDto })
