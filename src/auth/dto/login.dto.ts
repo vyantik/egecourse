@@ -10,26 +10,26 @@ import {
 
 export class LoginDto {
 	@ApiProperty({
-		description: 'User email address',
+		description: 'Email адрес пользователя',
 		example: 'john.doe@example.com',
 	})
-	@IsString({ message: 'Email must be a string.' })
-	@IsEmail({}, { message: 'Invalid email format.' })
-	@IsNotEmpty({ message: 'Email is required.' })
+	@IsString({ message: 'Email должен быть строкой.' })
+	@IsEmail({}, { message: 'Неверный формат email.' })
+	@IsNotEmpty({ message: 'Email обязателен.' })
 	email: string
 
 	@ApiProperty({
-		description: 'User password',
+		description: 'Пароль пользователя',
 		example: 'passwordD123',
 	})
-	@IsString({ message: 'Password must be a string.' })
-	@IsNotEmpty({ message: 'Password is required.' })
-	@MinLength(8, { message: 'Password must be at least 8 characters.' })
-	@MaxLength(32, { message: 'Password must be at most 32 characters.' })
+	@IsString({ message: 'Пароль должен быть строкой.' })
+	@IsNotEmpty({ message: 'Пароль обязателен.' })
+	@MinLength(8, { message: 'Пароль должен содержать минимум 8 символов.' })
+	@MaxLength(32, { message: 'Пароль должен содержать максимум 32 символа.' })
 	password: string
 
 	@ApiProperty({
-		description: 'Two-factor authentication code (if enabled)',
+		description: 'Код двухфакторной аутентификации (если включена)',
 		example: '123456',
 		required: false,
 	})

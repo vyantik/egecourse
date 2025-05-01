@@ -13,13 +13,13 @@ import {
 } from './dto/url-container.dto'
 import { UrlContainerService } from './url-container.service'
 
-@ApiTags('Url container')
+@ApiTags('Контейнер URL')
 @Controller('url-container')
 export class UrlContainerController {
 	constructor(private readonly urlContainerService: UrlContainerService) {}
 
 	@ApiOperation({
-		summary: 'Get a url',
+		summary: 'Получить URL',
 		description: 'Получить URL по его идентификатору',
 	})
 	@ApiParam({ name: 'id', description: 'Идентификатор URL', type: String })
@@ -30,7 +30,7 @@ export class UrlContainerController {
 		return this.urlContainerService.getUrlContainer(id)
 	}
 
-	@ApiOperation({ summary: 'Create a url', description: 'Создать новый URL' })
+	@ApiOperation({ summary: 'Создать URL', description: 'Создать новый URL' })
 	@ApiBody({
 		type: CreateUrlContainerDto,
 		description: 'Данные для создания URL',
@@ -46,7 +46,7 @@ export class UrlContainerController {
 	}
 
 	@ApiOperation({
-		summary: 'Update a url',
+		summary: 'Обновить URL',
 		description: 'Обновить существующий URL',
 	})
 	@ApiParam({

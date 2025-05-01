@@ -4,13 +4,13 @@ import { Exclude } from 'class-transformer'
 
 export class UserEntity {
 	@ApiProperty({
-		description: 'Unique user identifier',
+		description: 'Уникальный идентификатор пользователя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	id: string
 
 	@ApiProperty({
-		description: 'User email address',
+		description: 'Email адрес пользователя',
 		example: 'user@example.com',
 	})
 	email: string
@@ -20,19 +20,19 @@ export class UserEntity {
 	password: string
 
 	@ApiProperty({
-		description: 'User first name',
+		description: 'Имя пользователя',
 		example: 'Иван',
 	})
 	name: string
 
 	@ApiProperty({
-		description: 'User last name',
+		description: 'Фамилия пользователя',
 		example: 'Иванов',
 	})
 	surname: string
 
 	@ApiProperty({
-		description: 'User patronymic (middle name)',
+		description: 'Отчество пользователя',
 		example: 'Иванович',
 	})
 	patronymic: string

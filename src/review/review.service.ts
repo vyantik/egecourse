@@ -26,7 +26,7 @@ export class ReviewService {
 		})
 
 		if (!review) {
-			throw new NotFoundException('Review not found')
+			throw new NotFoundException('Отзыв не найден')
 		}
 
 		return plainToInstance(ReviewResponseEntity, review, {

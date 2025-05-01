@@ -3,19 +3,19 @@ import { IsNotEmpty, IsString } from 'class-validator'
 
 export class FaqDto {
 	@ApiProperty({
-		example: 'How do I reset my password?',
-		description: 'The question for the FAQ entry',
+		example: 'Как сбросить пароль?',
+		description: 'Вопрос для FAQ',
 	})
-	@IsString({ message: 'Question must be a string' })
-	@IsNotEmpty({ message: 'Question is required' })
+	@IsString({ message: 'Вопрос должен быть строкой' })
+	@IsNotEmpty({ message: 'Вопрос обязателен' })
 	question: string
 
 	@ApiProperty({
 		example:
-			'You can reset your password by clicking on the "Forgot Password" link on the login page.',
-		description: 'The answer for the FAQ entry',
+			'Вы можете сбросить пароль, нажав на ссылку "Забыли пароль" на странице входа.',
+		description: 'Ответ на вопрос FAQ',
 	})
-	@IsString({ message: 'Answer must be a string' })
-	@IsNotEmpty({ message: 'Answer is required' })
+	@IsString({ message: 'Ответ должен быть строкой' })
+	@IsNotEmpty({ message: 'Ответ обязателен' })
 	answer: string
 }

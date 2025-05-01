@@ -26,21 +26,21 @@ import { CourseTransferDto } from './dto/course-transfer.dto'
 import { CourseDto } from './dto/course.dto'
 import { UpdateCourseDto } from './dto/update-course.dto'
 
-@ApiTags('Courses')
+@ApiTags('Курсы')
 @Controller('courses')
 export class CourseController {
 	constructor(private readonly courseService: CourseService) {}
 
-	@ApiOperation({ summary: 'Create a new course' })
+	@ApiOperation({ summary: 'Создать новый курс' })
 	@ApiBody({ type: CourseDto })
 	@ApiResponse({
 		status: 201,
-		description: 'Course successfully created',
+		description: 'Курс успешно создан',
 		type: CourseTransferDto,
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Post()
@@ -48,24 +48,24 @@ export class CourseController {
 		return this.courseService.createCourse(dto)
 	}
 
-	@ApiOperation({ summary: 'Get all courses with pagination' })
+	@ApiOperation({ summary: 'Получить все курсы с пагинацией' })
 	@ApiQuery({
 		name: 'page',
 		required: false,
 		type: Number,
-		description: 'Page number (starts from 1)',
+		description: 'Номер страницы (начиная с 1)',
 		example: 1,
 	})
 	@ApiQuery({
 		name: 'limit',
 		required: false,
 		type: Number,
-		description: 'Number of items per page',
+		description: 'Количество элементов на странице',
 		example: 10,
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Returns courses with pagination metadata',
+		description: 'Возвращает курсы с метаданными пагинации',
 		type: CoursePaginationResponseDto,
 	})
 	@Get()
@@ -76,47 +76,47 @@ export class CourseController {
 		return this.courseService.getCourses(page, limit)
 	}
 
-	@ApiOperation({ summary: 'Get course by ID' })
+	@ApiOperation({ summary: 'Получить курс по ID' })
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'Course ID',
+		description: 'ID курса',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Returns the course with the specified ID',
+		description: 'Возвращает курс с указанным ID',
 		type: CourseTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Course not found',
+		description: 'Курс не найден',
 	})
 	@Get(':id')
 	public async getCourseById(@Param('id') id: string) {
 		return this.courseService.getCourseById(id)
 	}
 
-	@ApiOperation({ summary: 'Update part of a course' })
+	@ApiOperation({ summary: 'Частично обновить курс' })
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'Course ID',
+		description: 'ID курса',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiBody({ type: UpdateCourseDto })
 	@ApiResponse({
 		status: 200,
-		description: 'Course successfully updated',
+		description: 'Курс успешно обновлен',
 		type: CourseTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Course not found',
+		description: 'Курс не найден',
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Patch(':id')
@@ -127,26 +127,26 @@ export class CourseController {
 		return this.courseService.updateCourse(id, dto)
 	}
 
-	@ApiOperation({ summary: 'Replace an entire course' })
+	@ApiOperation({ summary: 'Полностью заменить курс' })
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'Course ID',
+		description: 'ID курса',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiBody({ type: CourseDto })
 	@ApiResponse({
 		status: 200,
-		description: 'Course successfully replaced',
+		description: 'Курс успешно заменен',
 		type: CourseTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Course not found',
+		description: 'Курс не найден',
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Put(':id')

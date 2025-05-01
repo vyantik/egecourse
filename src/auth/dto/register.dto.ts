@@ -13,75 +13,75 @@ import { IsPasswordsMatchingConstraint } from '@/libs/common/decorators/is-passw
 
 export class RegisterDto {
 	@ApiProperty({
-		description: 'User first name',
+		description: 'Имя пользователя',
 		example: 'Иван',
 	})
-	@IsString({ message: 'First name must be a string.' })
-	@IsNotEmpty({ message: 'First name is required.' })
+	@IsString({ message: 'Имя должно быть строкой.' })
+	@IsNotEmpty({ message: 'Имя обязательно.' })
 	@Matches(/^[А-ЯЁ][а-яё]*$/, {
-		message: 'Name must contains only russian letters.',
+		message: 'Имя должно содержать только русские буквы.',
 	})
 	name: string
 
 	@ApiProperty({
-		description: 'User last name',
+		description: 'Фамилия пользователя',
 		example: 'Иванов',
 	})
-	@IsString({ message: 'Last name must be a string.' })
-	@IsNotEmpty({ message: 'Last name is required.' })
+	@IsString({ message: 'Фамилия должна быть строкой.' })
+	@IsNotEmpty({ message: 'Фамилия обязательна.' })
 	@Matches(/^[А-ЯЁ][а-яё]*$/, {
-		message: 'Name must contains only russian letters.',
+		message: 'Фамилия должна содержать только русские буквы.',
 	})
 	surname: string
 
 	@ApiProperty({
-		description: 'User patronymic (middle name)',
+		description: 'Отчество пользователя',
 		example: 'Иванович',
 	})
-	@IsString({ message: 'Patronymic must be a string.' })
-	@IsNotEmpty({ message: 'Patronymic is required.' })
+	@IsString({ message: 'Отчество должно быть строкой.' })
+	@IsNotEmpty({ message: 'Отчество обязательно.' })
 	@Matches(/^[А-ЯЁ][а-яё]*$/, {
-		message: 'Name must contains only russian letters.',
+		message: 'Отчество должно содержать только русские буквы.',
 	})
 	patronymic: string
 
 	@ApiProperty({
-		description: 'User email address',
+		description: 'Email адрес пользователя',
 		example: 'john.doe@example.com',
 	})
-	@IsString({ message: 'Email must be a string.' })
-	@IsEmail({}, { message: 'Invalid email format.' })
-	@IsNotEmpty({ message: 'Email is required.' })
+	@IsString({ message: 'Email должен быть строкой.' })
+	@IsEmail({}, { message: 'Неверный формат email.' })
+	@IsNotEmpty({ message: 'Email обязателен.' })
 	email: string
 
 	@ApiProperty({
-		description: 'User password (minimum 8 characters)',
+		description: 'Пароль пользователя (минимум 8 символов)',
 		example: 'passwordD123',
 		minLength: 8,
 		maxLength: 32,
 	})
-	@IsString({ message: 'Password must be a string.' })
-	@IsNotEmpty({ message: 'Password is required.' })
-	@MinLength(8, { message: 'Password must be at least 8 characters.' })
-	@MaxLength(32, { message: 'Password must be at most 32 characters.' })
+	@IsString({ message: 'Пароль должен быть строкой.' })
+	@IsNotEmpty({ message: 'Пароль обязателен.' })
+	@MinLength(8, { message: 'Пароль должен содержать минимум 8 символов.' })
+	@MaxLength(32, { message: 'Пароль должен содержать максимум 32 символа.' })
 	@Matches(
 		/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+-=[\]{};':"\\|,.<>\/?~]).*$/,
 		{
 			message:
-				'Password must contain one uppercase letter, one number, and one special character.',
+				'Пароль должен содержать одну заглавную букву, одну цифру и один специальный символ.',
 		},
 	)
 	password: string
 
 	@ApiProperty({
-		description: 'Password confirmation (must match password)',
+		description: 'Подтверждение пароля (должно совпадать с паролем)',
 		example: 'passwordD123',
 	})
-	@IsString({ message: 'Password must be a string.' })
-	@IsNotEmpty({ message: 'Password is required.' })
-	@MinLength(8, { message: 'Password must be at least 8 characters.' })
+	@IsString({ message: 'Пароль должен быть строкой.' })
+	@IsNotEmpty({ message: 'Пароль обязателен.' })
+	@MinLength(8, { message: 'Пароль должен содержать минимум 8 символов.' })
 	@Validate(IsPasswordsMatchingConstraint, {
-		message: 'Passwords do not match.',
+		message: 'Пароли не совпадают.',
 	})
 	passwordRepeat: string
 }

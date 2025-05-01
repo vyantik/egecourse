@@ -36,36 +36,36 @@ import { CreateTeacherDto } from './dto/teacher.dto'
 import { UpdateTeacherDto } from './dto/update-teacher.dto'
 import { TeacherService } from './teacher.service'
 
-@ApiTags('Teachers')
+@ApiTags('Преподаватели')
 @Controller('teachers')
 export class TeacherController {
 	constructor(private readonly teacherService: TeacherService) {}
 
-	@ApiOperation({ summary: 'Create a new teacher' })
+	@ApiOperation({ summary: 'Создать нового преподавателя' })
 	@ApiResponse({
 		status: 201,
-		description: 'Teacher successfully created',
+		description: 'Преподаватель успешно создан',
 		type: TeacherTransferDto,
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@ApiConsumes('multipart/form-data')
 	@ApiBody({
 		schema: {
 			type: 'object',
 			properties: {
-				name: { type: 'string', example: 'John' },
-				surname: { type: 'string', example: 'Doe' },
-				patronymic: { type: 'string', example: 'Smith' },
-				experience: { type: 'string', example: '10 years' },
+				name: { type: 'string', example: 'Иван' },
+				surname: { type: 'string', example: 'Иванов' },
+				patronymic: { type: 'string', example: 'Иванович' },
+				experience: { type: 'string', example: '10 лет' },
 				egeScore: { type: 'number', example: 95 },
-				direction: { type: 'string', example: 'Mathematics' },
+				direction: { type: 'string', example: 'Математика' },
 				file: {
 					type: 'string',
 					format: 'binary',
-					description: 'Teacher picture file (JPG, PNG, WebP)',
+					description: 'Фотография преподавателя (JPG, PNG, WebP)',
 				},
 			},
 			required: [
@@ -91,24 +91,24 @@ export class TeacherController {
 		return this.teacherService.createTeacher(dto, file)
 	}
 
-	@ApiOperation({ summary: 'Get all teachers with pagination' })
+	@ApiOperation({ summary: 'Получить всех преподавателей с пагинацией' })
 	@ApiQuery({
 		name: 'page',
 		required: false,
 		type: Number,
-		description: 'Page number (starts from 1)',
+		description: 'Номер страницы (начиная с 1)',
 		example: 1,
 	})
 	@ApiQuery({
 		name: 'limit',
 		required: false,
 		type: Number,
-		description: 'Number of items per page',
+		description: 'Количество элементов на странице',
 		example: 10,
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Returns teachers with pagination metadata',
+		description: 'Возвращает преподавателей с метаданными пагинации',
 		type: TeacherPaginationResponseDto,
 	})
 	@Get()
@@ -119,21 +119,21 @@ export class TeacherController {
 		return this.teacherService.getTeachers(page, limit)
 	}
 
-	@ApiOperation({ summary: 'Get teacher by ID' })
+	@ApiOperation({ summary: 'Получить преподавателя по ID' })
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'Teacher ID',
+		description: 'ID преподавателя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Returns the teacher with the specified ID',
+		description: 'Возвращает преподавателя с указанным ID',
 		type: TeacherTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Teacher not found',
+		description: 'Преподаватель не найден',
 	})
 	@Get(':id')
 	public async getTeacherById(@Param('id') id: string) {
@@ -141,27 +141,28 @@ export class TeacherController {
 	}
 
 	@ApiOperation({
-		summary: 'Update part of a teacher (picture cannot be modified)',
+		summary:
+			'Частично обновить данные преподавателя (фотография не может быть изменена)',
 	})
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'Teacher ID',
+		description: 'ID преподавателя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiBody({ type: UpdateTeacherDto })
 	@ApiResponse({
 		status: 200,
-		description: 'Teacher successfully updated',
+		description: 'Преподаватель успешно обновлен',
 		type: TeacherTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Teacher not found',
+		description: 'Преподаватель не найден',
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Patch(':id')
@@ -173,27 +174,28 @@ export class TeacherController {
 	}
 
 	@ApiOperation({
-		summary: 'Replace an entire teacher (picture will be preserved)',
+		summary:
+			'Полностью заменить данные преподавателя (фотография будет сохранена)',
 	})
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'Teacher ID',
+		description: 'ID преподавателя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiBody({ type: UpdateTeacherDto })
 	@ApiResponse({
 		status: 200,
-		description: 'Teacher successfully replaced',
+		description: 'Данные преподавателя успешно заменены',
 		type: TeacherTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Teacher not found',
+		description: 'Преподаватель не найден',
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Put(':id')
@@ -204,11 +206,11 @@ export class TeacherController {
 		return this.teacherService.replaceTeacher(id, dto)
 	}
 
-	@ApiOperation({ summary: 'Update teacher picture' })
+	@ApiOperation({ summary: 'Обновить фотографию преподавателя' })
 	@ApiParam({
 		name: 'teacherId',
 		required: true,
-		description: 'Teacher ID',
+		description: 'ID преподавателя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiConsumes('multipart/form-data')
@@ -219,7 +221,8 @@ export class TeacherController {
 				file: {
 					type: 'string',
 					format: 'binary',
-					description: 'New teacher picture file (JPG, PNG, WebP)',
+					description:
+						'Новая фотография преподавателя (JPG, PNG, WebP)',
 				},
 			},
 			required: ['file'],
@@ -227,16 +230,16 @@ export class TeacherController {
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Teacher picture successfully updated',
+		description: 'Фотография преподавателя успешно обновлена',
 		type: TeacherTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Teacher or picture not found',
+		description: 'Преподаватель или фотография не найдены',
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - invalid file format or size',
+		description: 'Неверный запрос - неверный формат или размер файла',
 	})
 	@Authorization(UserRole.ADMIN)
 	@UseInterceptors(FileInterceptor('file'))
@@ -249,26 +252,26 @@ export class TeacherController {
 		return this.teacherService.updateTeacherPicture(teacherId, file)
 	}
 
-	@ApiOperation({ summary: 'Get teacher picture' })
+	@ApiOperation({ summary: 'Получить фотографию преподавателя' })
 	@ApiParam({
 		name: 'teacherId',
 		required: true,
-		description: 'Teacher ID',
+		description: 'ID преподавателя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiParam({
 		name: 'picture',
 		required: true,
-		description: 'Picture filename',
-		example: 'teacher-id-uuid.webp',
+		description: 'Имя файла фотографии',
+		example: 'teacher-photo.jpg',
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Returns the teacher picture',
+		description: 'Возвращает фотографию преподавателя',
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Picture or Teacher not found',
+		description: 'Преподаватель или фотография не найдены',
 	})
 	@Get('/:teacherId/picture/:picture')
 	public async getPicture(
@@ -292,26 +295,26 @@ export class TeacherController {
 		return res.send(file)
 	}
 
-	@ApiOperation({ summary: 'Delete teacher picture' })
+	@ApiOperation({ summary: 'Удалить фотографию преподавателя' })
 	@ApiParam({
 		name: 'teacherId',
 		required: true,
-		description: 'Teacher ID',
+		description: 'ID преподавателя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiParam({
 		name: 'picture',
 		required: true,
-		description: 'Picture filename',
-		example: 'teacher-id-uuid.webp',
+		description: 'Имя файла фотографии',
+		example: 'teacher-photo.jpg',
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Picture successfully deleted',
+		description: 'Фотография преподавателя успешно удалена',
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Picture or Teacher not found',
+		description: 'Преподаватель или фотография не найдены',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Delete('/:teacherId/picture/:picture')
@@ -322,20 +325,20 @@ export class TeacherController {
 		return this.teacherService.deleteTeacherPicture(teacherId, picture)
 	}
 
-	@ApiOperation({ summary: 'Delete teacher' })
+	@ApiOperation({ summary: 'Удалить преподавателя' })
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'Teacher ID',
+		description: 'ID преподавателя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Teacher successfully deleted',
+		description: 'Преподаватель успешно удален',
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Teacher not found',
+		description: 'Преподаватель не найден',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Delete(':id')

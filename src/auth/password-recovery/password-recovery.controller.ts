@@ -18,48 +18,53 @@ import { NewPasswordDto } from './dto/new-password.dto'
 import { ResetPasswordDto } from './dto/reset-password.dto'
 import { PasswordRecoveryService } from './password-recovery.service'
 
-@ApiTags('Password-Recovery')
+@ApiTags('Восстановление пароля')
 @Controller('auth/password-recovery')
 export class PasswordRecoveryController {
 	constructor(
 		private readonly passwordRecoveryService: PasswordRecoveryService,
 	) {}
 
-	@ApiOperation({ summary: 'Request password reset email' })
+	@ApiOperation({ summary: 'Запросить письмо для сброса пароля' })
 	@ApiBody({ type: ResetPasswordDto })
 	@ApiResponse({
 		status: 200,
-		description: 'Password reset email sent successfully',
+		description: 'Письмо для сброса пароля успешно отправлено',
 		schema: {
 			type: 'boolean',
 			example: true,
 		},
 	})
-	@ApiResponse({ status: 404, description: 'User not found' })
+	@ApiResponse({ status: 404, description: 'Пользователь не найден' })
 	@Post('reset')
 	@HttpCode(HttpStatus.OK)
 	public async resetPassword(@Body() dto: ResetPasswordDto) {
 		return this.passwordRecoveryService.resetPassword(dto)
 	}
 
-	@ApiOperation({ summary: 'Set new password using reset token' })
+	@ApiOperation({
+		summary: 'Установить новый пароль с помощью токена сброса',
+	})
 	@ApiParam({
 		name: 'token',
-		description: 'Password reset token received via email',
+		description: 'Токен сброса пароля, полученный по email',
 		type: 'string',
 		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
 	@ApiBody({ type: NewPasswordDto })
 	@ApiResponse({
 		status: 200,
-		description: 'Password successfully updated',
+		description: 'Пароль успешно обновлен',
 		schema: {
 			type: 'boolean',
 			example: true,
 		},
 	})
-	@ApiResponse({ status: 400, description: 'Token expired' })
-	@ApiResponse({ status: 404, description: 'Token or user not found' })
+	@ApiResponse({ status: 400, description: 'Токен истек' })
+	@ApiResponse({
+		status: 404,
+		description: 'Токен или пользователь не найден',
+	})
 	@Post('new/:token')
 	@HttpCode(HttpStatus.OK)
 	public async newPassword(

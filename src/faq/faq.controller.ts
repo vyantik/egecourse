@@ -26,20 +26,20 @@ import { FaqDto } from './dto/faq.dto'
 import { UpdateFaqDto, UpdateFullFaqDto } from './dto/update-faq.dto'
 import { FaqService } from './faq.service'
 
-@ApiTags('FAQ')
+@ApiTags('Часто задаваемые вопросы')
 @Controller('faqs')
 export class FaqController {
 	constructor(private readonly faqService: FaqService) {}
 
-	@ApiOperation({ summary: 'Create a new FAQ entry' })
+	@ApiOperation({ summary: 'Создать новый FAQ' })
 	@ApiResponse({
 		status: 201,
-		description: 'FAQ entry successfully created',
+		description: 'FAQ успешно создан',
 		type: FaqDto,
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Post()
@@ -47,24 +47,24 @@ export class FaqController {
 		return this.faqService.createFaq(dto)
 	}
 
-	@ApiOperation({ summary: 'Get all FAQ entries with pagination' })
+	@ApiOperation({ summary: 'Получить все FAQ с пагинацией' })
 	@ApiQuery({
 		name: 'page',
 		required: false,
 		type: Number,
-		description: 'Page number (starts from 1)',
+		description: 'Номер страницы (начиная с 1)',
 		example: 1,
 	})
 	@ApiQuery({
 		name: 'limit',
 		required: false,
 		type: Number,
-		description: 'Number of items per page',
+		description: 'Количество элементов на странице',
 		example: 10,
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Returns FAQ entries with pagination metadata',
+		description: 'Возвращает FAQ с метаданными пагинации',
 		type: FaqPaginationResponseDto,
 	})
 	@Get()
@@ -75,26 +75,26 @@ export class FaqController {
 		return this.faqService.getFaqs(page, limit)
 	}
 
-	@ApiOperation({ summary: 'Update part of an FAQ entry' })
+	@ApiOperation({ summary: 'Частично обновить FAQ' })
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'FAQ ID',
+		description: 'ID FAQ',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiBody({ type: UpdateFaqDto })
 	@ApiResponse({
 		status: 200,
-		description: 'FAQ entry successfully updated',
+		description: 'FAQ успешно обновлен',
 		type: FaqTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'FAQ not found',
+		description: 'FAQ не найден',
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Patch(':id')
@@ -102,26 +102,26 @@ export class FaqController {
 		return this.faqService.updateFaq(id, dto)
 	}
 
-	@ApiOperation({ summary: 'Replace an entire FAQ entry' })
+	@ApiOperation({ summary: 'Полностью заменить FAQ' })
 	@ApiParam({
 		name: 'id',
 		required: true,
-		description: 'FAQ ID',
+		description: 'ID FAQ',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiBody({ type: UpdateFullFaqDto })
 	@ApiResponse({
 		status: 200,
-		description: 'FAQ entry successfully replaced',
+		description: 'FAQ успешно заменен',
 		type: FaqTransferDto,
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'FAQ not found',
+		description: 'FAQ не найден',
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - validation error',
+		description: 'Неверный запрос - ошибка валидации',
 	})
 	@Authorization(UserRole.ADMIN)
 	@Put(':id')

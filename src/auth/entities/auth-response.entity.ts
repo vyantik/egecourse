@@ -4,7 +4,7 @@ import { UserResponseEntity } from '@/user/entities/user-response.entity'
 
 export class AuthResponseEntity {
 	@ApiProperty({
-		description: 'User information',
+		description: 'Информация о пользователе',
 		type: UserResponseEntity,
 	})
 	user: UserResponseEntity

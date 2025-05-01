@@ -7,19 +7,19 @@ import { UserResponseEntity } from '../../user/entities/user-response.entity'
 
 export class ReviewResponseEntity {
 	@ApiProperty({
-		description: 'Unique review identifier',
+		description: 'Уникальный идентификатор отзыва',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	id: string
 
 	@ApiProperty({
-		description: 'Review text content',
-		example: 'Great course, I learned a lot!',
+		description: 'Текст отзыва',
+		example: 'Отличный курс, я многому научился!',
 	})
 	text: string
 
 	@ApiProperty({
-		description: 'User who created the review',
+		description: 'Пользователь, создавший отзыв',
 	})
 	@Type(() => UserResponseEntity)
 	@Transform(({ value }) => {

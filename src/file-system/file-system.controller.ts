@@ -6,20 +6,22 @@ import { Authorization } from '@/auth/decorators/auth.decorator'
 
 import { FileSystemService } from './file-system.service'
 
-@ApiTags('File System')
+@ApiTags('Файловая система')
 @Controller('files')
 export class FileSystemController {
 	constructor(private readonly fileService: FileSystemService) {}
 
-	@ApiOperation({ summary: 'Remove user avatar (Admin only)' })
+	@ApiOperation({
+		summary: 'Удалить аватар пользователя (только для администратора)',
+	})
 	@ApiParam({
 		name: 'userId',
-		description: 'User ID',
+		description: 'ID пользователя',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'User avatar removed successfully',
+		description: 'Аватар пользователя успешно удален',
 	})
 	@Delete('avatar/user/:userId')
 	@Authorization(UserRole.ADMIN)

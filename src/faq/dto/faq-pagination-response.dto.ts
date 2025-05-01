@@ -5,7 +5,7 @@ import { FaqTransferDto } from './faq-transfer.dto'
 export class FaqPaginationResponseDto {
 	@ApiProperty({
 		type: [FaqTransferDto],
-		description: 'Array of FAQ entries',
+		description: 'Массив FAQ',
 	})
 	data: FaqTransferDto[]
 
@@ -15,22 +15,22 @@ export class FaqPaginationResponseDto {
 			total: {
 				type: 'number',
 				example: 100,
-				description: 'Total number of FAQ entries',
+				description: 'Общее количество FAQ',
 			},
 			page: {
 				type: 'number',
 				example: 1,
-				description: 'Current page number',
+				description: 'Текущая страница',
 			},
 			limit: {
 				type: 'number',
 				example: 10,
-				description: 'Number of items per page',
+				description: 'Количество элементов на странице',
 			},
 			lastPage: {
 				type: 'number',
 				example: 10,
-				description: 'Last page number',
+				description: 'Номер последней страницы',
 			},
 		},
 	})

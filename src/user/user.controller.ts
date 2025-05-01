@@ -32,15 +32,15 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import { UserResponseEntity } from './entities/user-response.entity'
 import { UserService } from './user.service'
 
-@ApiTags('Users')
+@ApiTags('Пользователи')
 @Controller('users')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@ApiOperation({ summary: 'Get current user profile' })
+	@ApiOperation({ summary: 'Получить профиль текущего пользователя' })
 	@ApiResponse({
 		status: 200,
-		description: 'Returns the current user profile',
+		description: 'Возвращает профиль текущего пользователя',
 		type: UserResponseEntity,
 	})
 	@Authorization()
@@ -50,17 +50,19 @@ export class UserController {
 		return this.userService.findById(userId)
 	}
 
-	@ApiOperation({ summary: 'Get user by ID (Admin only)' })
+	@ApiOperation({
+		summary: 'Получить пользователя по ID (только для администраторов)',
+	})
 	@ApiResponse({
 		status: 200,
-		description: 'Returns the user with the specified ID',
+		description: 'Возвращает пользователя с указанным ID',
 		type: UserResponseEntity,
 	})
 	@ApiResponse({
 		status: 403,
-		description: 'Forbidden - Insufficient permissions',
+		description: 'Запрещено - Недостаточно прав',
 	})
-	@ApiResponse({ status: 404, description: 'User not found' })
+	@ApiResponse({ status: 404, description: 'Пользователь не найден' })
 	@Authorization(UserRole.ADMIN)
 	@HttpCode(HttpStatus.OK)
 	@Get('/by-id/:id')
@@ -68,10 +70,10 @@ export class UserController {
 		return this.userService.findById(id)
 	}
 
-	@ApiOperation({ summary: 'Update current user profile' })
+	@ApiOperation({ summary: 'Обновить профиль текущего пользователя' })
 	@ApiResponse({
 		status: 200,
-		description: 'User profile updated successfully',
+		description: 'Профиль пользователя успешно обновлен',
 		type: UserResponseEntity,
 	})
 	@Authorization()
@@ -84,7 +86,7 @@ export class UserController {
 		return this.userService.update(userId, dto)
 	}
 
-	@ApiOperation({ summary: 'Update user avatar' })
+	@ApiOperation({ summary: 'Обновить аватар пользователя' })
 	@ApiConsumes('multipart/form-data')
 	@ApiBody({
 		schema: {
@@ -93,7 +95,8 @@ export class UserController {
 				file: {
 					type: 'string',
 					format: 'binary',
-					description: 'New user picture file (JPG, PNG, WebP)',
+					description:
+						'Новый файл изображения пользователя (JPG, PNG, WebP)',
 				},
 			},
 			required: ['file'],
@@ -101,16 +104,16 @@ export class UserController {
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'User avatar updated successfully',
+		description: 'Аватар пользователя успешно обновлен',
 		type: UserResponseEntity,
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'Bad request - invalid file format or size',
+		description: 'Неверный запрос - неверный формат или размер файла',
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'User not found',
+		description: 'Пользователь не найден',
 	})
 	@Authorization()
 	@UseInterceptors(FileInterceptor('file'))
@@ -123,14 +126,14 @@ export class UserController {
 		return this.userService.updateAvatar(userId, file)
 	}
 
-	@ApiOperation({ summary: 'Get user avatar image' })
+	@ApiOperation({ summary: 'Получить изображение аватара пользователя' })
 	@ApiResponse({
 		status: 200,
-		description: 'Returns the user avatar image',
+		description: 'Возвращает изображение аватара пользователя',
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'User or avatar not found',
+		description: 'Пользователь или аватар не найден',
 	})
 	@Get('/:userId/picture/:picture')
 	public async getPicture(
@@ -153,14 +156,14 @@ export class UserController {
 		return res.send(file)
 	}
 
-	@ApiOperation({ summary: 'Create a new review' })
+	@ApiOperation({ summary: 'Создать новый отзыв' })
 	@ApiResponse({
 		status: 201,
-		description: 'Review created successfully',
+		description: 'Отзыв успешно создан',
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'User not found',
+		description: 'Пользователь не найден',
 	})
 	@Authorization()
 	@HttpCode(HttpStatus.CREATED)

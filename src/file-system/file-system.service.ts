@@ -58,7 +58,7 @@ export class FileSystemService {
 		try {
 			return await fs.readFile(filePath)
 		} catch (error) {
-			throw new NotFoundException('Picture not found')
+			throw new NotFoundException('Изображение не найдено')
 		}
 	}
 
@@ -92,7 +92,7 @@ export class FileSystemService {
 		})
 
 		if (!user) {
-			throw new NotFoundException('User not found')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		if (user.picture) {
@@ -125,18 +125,18 @@ export class FileSystemService {
 
 	private validateFile(file: Express.Multer.File): void {
 		if (!file) {
-			throw new BadRequestException('No file uploaded')
+			throw new BadRequestException('Файл не загружен')
 		}
 
 		if (file.size > this.maxFileSize) {
 			throw new BadRequestException(
-				`File size exceeds the limit of ${this.maxFileSize / (1024 * 1024)}MB`,
+				`Размер файла превышает лимит в ${this.maxFileSize / (1024 * 1024)}МБ`,
 			)
 		}
 
 		if (!this.allowedMimeTypes.includes(file.mimetype)) {
 			throw new BadRequestException(
-				`Invalid file type. Allowed types: ${this.allowedMimeTypes.join(', ')}`,
+				`Неверный тип файла. Разрешенные типы: ${this.allowedMimeTypes.join(', ')}`,
 			)
 		}
 	}

@@ -3,18 +3,20 @@ import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator'
 
 export class UpdateUserDto {
 	@ApiProperty({
-		description: 'User email address',
+		description: 'Email адрес пользователя',
 		example: 'user@example.com',
 	})
-	@IsString({ message: 'Email must be a string.' })
-	@IsEmail({}, { message: 'Invalid email format.' })
-	@IsNotEmpty({ message: 'Email is required.' })
+	@IsString({ message: 'Email должен быть строкой.' })
+	@IsEmail({}, { message: 'Неверный формат email.' })
+	@IsNotEmpty({ message: 'Email обязателен.' })
 	email: string
 
 	@ApiProperty({
-		description: 'Two-factor authentication status',
+		description: 'Статус двухфакторной аутентификации',
 		example: false,
 	})
-	@IsBoolean({ message: 'isTwoFactorEnabled must be a boolean value.' })
+	@IsBoolean({
+		message: 'isTwoFactorEnabled должен быть логическим значением.',
+	})
 	isTwoFactorEnabled: boolean
 }

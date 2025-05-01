@@ -3,10 +3,10 @@ import { IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateReviewDto {
 	@ApiProperty({
-		description: 'Review text content',
-		example: 'Great course, I learned a lot!',
+		description: 'Текст отзыва',
+		example: 'Отличный курс, я многому научился!',
 	})
-	@IsString({ message: 'Review text must be a string.' })
-	@IsNotEmpty({ message: 'Review text is required.' })
+	@IsString({ message: 'Текст отзыва должен быть строкой.' })
+	@IsNotEmpty({ message: 'Текст отзыва обязателен.' })
 	text: string
 }

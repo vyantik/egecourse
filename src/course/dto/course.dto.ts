@@ -3,19 +3,19 @@ import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator'
 
 export class PriceOptionDto {
 	@ApiProperty({
-		example: '3 months',
-		description: 'Duration of the study period',
+		example: '3 месяца',
+		description: 'Продолжительность периода обучения',
 	})
-	@IsString({ message: 'Study time must be a string' })
-	@IsNotEmpty({ message: 'Study time is required' })
+	@IsString({ message: 'Время обучения должно быть строкой' })
+	@IsNotEmpty({ message: 'Время обучения обязательно' })
 	studyTime: string
 
 	@ApiProperty({
 		example: '10000',
-		description: 'Price for the specified study period',
+		description: 'Цена за указанный период обучения',
 	})
-	@IsString({ message: 'Price must be a string' })
-	@IsNotEmpty({ message: 'Price is required' })
+	@IsString({ message: 'Цена должна быть строкой' })
+	@IsNotEmpty({ message: 'Цена обязательна' })
 	price: string
 }
 

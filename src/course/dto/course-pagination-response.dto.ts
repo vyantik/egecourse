@@ -5,7 +5,7 @@ import { CourseTransferDto } from './course-transfer.dto'
 export class CoursePaginationResponseDto {
 	@ApiProperty({
 		type: [CourseTransferDto],
-		description: 'Array of course entries',
+		description: 'Массив курсов',
 	})
 	data: CourseTransferDto[]
 
@@ -15,22 +15,22 @@ export class CoursePaginationResponseDto {
 			total: {
 				type: 'number',
 				example: 100,
-				description: 'Total number of course entries',
+				description: 'Общее количество курсов',
 			},
 			page: {
 				type: 'number',
 				example: 1,
-				description: 'Current page number',
+				description: 'Текущая страница',
 			},
 			limit: {
 				type: 'number',
 				example: 10,
-				description: 'Number of items per page',
+				description: 'Количество элементов на странице',
 			},
 			lastPage: {
 				type: 'number',
 				example: 10,
-				description: 'Last page number',
+				description: 'Номер последней страницы',
 			},
 		},
 	})

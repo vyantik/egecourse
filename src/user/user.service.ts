@@ -35,6 +35,10 @@ export class UserService {
 		}
 	}
 
+	/**
+	 * Находит пользователя по ID
+	 * @throws NotFoundException если пользователь не найден
+	 */
 	public async findById(id: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: { id },
@@ -49,6 +53,9 @@ export class UserService {
 		})
 	}
 
+	/**
+	 * Находит пользователя по email
+	 */
 	public async findByEmail(email: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: { email },
@@ -57,6 +64,9 @@ export class UserService {
 		return user
 	}
 
+	/**
+	 * Создает нового пользователя
+	 */
 	public async create(
 		email: string,
 		password: string,
@@ -83,6 +93,10 @@ export class UserService {
 		return user
 	}
 
+	/**
+	 * Обновляет данные пользователя
+	 * @throws NotFoundException если пользователь не найден
+	 */
 	public async update(userId: string, dto: UpdateUserDto) {
 		const user = await this.findById(userId)
 
@@ -99,6 +113,10 @@ export class UserService {
 		return updatedUser
 	}
 
+	/**
+	 * Обновляет аватар пользователя
+	 * @throws NotFoundException если пользователь не найден
+	 */
 	public async updateAvatar(userId: string, file: Express.Multer.File) {
 		const user = await this.prismaService.user.findUnique({
 			where: { id: userId },
@@ -134,6 +152,10 @@ export class UserService {
 		})
 	}
 
+	/**
+	 * Получает аватар пользователя
+	 * @throws NotFoundException если пользователь или аватар не найден
+	 */
 	public async getAvatar(
 		userId: string,
 		pictureName: string,
@@ -153,6 +175,10 @@ export class UserService {
 		return this.fileService.getPicture(this.avatarsDir, pictureName)
 	}
 
+	/**
+	 * Создает новый отзыв от пользователя
+	 * @throws NotFoundException если пользователь не найден
+	 */
 	public async createReview(userId: string, text: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: { id: userId },
