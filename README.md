@@ -51,4 +51,8 @@ cd egecourse
 
 # Install dependencies
 bun install --frozen-lockfile
+
+# Prisma generate
+npx prisma generate
+npx prisma db push
 ```

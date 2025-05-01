@@ -12,6 +12,7 @@ import { ConfigService } from '@nestjs/config'
 import { AuthMethod, User } from '@prisma/__generated__'
 import { verify } from 'argon2'
 import { plainToInstance } from 'class-transformer'
+import validate from 'deep-email-validator'
 import { Request, Response } from 'express'
 
 import { UserResponseEntity } from '@/user/entities/user-response.entity'
@@ -21,7 +22,6 @@ import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service'
 import { TwoFactorAuthService } from './two-factor-auth/two-factor-auth.service'
-import validate from 'deep-email-validator'
 
 @Injectable()
 export class AuthService {
@@ -35,8 +35,8 @@ export class AuthService {
 
 	public async register(req: Request, dto: RegisterDto) {
 		const validateEmail = await validate(dto.email)
-		
-		if(!validateEmail.valid){
+
+		if (!validateEmail.valid) {
 			throw new BadRequestException('Invalid email address')
 		}
 
