@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 
+import { ApplicationModule } from './application/application.module'
 import { AuthModule } from './auth/auth.module'
 import { EmailConfirmationModule } from './auth/email-confirmation/email-confirmation.module'
 import { PasswordRecoveryModule } from './auth/password-recovery/password-recovery.module'
@@ -35,6 +36,7 @@ import { UserModule } from './user/user.module'
 		CourseModule,
 		ReviewModule,
 		UrlContainerModule,
+		ApplicationModule,
 	],
 })
 export class AppModule {}

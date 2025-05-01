@@ -125,6 +125,19 @@ model UrlContainer {
   @@map("url_containers")
 }
 
+model Application {
+  id String @id @default(uuid())
+
+  name     String
+  phone    String
+  category ApplicationCategory
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("applications")
+}
+
 enum UserRole {
   REGULAR
   ADMIN
@@ -143,4 +156,10 @@ enum TokenType {
 enum TeacherCategory {
   EGE
   BEFORE_EGE
+}
+
+enum ApplicationCategory {
+  EXAM_PREPARATION
+  ADVANCED_TRAINING
+  SUNDAY_SCHOOL
 }
