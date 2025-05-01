@@ -1,54 +1,82 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Type } from 'class-transformer'
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { TeacherCategory } from '@prisma/__generated__'
+import {
+	IsEnum,
+	IsInt,
+	IsNotEmpty,
+	IsOptional,
+	IsString,
+	Max,
+	Min,
+} from 'class-validator'
 
-export class TeacherDto {
+export class CreateTeacherDto {
 	@ApiProperty({
-		example: 'John',
-		description: 'Teacher first name',
+		example: 'Иван',
+		description: 'Имя преподавателя',
 	})
-	@IsString({ message: 'Name must be a string' })
-	@IsNotEmpty({ message: 'Name is required' })
-	name: string
-
-	@ApiProperty({
-		example: 'Doe',
-		description: 'Teacher last name',
-	})
-	@IsString({ message: 'Surname must be a string' })
-	@IsNotEmpty({ message: 'Surname is required' })
-	surname: string
-
-	@ApiProperty({
-		example: 'Smith',
-		description: 'Teacher patronymic name',
-	})
-	@IsString({ message: 'Patronymic must be a string' })
-	@IsNotEmpty({ message: 'Patronymic is required' })
-	patronymic: string
+	@IsString()
+	@IsNotEmpty()
+	public name: string
 
 	@ApiProperty({
-		example: '10 years',
-		description: 'Teaching experience',
+		example: 'Иванов',
+		description: 'Фамилия преподавателя',
 	})
-	@IsString({ message: 'Experience must be a string' })
-	@IsNotEmpty({ message: 'Experience is required' })
-	experience: string
+	@IsString()
+	@IsNotEmpty()
+	public surname: string
+
+	@ApiProperty({
+		example: 'Иванович',
+		description: 'Отчество преподавателя',
+	})
+	@IsString()
+	@IsNotEmpty()
+	public patronymic: string
+
+	@ApiProperty({
+		example: 'EGE',
+		description: 'Категория преподавателя',
+		enum: TeacherCategory,
+	})
+	@IsEnum(TeacherCategory)
+	@IsNotEmpty()
+	public category: TeacherCategory
+
+	@ApiProperty({
+		example: 'https://example.com/teacher-photo.jpg',
+		description: 'URL фотографии преподавателя',
+		required: false,
+	})
+	@IsString()
+	@IsOptional()
+	public picture?: string
+
+	@ApiProperty({
+		example: '5 лет',
+		description: 'Опыт работы преподавателя',
+	})
+	@IsString()
+	@IsNotEmpty()
+	public experience: string
 
 	@ApiProperty({
 		example: 95,
-		description: 'EGE score',
+		description: 'Балл ЕГЭ преподавателя (от 0 до 100)',
+		minimum: 0,
+		maximum: 100,
 	})
-	@IsNumber({}, { message: 'EGE score must be a number' })
-	@IsNotEmpty({ message: 'EGE score is required' })
-	@Type(() => Number)
-	egeScore: number
+	@IsInt()
+	@Min(0)
+	@Max(100)
+	public egeScore: number
 
 	@ApiProperty({
-		example: 'Mathematics',
-		description: 'Teaching direction/subject',
+		example: 'Математика',
+		description: 'Направление подготовки преподавателя',
 	})
-	@IsString({ message: 'Direction must be a string' })
-	@IsNotEmpty({ message: 'Direction is required' })
-	direction: string
+	@IsString()
+	@IsNotEmpty()
+	public direction: string
 }

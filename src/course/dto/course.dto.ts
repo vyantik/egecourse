@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Type } from 'class-transformer'
-import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator'
+import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator'
 
 export class PriceOptionDto {
 	@ApiProperty({
@@ -22,55 +21,72 @@ export class PriceOptionDto {
 
 export class CourseDto {
 	@ApiProperty({
-		example: 'Mathematics for EGE',
-		description: 'Name of the course',
+		example: 'Подготовка к ЕГЭ по математике',
+		description: 'Название курса',
 	})
-	@IsString({ message: 'Name must be a string' })
-	@IsNotEmpty({ message: 'Name is required' })
-	name: string
+	@IsString()
+	@IsNotEmpty()
+	public name: string
 
 	@ApiProperty({
-		example: 'Comprehensive course covering all EGE mathematics topics',
-		description: 'Detailed description of the course',
+		example: 'Интенсивная подготовка к ЕГЭ по математике',
+		description: 'Заголовок курса',
 	})
-	@IsString({ message: 'Description must be a string' })
-	@IsNotEmpty({ message: 'Description is required' })
-	description: string
+	@IsString()
+	@IsNotEmpty()
+	public header: string
 
 	@ApiProperty({
-		example: 'Online',
-		description: 'Format of study (Online, Offline, Hybrid)',
+		example: 'Подготовка к ЕГЭ по математике с нуля до 80+ баллов',
+		description: 'Описание курса',
 	})
-	@IsString({ message: 'Study format must be a string' })
-	@IsNotEmpty({ message: 'Study format is required' })
-	studyFormat: string
+	@IsString()
+	@IsNotEmpty()
+	public description: string
 
 	@ApiProperty({
-		example: 'Certificate of completion',
-		description: 'Document provided upon completion',
+		example: 'Онлайн',
+		description: 'Формат обучения',
 	})
-	@IsString({ message: 'Document must be a string' })
-	@IsNotEmpty({ message: 'Document is required' })
-	document: string
+	@IsString()
+	@IsNotEmpty()
+	public studyFormat: string
 
 	@ApiProperty({
-		example: 'September 2023',
-		description: 'When the course starts',
+		example: 'Диплом о профессиональной переподготовке',
+		description: 'Документ об окончании',
 	})
-	@IsString({ message: 'Study start must be a string' })
-	@IsNotEmpty({ message: 'Study start is required' })
-	studyStart: string
+	@IsString()
+	@IsNotEmpty()
+	public document: string
 
 	@ApiProperty({
-		type: [PriceOptionDto],
-		description: 'Available price options with different study durations',
-		example: [
-			{ studyTime: '3 months', price: '10000' },
-			{ studyTime: '6 months', price: '18000' },
-		],
+		example: 'Сентябрь 2024',
+		description: 'Дата начала обучения',
 	})
-	@IsArray({ message: 'Price options must be an array' })
-	@ValidateNested({ each: true })
-	@Type(() => PriceOptionDto)
-	priceOptions: PriceOptionDto[]
+	@IsString()
+	@IsNotEmpty()
+	public studyStart: string
+
+	@ApiProperty({
+		example: {
+			basic: {
+				price: 15000,
+				features: ['Доступ к материалам', 'Проверка домашних заданий'],
+			},
+			premium: {
+				price: 25000,
+				features: [
+					'Доступ к материалам',
+					'Проверка домашних заданий',
+					'Индивидуальные консультации',
+				],
+			},
+		},
+		description: 'Варианты цен и их особенности',
+		required: false,
+	})
+	@IsObject()
+	@IsOptional()
+	public priceOptions?: Record<string, any>
 }

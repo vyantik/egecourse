@@ -12,11 +12,8 @@ import { FileSystemService } from '@/file-system/file-system.service'
 import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
 
-import { TeacherDto } from './dto/teacher.dto'
-import {
-	UpdateFullTeacherDto,
-	UpdateTeacherDto,
-} from './dto/update-teacher.dto'
+import { CreateTeacherDto } from './dto/teacher.dto'
+import { UpdateTeacherDto } from './dto/update-teacher.dto'
 
 @Injectable()
 export class TeacherService {
@@ -40,7 +37,7 @@ export class TeacherService {
 	}
 
 	public async createTeacher(
-		dto: TeacherDto,
+		dto: CreateTeacherDto,
 		file?: Express.Multer.File,
 	): Promise<Teacher> {
 		const teacher = await this.prismaService.teacher.create({
@@ -51,6 +48,7 @@ export class TeacherService {
 				experience: dto.experience,
 				direction: dto.direction,
 				egeScore: dto.egeScore,
+				category: dto.category,
 				picture: '',
 			},
 		})
@@ -150,7 +148,7 @@ export class TeacherService {
 
 	public async replaceTeacher(
 		id: string,
-		dto: UpdateFullTeacherDto,
+		dto: UpdateTeacherDto,
 	): Promise<Teacher> {
 		if (!id) throw new NotFoundException('id is required')
 

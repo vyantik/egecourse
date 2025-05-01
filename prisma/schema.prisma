@@ -55,6 +55,8 @@ model Teacher {
   surname    String
   patronymic String
 
+  category TeacherCategory
+
   picture String?
 
   experience String
@@ -84,6 +86,7 @@ model Course {
 
   name        String
   description String
+  header      String
 
   studyFormat String @map("study_format")
   document    String
@@ -111,6 +114,17 @@ model Review {
   @@map("reviews")
 }
 
+model UrlContainer {
+  id String @id @default(uuid())
+
+  url String @unique
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("url_containers")
+}
+
 enum UserRole {
   REGULAR
   ADMIN
@@ -124,4 +138,9 @@ enum TokenType {
   VERIFICATION
   TWO_FACTOR
   PASSWORD_RESET
+}
+
+enum TeacherCategory {
+  EGE
+  BEFORE_EGE
 }

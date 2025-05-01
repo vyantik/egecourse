@@ -1,65 +1,72 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { TeacherCategory } from '@prisma/__generated__'
 
 export class TeacherTransferDto {
 	@ApiProperty({
 		example: '550e8400-e29b-41d4-a716-446655440000',
-		description: 'Unique identifier',
+		description: 'Уникальный идентификатор преподавателя',
 	})
-	id: string
+	public id: string
 
 	@ApiProperty({
-		example: 'John',
-		description: 'Teacher first name',
+		example: 'Иван',
+		description: 'Имя преподавателя',
 	})
-	name: string
+	public name: string
 
 	@ApiProperty({
-		example: 'Doe',
-		description: 'Teacher last name',
+		example: 'Иванов',
+		description: 'Фамилия преподавателя',
 	})
-	surname: string
+	public surname: string
 
 	@ApiProperty({
-		example: 'Smith',
-		description: 'Teacher patronymic name',
+		example: 'Иванович',
+		description: 'Отчество преподавателя',
 	})
-	patronymic: string
+	public patronymic: string
 
 	@ApiProperty({
-		example: 'http://example.com/teacher-pictures/teacher-id.webp',
-		description: 'URL to teacher picture',
+		example: 'EGE',
+		description: 'Категория преподавателя',
+		enum: TeacherCategory,
+	})
+	public category: TeacherCategory
+
+	@ApiProperty({
+		example: 'https://example.com/teacher-photo.jpg',
+		description: 'URL фотографии преподавателя',
 		required: false,
-		nullable: true,
 	})
-	picture: string | null
+	public picture?: string
 
 	@ApiProperty({
-		example: '10 years',
-		description: 'Teaching experience',
+		example: '5 лет',
+		description: 'Опыт работы преподавателя',
 	})
-	experience: string
+	public experience: string
 
 	@ApiProperty({
 		example: 95,
-		description: 'EGE score',
+		description: 'Балл ЕГЭ преподавателя',
 	})
-	egeScore: number
+	public egeScore: number
 
 	@ApiProperty({
-		example: 'Mathematics',
-		description: 'Teaching direction/subject',
+		example: 'Математика',
+		description: 'Направление подготовки преподавателя',
 	})
-	direction: string
+	public direction: string
 
 	@ApiProperty({
-		example: '2023-01-01T00:00:00.000Z',
-		description: 'Creation date',
+		example: '2024-03-20T12:00:00.000Z',
+		description: 'Дата создания записи',
 	})
-	createdAt: Date
+	public createdAt: Date
 
 	@ApiProperty({
-		example: '2023-01-01T00:00:00.000Z',
-		description: 'Last update date',
+		example: '2024-03-20T12:00:00.000Z',
+		description: 'Дата последнего обновления записи',
 	})
-	updatedAt: Date
+	public updatedAt: Date
 }

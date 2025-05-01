@@ -4,40 +4,47 @@ import { TeacherTransferDto } from './teacher-transfer.dto'
 
 export class TeacherPaginationResponseDto {
 	@ApiProperty({
+		description: 'Список преподавателей',
 		type: [TeacherTransferDto],
-		description: 'Array of teachers',
+		example: [
+			{
+				id: '550e8400-e29b-41d4-a716-446655440000',
+				name: 'Иван',
+				surname: 'Иванов',
+				patronymic: 'Иванович',
+				category: 'EGE',
+				picture: 'https://example.com/teacher-photo.jpg',
+				experience: '5 лет',
+				egeScore: 95,
+				direction: 'Математика',
+				createdAt: '2024-03-20T12:00:00.000Z',
+				updatedAt: '2024-03-20T12:00:00.000Z',
+			},
+		],
 	})
-	data: TeacherTransferDto[]
+	public items: TeacherTransferDto[]
 
 	@ApiProperty({
-		type: 'object',
-		properties: {
-			total: {
-				type: 'number',
-				example: 100,
-				description: 'Total number of teachers',
-			},
-			page: {
-				type: 'number',
-				example: 1,
-				description: 'Current page number',
-			},
-			limit: {
-				type: 'number',
-				example: 10,
-				description: 'Number of items per page',
-			},
-			lastPage: {
-				type: 'number',
-				example: 10,
-				description: 'Last page number',
-			},
-		},
+		example: 100,
+		description: 'Общее количество преподавателей',
 	})
-	meta: {
-		total: number
-		page: number
-		limit: number
-		lastPage: number
-	}
+	public total: number
+
+	@ApiProperty({
+		example: 1,
+		description: 'Текущая страница',
+	})
+	public page: number
+
+	@ApiProperty({
+		example: 10,
+		description: 'Количество элементов на странице',
+	})
+	public limit: number
+
+	@ApiProperty({
+		example: 10,
+		description: 'Общее количество страниц',
+	})
+	public totalPages: number
 }

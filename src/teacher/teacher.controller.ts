@@ -32,11 +32,8 @@ import { TransformTeacherDtoPipe } from '@/libs/common/pipes/transform-teacher-d
 
 import { TeacherPaginationResponseDto } from './dto/teacher-pagination-response.dto'
 import { TeacherTransferDto } from './dto/teacher-transfer.dto'
-import { TeacherDto } from './dto/teacher.dto'
-import {
-	UpdateFullTeacherDto,
-	UpdateTeacherDto,
-} from './dto/update-teacher.dto'
+import { CreateTeacherDto } from './dto/teacher.dto'
+import { UpdateTeacherDto } from './dto/update-teacher.dto'
 import { TeacherService } from './teacher.service'
 
 @ApiTags('Teachers')
@@ -85,7 +82,7 @@ export class TeacherController {
 	@UseInterceptors(FileInterceptor('file'))
 	@Post()
 	public async createTeacher(
-		@Body(new TransformTeacherDtoPipe()) dto: TeacherDto,
+		@Body(new TransformTeacherDtoPipe()) dto: CreateTeacherDto,
 		@UploadedFile(
 			new ParseFilePipe({ ...parseFileConfig, fileIsRequired: false }),
 		)
@@ -184,7 +181,7 @@ export class TeacherController {
 		description: 'Teacher ID',
 		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
-	@ApiBody({ type: UpdateFullTeacherDto })
+	@ApiBody({ type: UpdateTeacherDto })
 	@ApiResponse({
 		status: 200,
 		description: 'Teacher successfully replaced',
@@ -202,7 +199,7 @@ export class TeacherController {
 	@Put(':id')
 	public async replaceTeacher(
 		@Param('id') id: string,
-		@Body() dto: UpdateFullTeacherDto,
+		@Body() dto: UpdateTeacherDto,
 	) {
 		return this.teacherService.replaceTeacher(id, dto)
 	}

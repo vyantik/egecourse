@@ -1,108 +1,82 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
+import { TeacherCategory } from '@prisma/__generated__'
+import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
 
 export class UpdateTeacherDto {
 	@ApiProperty({
-		example: 'John',
-		description: 'Teacher first name',
+		example: 'Иван',
+		description: 'Имя преподавателя',
 		required: false,
 	})
-	@IsString({ message: 'Name must be a string' })
+	@IsString()
 	@IsOptional()
-	name?: string
+	public name?: string
 
 	@ApiProperty({
-		example: 'Doe',
-		description: 'Teacher last name',
+		example: 'Иванов',
+		description: 'Фамилия преподавателя',
 		required: false,
 	})
-	@IsString({ message: 'Surname must be a string' })
+	@IsString()
 	@IsOptional()
-	surname?: string
+	public surname?: string
 
 	@ApiProperty({
-		example: 'Smith',
-		description: 'Teacher patronymic name',
+		example: 'Иванович',
+		description: 'Отчество преподавателя',
 		required: false,
 	})
-	@IsString({ message: 'Patronymic must be a string' })
+	@IsString()
 	@IsOptional()
-	patronymic?: string
+	public patronymic?: string
 
 	@ApiProperty({
-		example: '10 years',
-		description: 'Teaching experience',
+		example: 'EGE',
+		description: 'Категория преподавателя',
+		enum: TeacherCategory,
 		required: false,
 	})
-	@IsString({ message: 'Experience must be a string' })
+	@IsEnum(TeacherCategory)
 	@IsOptional()
-	experience?: string
+	public category?: TeacherCategory
+
+	@ApiProperty({
+		example: 'https://example.com/teacher-photo.jpg',
+		description: 'URL фотографии преподавателя',
+		required: false,
+	})
+	@IsString()
+	@IsOptional()
+	public picture?: string
+
+	@ApiProperty({
+		example: '5 лет',
+		description: 'Опыт работы преподавателя',
+		required: false,
+	})
+	@IsString()
+	@IsOptional()
+	public experience?: string
 
 	@ApiProperty({
 		example: 95,
-		description: 'EGE score',
+		description: 'Балл ЕГЭ преподавателя (от 0 до 100)',
+		minimum: 0,
+		maximum: 100,
 		required: false,
 	})
-	@IsNumber({}, { message: 'EGE score must be a number' })
+	@IsInt()
+	@Min(0)
+	@Max(100)
 	@IsOptional()
-	egeScore?: number
+	public egeScore?: number
 
 	@ApiProperty({
-		example: 'Mathematics',
-		description: 'Teaching direction/subject',
+		example: 'Математика',
+		description: 'Направление подготовки преподавателя',
 		required: false,
 	})
-	@IsString({ message: 'Direction must be a string' })
+	@IsString()
 	@IsOptional()
-	direction?: string
-}
-
-export class UpdateFullTeacherDto {
-	@ApiProperty({
-		example: 'John',
-		description: 'Teacher first name',
-	})
-	@IsString({ message: 'Name must be a string' })
-	@IsNotEmpty({ message: 'Name is required' })
-	name: string
-
-	@ApiProperty({
-		example: 'Doe',
-		description: 'Teacher last name',
-	})
-	@IsString({ message: 'Surname must be a string' })
-	@IsNotEmpty({ message: 'Surname is required' })
-	surname: string
-
-	@ApiProperty({
-		example: 'Smith',
-		description: 'Teacher patronymic name',
-	})
-	@IsString({ message: 'Patronymic must be a string' })
-	@IsNotEmpty({ message: 'Patronymic is required' })
-	patronymic: string
-
-	@ApiProperty({
-		example: '10 years',
-		description: 'Teaching experience',
-	})
-	@IsString({ message: 'Experience must be a string' })
-	@IsNotEmpty({ message: 'Experience is required' })
-	experience: string
-
-	@ApiProperty({
-		example: 95,
-		description: 'EGE score',
-	})
-	@IsNumber({}, { message: 'EGE score must be a number' })
-	@IsNotEmpty({ message: 'EGE score is required' })
-	egeScore: number
-
-	@ApiProperty({
-		example: 'Mathematics',
-		description: 'Teaching direction/subject',
-	})
-	@IsString({ message: 'Direction must be a string' })
-	@IsNotEmpty({ message: 'Direction is required' })
-	direction: string
+	public direction?: string
 }

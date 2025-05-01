@@ -67,7 +67,7 @@ export class CourseService {
 	}
 
 	public async getCourseById(id: string): Promise<Course> {
-		if (!id) throw new NotFoundException('id is required')
+		if (!id) throw new NotFoundException('ID курса обязателен')
 
 		const course = await this.prismaService.course.findUnique({
 			where: {
@@ -76,7 +76,7 @@ export class CourseService {
 		})
 
 		if (!course) {
-			throw new NotFoundException('Course not found')
+			throw new NotFoundException('Курс не найден')
 		}
 
 		return course
@@ -86,14 +86,14 @@ export class CourseService {
 		id: string,
 		dto: UpdateCourseDto,
 	): Promise<Course> {
-		if (!id) throw new NotFoundException('id is required')
+		if (!id) throw new NotFoundException('ID курса обязателен')
 
 		const course = await this.prismaService.course.findUnique({
 			where: { id },
 		})
 
 		if (!course) {
-			throw new NotFoundException('Course not found')
+			throw new NotFoundException('Курс не найден')
 		}
 
 		const { priceOptions, ...courseData } = dto
@@ -110,14 +110,14 @@ export class CourseService {
 	}
 
 	public async replaceCourse(id: string, dto: CourseDto): Promise<Course> {
-		if (!id) throw new NotFoundException('id is required')
+		if (!id) throw new NotFoundException('ID курса обязателен')
 
 		const course = await this.prismaService.course.findUnique({
 			where: { id },
 		})
 
 		if (!course) {
-			throw new NotFoundException('Course not found')
+			throw new NotFoundException('Курс не найден')
 		}
 
 		const { priceOptions, ...courseData } = dto
