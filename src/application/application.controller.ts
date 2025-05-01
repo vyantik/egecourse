@@ -1,6 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { UserRole } from '@prisma/__generated__'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
 

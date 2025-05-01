@@ -25,19 +25,19 @@ export class UrlContainerService {
 
 	/**
 	 * Получает URL-контейнер по его идентификатору
-	 * @param id - Уникальный идентификатор URL-контейнера
+	 * @param key - Уникальный ключ URL-контейнера
 	 * @returns Promise с найденным URL-контейнером
 	 * @throws NotFoundException если URL-контейнер не найден
 	 */
-	public async getUrlContainer(id: string) {
+	public async getUrlContainer(key: string) {
 		const urlContainer = await this.prisma.urlContainer.findUnique({
 			where: {
-				id,
+				key,
 			},
 		})
 
 		if (!urlContainer) {
-			throw new NotFoundException(`URL с идентификатором ${id} не найден`)
+			throw new NotFoundException(`URL с ключом ${key} не найден`)
 		}
 
 		return urlContainer
@@ -53,6 +53,7 @@ export class UrlContainerService {
 		try {
 			return await this.prisma.urlContainer.create({
 				data: {
+					key: dto.key,
 					url: dto.url,
 				},
 			})
@@ -72,21 +73,19 @@ export class UrlContainerService {
 	 * @throws NotFoundException если URL-контейнер не найден
 	 * @throws BadRequestException если URL уже существует или произошла ошибка при обновлении
 	 */
-	public async updateUrlContainer(id: string, dto: UpdateUrlContainerDto) {
+	public async updateUrlContainer(key: string, dto: UpdateUrlContainerDto) {
 		try {
 			const exists = await this.prisma.urlContainer.findUnique({
-				where: { id },
+				where: { key },
 			})
 
 			if (!exists) {
-				throw new NotFoundException(
-					`URL с идентификатором ${id} не найден`,
-				)
+				throw new NotFoundException(`URL с ключом ${key} не найден`)
 			}
 
 			return await this.prisma.urlContainer.update({
 				where: {
-					id,
+					key,
 				},
 				data: {
 					url: dto.url,

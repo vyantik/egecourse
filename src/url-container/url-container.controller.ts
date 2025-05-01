@@ -6,6 +6,9 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
+import { UserRole } from '@prisma/__generated__'
+
+import { Authorization } from '@/auth/decorators/auth.decorator'
 
 import {
 	CreateUrlContainerDto,
@@ -22,18 +25,26 @@ export class UrlContainerController {
 		summary: 'Получить URL',
 		description: 'Получить URL по его идентификатору',
 	})
-	@ApiParam({ name: 'id', description: 'Идентификатор URL', type: String })
+	@ApiParam({ name: 'key', description: 'Ключ URL', type: String })
 	@ApiResponse({ status: 200, description: 'URL успешно найден' })
 	@ApiResponse({ status: 404, description: 'URL не найден' })
-	@Get(':id')
-	public async getUrlContainer(@Param('id') id: string) {
-		return this.urlContainerService.getUrlContainer(id)
+	@Get(':key')
+	public async getUrlContainer(@Param('key') key: string) {
+		return this.urlContainerService.getUrlContainer(key)
 	}
 
 	@ApiOperation({ summary: 'Создать URL', description: 'Создать новый URL' })
 	@ApiBody({
 		type: CreateUrlContainerDto,
 		description: 'Данные для создания URL',
+		examples: {
+			example1: {
+				value: {
+					key: 'test',
+					url: 'https://example.com',
+				},
+			},
+		},
 	})
 	@ApiResponse({ status: 201, description: 'URL успешно создан' })
 	@ApiResponse({
@@ -41,6 +52,7 @@ export class UrlContainerController {
 		description: 'Неверные данные для создания URL',
 	})
 	@Post()
+	@Authorization(UserRole.ADMIN)
 	public async createUrlContainer(@Body() dto: CreateUrlContainerDto) {
 		return this.urlContainerService.createUrlContainer(dto)
 	}
@@ -50,13 +62,20 @@ export class UrlContainerController {
 		description: 'Обновить существующий URL',
 	})
 	@ApiParam({
-		name: 'id',
-		description: 'Идентификатор URL для обновления',
+		name: 'key',
+		description: 'Ключ для обновления URL',
 		type: String,
 	})
 	@ApiBody({
 		type: UpdateUrlContainerDto,
 		description: 'Данные для обновления URL',
+		examples: {
+			example1: {
+				value: {
+					url: 'https://example.com',
+				},
+			},
+		},
 	})
 	@ApiResponse({ status: 200, description: 'URL успешно обновлен' })
 	@ApiResponse({ status: 404, description: 'URL не найден' })
@@ -64,11 +83,12 @@ export class UrlContainerController {
 		status: 400,
 		description: 'Неверные данные для обновления URL',
 	})
-	@Patch(':id')
+	@Patch(':key')
+	@Authorization(UserRole.ADMIN)
 	public async updateUrlContainer(
-		@Param('id') id: string,
+		@Param('key') key: string,
 		@Body() dto: UpdateUrlContainerDto,
 	) {
-		return this.urlContainerService.updateUrlContainer(id, dto)
+		return this.urlContainerService.updateUrlContainer(key, dto)
 	}
 }
