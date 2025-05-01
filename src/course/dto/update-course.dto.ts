@@ -7,7 +7,7 @@ export class UpdateCourseDto {
 		description: 'Название курса',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Название курса должно быть строкой' })
 	@IsOptional()
 	public name?: string
 
@@ -16,7 +16,7 @@ export class UpdateCourseDto {
 		description: 'Заголовок курса',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Заголовок курса должен быть строкой' })
 	@IsOptional()
 	public header?: string
 
@@ -25,7 +25,7 @@ export class UpdateCourseDto {
 		description: 'Описание курса',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Описание курса должно быть строкой' })
 	@IsOptional()
 	public description?: string
 
@@ -34,7 +34,7 @@ export class UpdateCourseDto {
 		description: 'Формат обучения',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Формат обучения должен быть строкой' })
 	@IsOptional()
 	public studyFormat?: string
 
@@ -43,7 +43,7 @@ export class UpdateCourseDto {
 		description: 'Документ об окончании',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Документ об окончании должен быть строкой' })
 	@IsOptional()
 	public document?: string
 
@@ -52,7 +52,7 @@ export class UpdateCourseDto {
 		description: 'Дата начала обучения',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Дата начала обучения должна быть строкой' })
 	@IsOptional()
 	public studyStart?: string
 
@@ -74,7 +74,7 @@ export class UpdateCourseDto {
 		description: 'Варианты цен и их особенности',
 		required: false,
 	})
-	@IsObject()
+	@IsObject({ message: 'Ценовые опции должны быть объектом' })
 	@IsOptional()
 	public priceOptions?: Record<string, any>
 }

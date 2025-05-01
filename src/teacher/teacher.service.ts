@@ -142,7 +142,7 @@ export class TeacherService {
 	 * @throws NotFoundException если преподаватель не найден
 	 */
 	public async getTeacherById(id: string): Promise<Teacher> {
-		if (!id) throw new NotFoundException('id is required')
+		if (!id) throw new NotFoundException('Идентификатор обязателен')
 
 		const teacher = await this.prismaService.teacher.findUnique({
 			where: {
@@ -151,7 +151,7 @@ export class TeacherService {
 		})
 
 		if (!teacher) {
-			throw new NotFoundException('Teacher not found')
+			throw new NotFoundException('Преподаватель не найден')
 		}
 
 		return teacher
@@ -168,14 +168,14 @@ export class TeacherService {
 		id: string,
 		dto: UpdateTeacherDto,
 	): Promise<Teacher> {
-		if (!id) throw new NotFoundException('id is required')
+		if (!id) throw new NotFoundException('Идентификатор обязателен')
 
 		const teacher = await this.prismaService.teacher.findUnique({
 			where: { id },
 		})
 
 		if (!teacher) {
-			throw new NotFoundException('Teacher not found')
+			throw new NotFoundException('Преподаватель не найден')
 		}
 
 		const { ...updateData } = dto
@@ -197,14 +197,14 @@ export class TeacherService {
 		id: string,
 		dto: UpdateTeacherDto,
 	): Promise<Teacher> {
-		if (!id) throw new NotFoundException('id is required')
+		if (!id) throw new NotFoundException('Идентификатор обязателен')
 
 		const teacher = await this.prismaService.teacher.findUnique({
 			where: { id },
 		})
 
 		if (!teacher) {
-			throw new NotFoundException('Teacher not found')
+			throw new NotFoundException('Преподаватель не найден')
 		}
 
 		return this.prismaService.teacher.update({
@@ -232,7 +232,7 @@ export class TeacherService {
 		})
 
 		if (!teacher) {
-			throw new NotFoundException('Teacher not found')
+			throw new NotFoundException('Преподаватель не найден')
 		}
 
 		if (teacher.picture) {
@@ -273,11 +273,11 @@ export class TeacherService {
 		})
 
 		if (!teacher) {
-			throw new NotFoundException('Teacher not found')
+			throw new NotFoundException('Преподаватель не найден')
 		}
 
 		if (!teacher.picture) {
-			throw new NotFoundException('Teacher picture not found')
+			throw new NotFoundException('Фотография преподавателя не найдена')
 		}
 
 		return this.fileService.getPicture(this.teacherPicturesDir, pictureName)
@@ -298,7 +298,7 @@ export class TeacherService {
 		})
 
 		if (!teacher) {
-			throw new NotFoundException('Teacher not found')
+			throw new NotFoundException('Преподаватель не найден')
 		}
 
 		await this.fileService.deletePicture(
@@ -320,7 +320,7 @@ export class TeacherService {
 	 * @throws BadRequestException если id не предоставлен
 	 */
 	public async deleteTeacher(id: string): Promise<void> {
-		if (!id) throw new BadRequestException('id is required')
+		if (!id) throw new BadRequestException('Идентификатор обязателен')
 
 		return this.prismaService.teacher.delete({
 			where: { id },

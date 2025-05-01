@@ -24,48 +24,48 @@ export class CourseDto {
 		example: 'Подготовка к ЕГЭ по математике',
 		description: 'Название курса',
 	})
-	@IsString()
-	@IsNotEmpty()
+	@IsString({ message: 'Название курса должно быть строкой' })
+	@IsNotEmpty({ message: 'Название курса обязательно' })
 	public name: string
 
 	@ApiProperty({
 		example: 'Интенсивная подготовка к ЕГЭ по математике',
 		description: 'Заголовок курса',
 	})
-	@IsString()
-	@IsNotEmpty()
+	@IsString({ message: 'Заголовок курса должен быть строкой' })
+	@IsNotEmpty({ message: 'Заголовок курса обязателен' })
 	public header: string
 
 	@ApiProperty({
 		example: 'Подготовка к ЕГЭ по математике с нуля до 80+ баллов',
 		description: 'Описание курса',
 	})
-	@IsString()
-	@IsNotEmpty()
+	@IsString({ message: 'Описание курса должно быть строкой' })
+	@IsNotEmpty({ message: 'Описание курса обязательно' })
 	public description: string
 
 	@ApiProperty({
 		example: 'Онлайн',
 		description: 'Формат обучения',
 	})
-	@IsString()
-	@IsNotEmpty()
+	@IsString({ message: 'Формат обучения должен быть строкой' })
+	@IsNotEmpty({ message: 'Формат обучения обязателен' })
 	public studyFormat: string
 
 	@ApiProperty({
 		example: 'Диплом о профессиональной переподготовке',
 		description: 'Документ об окончании',
 	})
-	@IsString()
-	@IsNotEmpty()
+	@IsString({ message: 'Документ об окончании должен быть строкой' })
+	@IsNotEmpty({ message: 'Документ об окончании обязателен' })
 	public document: string
 
 	@ApiProperty({
 		example: 'Сентябрь 2024',
 		description: 'Дата начала обучения',
 	})
-	@IsString()
-	@IsNotEmpty()
+	@IsString({ message: 'Дата начала обучения должна быть строкой' })
+	@IsNotEmpty({ message: 'Дата начала обучения обязательна' })
 	public studyStart: string
 
 	@ApiProperty({
@@ -86,7 +86,7 @@ export class CourseDto {
 		description: 'Варианты цен и их особенности',
 		required: false,
 	})
-	@IsObject()
+	@IsObject({ message: 'Ценовые опции должны быть объектом' })
 	@IsOptional()
 	public priceOptions?: Record<string, any>
 }

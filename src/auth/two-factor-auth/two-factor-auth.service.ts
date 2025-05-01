@@ -8,6 +8,10 @@ import { TokenType } from '@prisma/__generated__'
 import { MailService } from '@/libs/mail/mail.service'
 import { PrismaService } from '@/prisma/prisma.service'
 
+/**
+ * Сервис двухфакторной аутентификации
+ * Предоставляет методы для генерации, отправки и валидации токенов двухфакторной аутентификации
+ */
 @Injectable()
 export class TwoFactorAuthService {
 	public constructor(
@@ -24,12 +28,12 @@ export class TwoFactorAuthService {
 		})
 
 		if (!existingToken) {
-			throw new NotFoundException('Token not found.')
+			throw new NotFoundException('Токен не найден')
 		}
 
 		if (existingToken.token !== code) {
 			throw new BadRequestException(
-				'The two-factor authentication code is incorrect. Please check the code you entered and try again.',
+				'Неверный код двухфакторной аутентификации. Пожалуйста, проверьте введенный код и попробуйте снова.',
 			)
 		}
 
@@ -37,7 +41,7 @@ export class TwoFactorAuthService {
 
 		if (isExpired) {
 			throw new BadRequestException(
-				'The two-factor authentication token has expired. Please request a new token.',
+				'Срок действия кода двухфакторной аутентификации истек. Пожалуйста, запросите новый код.',
 			)
 		}
 

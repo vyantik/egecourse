@@ -8,8 +8,9 @@ export class CreateUrlContainerDto {
 }
 
 export class UpdateUrlContainerDto {
-	@IsString({ message: 'ID должен быть строкой' })
-	@IsNotEmpty({ message: 'ID обязателен' })
+	@IsString({ message: 'Идентификатор должен быть строкой' })
+	@IsNotEmpty({ message: 'Идентификатор обязателен' })
+	@IsUrl()
 	id: string
 
 	@IsString({ message: 'URL должен быть строкой' })

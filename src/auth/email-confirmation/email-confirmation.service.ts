@@ -17,6 +17,10 @@ import { AuthService } from '../auth.service'
 
 import { ConfirmationDto } from './dto/confirmation.dto'
 
+/**
+ * Сервис подтверждения email
+ * Предоставляет методы для генерации, отправки и валидации токенов подтверждения email
+ */
 @Injectable()
 export class EmailConfirmationService {
 	public constructor(
@@ -36,13 +40,13 @@ export class EmailConfirmationService {
 		})
 
 		if (!existingToken) {
-			throw new NotFoundException('Token not found.')
+			throw new NotFoundException('Токен не найден')
 		}
 
 		const isExpired = new Date(existingToken.expiresIn) < new Date()
 
 		if (isExpired) {
-			throw new BadRequestException('Token was expired.')
+			throw new BadRequestException('Срок действия токена истек')
 		}
 
 		const existingUser = await this.userService.findByEmail(
@@ -50,7 +54,7 @@ export class EmailConfirmationService {
 		)
 
 		if (!existingUser) {
-			throw new NotFoundException('User not found.')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		await this.prismaService.user.update({

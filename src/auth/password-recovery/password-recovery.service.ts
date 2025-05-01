@@ -14,6 +14,10 @@ import { UserService } from '@/user/user.service'
 import { NewPasswordDto } from './dto/new-password.dto'
 import { ResetPasswordDto } from './dto/reset-password.dto'
 
+/**
+ * Сервис восстановления пароля
+ * Предоставляет методы для сброса пароля и создания нового пароля
+ */
 @Injectable()
 export class PasswordRecoveryService {
 	public constructor(
@@ -26,7 +30,7 @@ export class PasswordRecoveryService {
 		const existingUser = await this.userService.findByEmail(dto.email)
 
 		if (!existingUser) {
-			throw new NotFoundException('User not found.')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		const passwordResetToken = await this.generatePasswordResetToken(
@@ -50,13 +54,13 @@ export class PasswordRecoveryService {
 		})
 
 		if (!existingToken) {
-			throw new NotFoundException('Token not found.')
+			throw new NotFoundException('Токен не найден')
 		}
 
 		const itExpired = new Date(existingToken.expiresIn) < new Date()
 
 		if (itExpired) {
-			throw new BadRequestException('Token was expired.')
+			throw new BadRequestException('Срок действия токена истек')
 		}
 
 		const existingUser = await this.userService.findByEmail(
@@ -64,7 +68,7 @@ export class PasswordRecoveryService {
 		)
 
 		if (!existingUser) {
-			throw new NotFoundException('User not found.')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		await this.prismaService.user.update({

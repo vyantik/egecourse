@@ -27,6 +27,6 @@ export class FileSystemController {
 	@Authorization(UserRole.ADMIN)
 	async removeUserAvatar(@Param('userId') userId: string) {
 		await this.fileService.removeUserAvatar(userId)
-		return { message: 'success' }
+		return { message: 'Аватар успешно удален' }
 	}
 }

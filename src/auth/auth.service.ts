@@ -57,14 +57,14 @@ export class AuthService {
 		const validateEmail = await validate(dto.email)
 
 		if (!validateEmail.valid) {
-			throw new BadRequestException('Invalid email address')
+			throw new BadRequestException('Неверный формат email адреса')
 		}
 
 		const isExists = await this.userService.findByEmail(dto.email)
 
 		if (isExists) {
 			throw new ConflictException(
-				'Conflict exception. Please use another email address or login',
+				'Пользователь с таким email адресом уже существует',
 			)
 		}
 
@@ -83,7 +83,7 @@ export class AuthService {
 
 		return {
 			message:
-				'You have successfully registered. Please confirm your email. The message has been sent to your email address.',
+				'Вы успешно зарегистрировались. Пожалуйста, подтвердите ваш email. Сообщение было отправлено на ваш адрес электронной почты.',
 		}
 	}
 
@@ -99,13 +99,13 @@ export class AuthService {
 		const user = await this.userService.findByEmail(dto.email)
 
 		if (!user || !user.password) {
-			throw new NotFoundException('User not found.')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		const isValidPassport = await verify(user.password, dto.password)
 
 		if (!isValidPassport) {
-			throw new UnauthorizedException('Incorrect password')
+			throw new UnauthorizedException('Неверный пароль')
 		}
 
 		if (!user.isVerified) {
@@ -113,7 +113,7 @@ export class AuthService {
 				user.email,
 			)
 			throw new UnauthorizedException(
-				'Your email is not confirmed. Please check your mail and confirm the address.',
+				'Ваш email не подтвержден. Пожалуйста, проверьте почту и подтвердите адрес.',
 			)
 		}
 
@@ -123,7 +123,7 @@ export class AuthService {
 
 				return {
 					message:
-						'Check your email. Two-factor authentication code required.',
+						'Проверьте вашу почту. Требуется код двухфакторной аутентификации.',
 				}
 			}
 

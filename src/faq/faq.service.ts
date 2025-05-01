@@ -90,7 +90,7 @@ export class FaqService {
 		})
 
 		if (!faq) {
-			throw new NotFoundException('FAQ not found')
+			throw new NotFoundException('FAQ не найден')
 		}
 
 		return this.prismaService.faq.update({
@@ -112,7 +112,7 @@ export class FaqService {
 		})
 
 		if (!faq) {
-			throw new NotFoundException('FAQ not found')
+			throw new NotFoundException('FAQ не найден')
 		}
 
 		return this.prismaService.faq.update({

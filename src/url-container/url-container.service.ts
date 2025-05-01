@@ -37,7 +37,7 @@ export class UrlContainerService {
 		})
 
 		if (!urlContainer) {
-			throw new NotFoundException(`URL с id ${id} не найден`)
+			throw new NotFoundException(`URL с идентификатором ${id} не найден`)
 		}
 
 		return urlContainer
@@ -58,9 +58,9 @@ export class UrlContainerService {
 			})
 		} catch (error) {
 			if (error.code === 'P2002') {
-				throw new BadRequestException('URL уже существует')
+				throw new BadRequestException('Такой URL уже существует')
 			}
-			throw new BadRequestException('Не удалось создать URL')
+			throw new BadRequestException('Не удалось создать URL-контейнер')
 		}
 	}
 
@@ -79,7 +79,9 @@ export class UrlContainerService {
 			})
 
 			if (!exists) {
-				throw new NotFoundException(`URL с id ${id} не найден`)
+				throw new NotFoundException(
+					`URL с идентификатором ${id} не найден`,
+				)
 			}
 
 			return await this.prisma.urlContainer.update({
@@ -95,9 +97,9 @@ export class UrlContainerService {
 				throw error
 			}
 			if (error.code === 'P2002') {
-				throw new BadRequestException('URL уже существует')
+				throw new BadRequestException('Такой URL уже существует')
 			}
-			throw new BadRequestException('Не удалось обновить URL')
+			throw new BadRequestException('Не удалось обновить URL-контейнер')
 		}
 	}
 }

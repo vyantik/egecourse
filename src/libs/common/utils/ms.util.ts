@@ -49,7 +49,7 @@ export function ms(str: StringValue): number {
 	// Проверка входных данных
 	if (typeof str !== 'string' || str.length === 0 || str.length > 100) {
 		throw new Error(
-			'Value provided to ms() must be a string with length between 1 and 99.',
+			'Значение, переданное в ms(), должно быть строкой длиной от 1 до 99 символов',
 		)
 	}
 
@@ -106,7 +106,7 @@ export function ms(str: StringValue): number {
 			return n
 		default:
 			throw new Error(
-				`Ошибка: единица времени ${type} была распознана, но не существует соответствующего случая. Пожалуйста, проверьте введенные данные.`,
+				`Ошибка: единица времени ${type} была распознана, но не существует соответствующего случая. Пожалуйста, проверьте введенные данные`,
 			)
 	}
 }

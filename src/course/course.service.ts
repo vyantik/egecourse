@@ -94,7 +94,7 @@ export class CourseService {
 	 * @throws NotFoundException если id не предоставлен или курс не найден
 	 */
 	public async getCourseById(id: string): Promise<Course> {
-		if (!id) throw new NotFoundException('ID курса обязателен')
+		if (!id) throw new NotFoundException('Идентификатор курса обязателен')
 
 		const course = await this.prismaService.course.findUnique({
 			where: {
@@ -123,7 +123,7 @@ export class CourseService {
 		id: string,
 		dto: UpdateCourseDto,
 	): Promise<Course> {
-		if (!id) throw new NotFoundException('ID курса обязателен')
+		if (!id) throw new NotFoundException('Идентификатор курса обязателен')
 
 		const course = await this.prismaService.course.findUnique({
 			where: { id },
@@ -157,7 +157,7 @@ export class CourseService {
 	 * Все существующие данные, не указанные в dto, будут удалены или заменены значениями по умолчанию.
 	 */
 	public async replaceCourse(id: string, dto: CourseDto): Promise<Course> {
-		if (!id) throw new NotFoundException('ID курса обязателен')
+		if (!id) throw new NotFoundException('Идентификатор курса обязателен')
 
 		const course = await this.prismaService.course.findUnique({
 			where: { id },

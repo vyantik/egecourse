@@ -8,7 +8,7 @@ export class UpdateTeacherDto {
 		description: 'Имя преподавателя',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Имя должно быть строкой' })
 	@IsOptional()
 	public name?: string
 
@@ -17,7 +17,7 @@ export class UpdateTeacherDto {
 		description: 'Фамилия преподавателя',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Фамилия должна быть строкой' })
 	@IsOptional()
 	public surname?: string
 
@@ -26,7 +26,7 @@ export class UpdateTeacherDto {
 		description: 'Отчество преподавателя',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Отчество должно быть строкой' })
 	@IsOptional()
 	public patronymic?: string
 
@@ -36,7 +36,9 @@ export class UpdateTeacherDto {
 		enum: TeacherCategory,
 		required: false,
 	})
-	@IsEnum(TeacherCategory)
+	@IsEnum(TeacherCategory, {
+		message: 'Некорректная категория преподавателя',
+	})
 	@IsOptional()
 	public category?: TeacherCategory
 
@@ -45,7 +47,7 @@ export class UpdateTeacherDto {
 		description: 'URL фотографии преподавателя',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'URL фотографии должен быть строкой' })
 	@IsOptional()
 	public picture?: string
 
@@ -54,7 +56,7 @@ export class UpdateTeacherDto {
 		description: 'Опыт работы преподавателя',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Опыт работы должен быть строкой' })
 	@IsOptional()
 	public experience?: string
 
@@ -65,9 +67,9 @@ export class UpdateTeacherDto {
 		maximum: 100,
 		required: false,
 	})
-	@IsInt()
-	@Min(0)
-	@Max(100)
+	@IsInt({ message: 'Балл ЕГЭ должен быть целым числом' })
+	@Min(0, { message: 'Балл ЕГЭ не может быть меньше 0' })
+	@Max(100, { message: 'Балл ЕГЭ не может быть больше 100' })
 	@IsOptional()
 	public egeScore?: number
 
@@ -76,7 +78,7 @@ export class UpdateTeacherDto {
 		description: 'Направление подготовки преподавателя',
 		required: false,
 	})
-	@IsString()
+	@IsString({ message: 'Направление должно быть строкой' })
 	@IsOptional()
 	public direction?: string
 }

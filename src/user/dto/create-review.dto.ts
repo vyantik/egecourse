@@ -6,7 +6,7 @@ export class CreateReviewDto {
 		description: 'Текст отзыва',
 		example: 'Отличный курс, я многому научился!',
 	})
-	@IsString({ message: 'Текст отзыва должен быть строкой.' })
-	@IsNotEmpty({ message: 'Текст отзыва обязателен.' })
+	@IsString({ message: 'Текст отзыва должен быть строкой' })
+	@IsNotEmpty({ message: 'Текст отзыва обязателен' })
 	text: string
 }
