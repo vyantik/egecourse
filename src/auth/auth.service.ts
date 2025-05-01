@@ -147,7 +147,9 @@ export class AuthService {
 			req.session.destroy(err => {
 				if (err) {
 					return reject(
-						new InternalServerErrorException('Session not deleted'),
+						new InternalServerErrorException(
+							'Не удалось удалить сессию',
+						),
 					)
 				}
 
@@ -173,7 +175,9 @@ export class AuthService {
 			req.session.save(err => {
 				if (err) {
 					return reject(
-						new InternalServerErrorException('Session not saved.'),
+						new InternalServerErrorException(
+							'Не удалось сохранить сессию',
+						),
 					)
 				}
 

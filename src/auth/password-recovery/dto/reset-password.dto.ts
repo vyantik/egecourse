@@ -3,10 +3,10 @@ import { IsEmail, IsNotEmpty } from 'class-validator'
 
 export class ResetPasswordDto {
 	@ApiProperty({
-		description: 'Email address for password reset',
+		description: 'Email адрес для сброса пароля',
 		example: 'john.doe@example.com',
 	})
-	@IsEmail({}, { message: 'Please enter a valid email address.' })
-	@IsNotEmpty({ message: 'Email field cannot be empty.' })
+	@IsEmail({}, { message: 'Пожалуйста, введите корректный email адрес.' })
+	@IsNotEmpty({ message: 'Поле email не может быть пустым.' })
 	email: string
 }
