@@ -7,10 +7,27 @@ import { PrismaService } from '@/prisma/prisma.service'
 import { CourseDto } from './dto/course.dto'
 import { UpdateCourseDto } from './dto/update-course.dto'
 
+/**
+ * Сервис для управления курсами
+ * Предоставляет методы для создания, получения и обновления курсов,
+ * включая управление ценовыми опциями
+ */
 @Injectable()
 export class CourseService {
+	/**
+	 * Конструктор сервиса курсов
+	 * @param prismaService - Сервис для работы с базой данных
+	 */
 	constructor(private readonly prismaService: PrismaService) {}
 
+	/**
+	 * Создает новый курс
+	 * @param dto - DTO с данными курса
+	 * @returns Promise с созданным курсом
+	 *
+	 * Отдельно обрабатывает priceOptions, преобразуя их в JSON
+	 * для корректного хранения в базе данных
+	 */
 	public async createCourse(dto: CourseDto): Promise<Course> {
 		const { priceOptions, ...courseData } = dto
 
@@ -24,16 +41,20 @@ export class CourseService {
 		})
 	}
 
+	/**
+	 * Получает список всех курсов с опциональной пагинацией
+	 * @param page - Номер страницы (опционально)
+	 * @param limit - Количество элементов на странице (опционально)
+	 * @returns Promise с массивом курсов или объектом с данными и метаинформацией
+	 *
+	 * Если параметры пагинации не указаны, возвращает все курсы.
+	 * Если указаны page и limit, возвращает объект с курсами и метаданными пагинации.
+	 * В обоих случаях курсы сортируются по дате создания (сначала новые).
+	 */
 	public async getCourses(
 		page?: number,
 		limit?: number,
-	): Promise<
-		| Course[]
-		| {
-				data: Course[]
-				meta: Meta
-		  }
-	> {
+	): Promise<Course[] | { data: Course[]; meta: Meta }> {
 		if (!page || !limit) {
 			return this.prismaService.course.findMany({
 				orderBy: {
@@ -66,6 +87,12 @@ export class CourseService {
 		}
 	}
 
+	/**
+	 * Получает курс по его идентификатору
+	 * @param id - Уникальный идентификатор курса
+	 * @returns Promise с найденным курсом
+	 * @throws NotFoundException если id не предоставлен или курс не найден
+	 */
 	public async getCourseById(id: string): Promise<Course> {
 		if (!id) throw new NotFoundException('ID курса обязателен')
 
@@ -82,6 +109,16 @@ export class CourseService {
 		return course
 	}
 
+	/**
+	 * Частично обновляет данные курса
+	 * @param id - Уникальный идентификатор курса
+	 * @param dto - DTO с обновляемыми полями
+	 * @returns Promise с обновленным курсом
+	 * @throws NotFoundException если id не предоставлен или курс не найден
+	 *
+	 * Позволяет обновить отдельные поля курса, включая priceOptions.
+	 * Существующие поля, не указанные в dto, остаются без изменений.
+	 */
 	public async updateCourse(
 		id: string,
 		dto: UpdateCourseDto,
@@ -109,6 +146,16 @@ export class CourseService {
 		})
 	}
 
+	/**
+	 * Полностью заменяет данные курса
+	 * @param id - Уникальный идентификатор курса
+	 * @param dto - DTO с полными данными для замены
+	 * @returns Promise с обновленным курсом
+	 * @throws NotFoundException если id не предоставлен или курс не найден
+	 *
+	 * Заменяет все данные курса на новые, указанные в dto.
+	 * Все существующие данные, не указанные в dto, будут удалены или заменены значениями по умолчанию.
+	 */
 	public async replaceCourse(id: string, dto: CourseDto): Promise<Course> {
 		if (!id) throw new NotFoundException('ID курса обязателен')
 

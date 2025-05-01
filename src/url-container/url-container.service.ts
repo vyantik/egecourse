@@ -11,10 +11,24 @@ import {
 	UpdateUrlContainerDto,
 } from './dto/url-container.dto'
 
+/**
+ * Сервис для управления URL-контейнерами
+ * Предоставляет методы для создания, получения и обновления URL
+ */
 @Injectable()
 export class UrlContainerService {
+	/**
+	 * Конструктор сервиса URL-контейнеров
+	 * @param prisma - Сервис для работы с базой данных
+	 */
 	constructor(private readonly prisma: PrismaService) {}
 
+	/**
+	 * Получает URL-контейнер по его идентификатору
+	 * @param id - Уникальный идентификатор URL-контейнера
+	 * @returns Promise с найденным URL-контейнером
+	 * @throws NotFoundException если URL-контейнер не найден
+	 */
 	public async getUrlContainer(id: string) {
 		const urlContainer = await this.prisma.urlContainer.findUnique({
 			where: {
@@ -29,6 +43,12 @@ export class UrlContainerService {
 		return urlContainer
 	}
 
+	/**
+	 * Создает новый URL-контейнер
+	 * @param dto - DTO с данными для создания URL-контейнера
+	 * @returns Promise с созданным URL-контейнером
+	 * @throws BadRequestException если URL уже существует или произошла ошибка при создании
+	 */
 	public async createUrlContainer(dto: CreateUrlContainerDto) {
 		try {
 			return await this.prisma.urlContainer.create({
@@ -44,6 +64,14 @@ export class UrlContainerService {
 		}
 	}
 
+	/**
+	 * Обновляет существующий URL-контейнер
+	 * @param id - Уникальный идентификатор URL-контейнера
+	 * @param dto - DTO с данными для обновления URL-контейнера
+	 * @returns Promise с обновленным URL-контейнером
+	 * @throws NotFoundException если URL-контейнер не найден
+	 * @throws BadRequestException если URL уже существует или произошла ошибка при обновлении
+	 */
 	public async updateUrlContainer(id: string, dto: UpdateUrlContainerDto) {
 		try {
 			const exists = await this.prisma.urlContainer.findUnique({

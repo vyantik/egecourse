@@ -23,8 +23,20 @@ import { RegisterDto } from './dto/register.dto'
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service'
 import { TwoFactorAuthService } from './two-factor-auth/two-factor-auth.service'
 
+/**
+ * Сервис аутентификации
+ * Предоставляет методы для регистрации, входа и выхода пользователей,
+ * а также управления сессиями и двухфакторной аутентификацией
+ */
 @Injectable()
 export class AuthService {
+	/**
+	 * Конструктор сервиса аутентификации
+	 * @param userService - Сервис для работы с пользователями
+	 * @param configService - Сервис конфигурации
+	 * @param emailConfirmationService - Сервис подтверждения email
+	 * @param twoFactorAuthService - Сервис двухфакторной аутентификации
+	 */
 	public constructor(
 		@Inject(forwardRef(() => UserService))
 		private readonly userService: UserService,
@@ -33,6 +45,14 @@ export class AuthService {
 		private readonly twoFactorAuthService: TwoFactorAuthService,
 	) {}
 
+	/**
+	 * Регистрация нового пользователя
+	 * @param req - Объект запроса Express
+	 * @param dto - DTO с данными для регистрации
+	 * @returns Promise с сообщением об успешной регистрации
+	 * @throws BadRequestException если email невалидный
+	 * @throws ConflictException если пользователь с таким email уже существует
+	 */
 	public async register(req: Request, dto: RegisterDto) {
 		const validateEmail = await validate(dto.email)
 
@@ -67,6 +87,14 @@ export class AuthService {
 		}
 	}
 
+	/**
+	 * Вход пользователя в систему
+	 * @param req - Объект запроса Express
+	 * @param dto - DTO с данными для входа
+	 * @returns Promise с данными пользователя или сообщением о необходимости двухфакторной аутентификации
+	 * @throws NotFoundException если пользователь не найден
+	 * @throws UnauthorizedException если пароль неверный или email не подтвержден
+	 */
 	public async login(req: Request, dto: LoginDto) {
 		const user = await this.userService.findByEmail(dto.email)
 
@@ -108,6 +136,12 @@ export class AuthService {
 		return this.saveSession(req, user)
 	}
 
+	/**
+	 * Выход пользователя из системы
+	 * @param req - Объект запроса Express
+	 * @param res - Объект ответа Express
+	 * @throws InternalServerErrorException если не удалось удалить сессию
+	 */
 	public async logout(req: Request, res: Response): Promise<void> {
 		return new Promise((resolve, reject) => {
 			req.session.destroy(err => {
@@ -125,6 +159,13 @@ export class AuthService {
 		})
 	}
 
+	/**
+	 * Сохранение сессии пользователя
+	 * @param req - Объект запроса Express
+	 * @param user - Объект пользователя
+	 * @returns Promise с преобразованными данными пользователя
+	 * @throws InternalServerErrorException если не удалось сохранить сессию
+	 */
 	public async saveSession(req: Request, user: User) {
 		return new Promise((resolve, reject) => {
 			req.session.userId = user.id

@@ -15,12 +15,27 @@ import { PrismaService } from '@/prisma/prisma.service'
 import { CreateTeacherDto } from './dto/teacher.dto'
 import { UpdateTeacherDto } from './dto/update-teacher.dto'
 
+/**
+ * Сервис для управления преподавателями
+ * Предоставляет методы для создания, получения, обновления и удаления преподавателей,
+ * а также управления их фотографиями
+ */
 @Injectable()
 export class TeacherService {
+	/**
+	 * Директории для хранения файлов и базовый URL
+	 * @private
+	 */
 	private readonly uploadDir: string
 	private readonly teacherPicturesDir: string
 	private readonly baseUrl: string
 
+	/**
+	 * Конструктор сервиса преподавателей
+	 * @param prismaService - Сервис для работы с базой данных
+	 * @param configService - Сервис конфигурации
+	 * @param fileService - Сервис для работы с файловой системой
+	 */
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly configService: ConfigService,
@@ -36,6 +51,12 @@ export class TeacherService {
 		}
 	}
 
+	/**
+	 * Создает нового преподавателя
+	 * @param dto - DTO с данными преподавателя
+	 * @param file - Опциональный файл с фотографией преподавателя
+	 * @returns Promise с созданным преподавателем
+	 */
 	public async createTeacher(
 		dto: CreateTeacherDto,
 		file?: Express.Multer.File,
@@ -72,6 +93,12 @@ export class TeacherService {
 		return teacher
 	}
 
+	/**
+	 * Получает список всех преподавателей с опциональной пагинацией
+	 * @param page - Номер страницы (опционально)
+	 * @param limit - Количество элементов на странице (опционально)
+	 * @returns Promise с массивом преподавателей или объектом с данными и метаинформацией
+	 */
 	public async getTeachers(
 		page?: number,
 		limit?: number,
@@ -108,6 +135,12 @@ export class TeacherService {
 		}
 	}
 
+	/**
+	 * Получает преподавателя по ID
+	 * @param id - Уникальный идентификатор преподавателя
+	 * @returns Promise с найденным преподавателем
+	 * @throws NotFoundException если преподаватель не найден
+	 */
 	public async getTeacherById(id: string): Promise<Teacher> {
 		if (!id) throw new NotFoundException('id is required')
 
@@ -124,6 +157,13 @@ export class TeacherService {
 		return teacher
 	}
 
+	/**
+	 * Частично обновляет данные преподавателя
+	 * @param id - Уникальный идентификатор преподавателя
+	 * @param dto - DTO с обновляемыми данными
+	 * @returns Promise с обновленным преподавателем
+	 * @throws NotFoundException если преподаватель не найден
+	 */
 	public async updateTeacher(
 		id: string,
 		dto: UpdateTeacherDto,
@@ -146,6 +186,13 @@ export class TeacherService {
 		})
 	}
 
+	/**
+	 * Полностью заменяет данные преподавателя, сохраняя фотографию
+	 * @param id - Уникальный идентификатор преподавателя
+	 * @param dto - DTO с новыми данными
+	 * @returns Promise с обновленным преподавателем
+	 * @throws NotFoundException если преподаватель не найден
+	 */
 	public async replaceTeacher(
 		id: string,
 		dto: UpdateTeacherDto,
@@ -169,6 +216,13 @@ export class TeacherService {
 		})
 	}
 
+	/**
+	 * Обновляет фотографию преподавателя
+	 * @param teacherId - Уникальный идентификатор преподавателя
+	 * @param file - Новый файл фотографии
+	 * @returns Promise с обновленным преподавателем
+	 * @throws NotFoundException если преподаватель не найден
+	 */
 	public async updateTeacherPicture(
 		teacherId: string,
 		file: Express.Multer.File,
@@ -203,6 +257,13 @@ export class TeacherService {
 		})
 	}
 
+	/**
+	 * Получает фотографию преподавателя
+	 * @param teacherId - Уникальный идентификатор преподавателя
+	 * @param pictureName - Имя файла фотографии
+	 * @returns Promise с буфером изображения
+	 * @throws NotFoundException если преподаватель или фотография не найдены
+	 */
 	public async getPicture(
 		teacherId: string,
 		pictureName: string,
@@ -222,6 +283,12 @@ export class TeacherService {
 		return this.fileService.getPicture(this.teacherPicturesDir, pictureName)
 	}
 
+	/**
+	 * Удаляет фотографию преподавателя
+	 * @param teacherId - Уникальный идентификатор преподавателя
+	 * @param pictureName - Имя файла фотографии
+	 * @throws NotFoundException если преподаватель не найден
+	 */
 	public async deleteTeacherPicture(
 		teacherId: string,
 		pictureName: string,
@@ -247,6 +314,11 @@ export class TeacherService {
 		})
 	}
 
+	/**
+	 * Удаляет преподавателя
+	 * @param id - Уникальный идентификатор преподавателя
+	 * @throws BadRequestException если id не предоставлен
+	 */
 	public async deleteTeacher(id: string): Promise<void> {
 		if (!id) throw new BadRequestException('id is required')
 

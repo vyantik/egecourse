@@ -6,9 +6,9 @@ export class UpdateUserDto {
 		description: 'Email адрес пользователя',
 		example: 'user@example.com',
 	})
-	@IsString({ message: 'Email должен быть строкой.' })
-	@IsEmail({}, { message: 'Неверный формат email.' })
-	@IsNotEmpty({ message: 'Email обязателен.' })
+	@IsString({ message: 'Email должен быть строкой' })
+	@IsEmail({}, { message: 'Неверный формат email' })
+	@IsNotEmpty({ message: 'Email обязателен' })
 	email: string
 
 	@ApiProperty({
@@ -16,7 +16,7 @@ export class UpdateUserDto {
 		example: false,
 	})
 	@IsBoolean({
-		message: 'isTwoFactorEnabled должен быть логическим значением.',
+		message: 'isTwoFactorEnabled должен быть логическим значением',
 	})
 	isTwoFactorEnabled: boolean
 }

@@ -16,10 +16,20 @@ import { UserResponseEntity } from './entities/user-response.entity'
 
 @Injectable()
 export class UserService {
+	/**
+	 * Директории для загрузки файлов и конфигурационные параметры
+	 * @private
+	 */
 	private readonly uploadDir: string
 	private readonly avatarsDir: string
 	private readonly baseUrl: string
 
+	/**
+	 * Конструктор сервиса пользователей
+	 * @param prismaService - Сервис для работы с базой данных
+	 * @param configService - Сервис конфигурации
+	 * @param fileService - Сервис для работы с файловой системой
+	 */
 	public constructor(
 		private readonly prismaService: PrismaService,
 		private readonly configService: ConfigService,
@@ -37,6 +47,8 @@ export class UserService {
 
 	/**
 	 * Находит пользователя по ID
+	 * @param id - ID пользователя
+	 * @returns Promise с найденным пользователем
 	 * @throws NotFoundException если пользователь не найден
 	 */
 	public async findById(id: string) {
@@ -45,7 +57,7 @@ export class UserService {
 		})
 
 		if (!user) {
-			throw new NotFoundException('User not found.')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		return plainToInstance(UserResponseEntity, user, {
@@ -55,6 +67,8 @@ export class UserService {
 
 	/**
 	 * Находит пользователя по email
+	 * @param email - Email адрес пользователя
+	 * @returns Promise с найденным пользователем или null
 	 */
 	public async findByEmail(email: string) {
 		const user = await this.prismaService.user.findUnique({
@@ -66,6 +80,15 @@ export class UserService {
 
 	/**
 	 * Создает нового пользователя
+	 * @param email - Email адрес пользователя
+	 * @param password - Пароль пользователя (будет захэширован)
+	 * @param name - Имя пользователя
+	 * @param surname - Фамилия пользователя
+	 * @param patronymic - Отчество пользователя
+	 * @param picture - URL изображения профиля
+	 * @param method - Метод аутентификации
+	 * @param isVerified - Статус верификации
+	 * @returns Promise с созданным пользователем
 	 */
 	public async create(
 		email: string,
@@ -95,6 +118,9 @@ export class UserService {
 
 	/**
 	 * Обновляет данные пользователя
+	 * @param userId - ID пользователя
+	 * @param dto - DTO с обновленными данными
+	 * @returns Promise с обновленным пользователем
 	 * @throws NotFoundException если пользователь не найден
 	 */
 	public async update(userId: string, dto: UpdateUserDto) {
@@ -115,6 +141,9 @@ export class UserService {
 
 	/**
 	 * Обновляет аватар пользователя
+	 * @param userId - ID пользователя
+	 * @param file - Загруженный файл изображения
+	 * @returns Promise с обновленным пользователем
 	 * @throws NotFoundException если пользователь не найден
 	 */
 	public async updateAvatar(userId: string, file: Express.Multer.File) {
@@ -123,7 +152,7 @@ export class UserService {
 		})
 
 		if (!user) {
-			throw new NotFoundException('User not found')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		if (user.picture) {
@@ -154,6 +183,9 @@ export class UserService {
 
 	/**
 	 * Получает аватар пользователя
+	 * @param userId - ID пользователя
+	 * @param pictureName - Имя файла изображения
+	 * @returns Promise с буфером изображения
 	 * @throws NotFoundException если пользователь или аватар не найден
 	 */
 	public async getAvatar(
@@ -165,11 +197,11 @@ export class UserService {
 		})
 
 		if (!user) {
-			throw new NotFoundException('User not found')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		if (!user.picture) {
-			throw new NotFoundException('Avatar not found')
+			throw new NotFoundException('Аватар не найден')
 		}
 
 		return this.fileService.getPicture(this.avatarsDir, pictureName)
@@ -177,6 +209,9 @@ export class UserService {
 
 	/**
 	 * Создает новый отзыв от пользователя
+	 * @param userId - ID пользователя
+	 * @param text - Текст отзыва
+	 * @returns Promise с созданным отзывом
 	 * @throws NotFoundException если пользователь не найден
 	 */
 	public async createReview(userId: string, text: string) {
@@ -185,7 +220,7 @@ export class UserService {
 		})
 
 		if (!user) {
-			throw new NotFoundException('User not found')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		const review = await this.prismaService.review.create({

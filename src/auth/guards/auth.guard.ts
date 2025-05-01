@@ -16,14 +16,14 @@ export class AuthGuard implements CanActivate {
 		const request = context.switchToHttp().getRequest()
 
 		if (typeof request.session.userId === 'undefined') {
-			throw new UnauthorizedException('Not authorized.')
+			throw new UnauthorizedException('Не авторизован')
 		}
 		const user = await this.prismaService.user.findUnique({
 			where: { id: request.session.userId },
 		})
 
 		if (!user) {
-			throw new NotFoundException('User not found.')
+			throw new NotFoundException('Пользователь не найден')
 		}
 
 		request.user = user

@@ -13,17 +13,33 @@ import { PrismaService } from '@/prisma/prisma.service'
 
 import * as fs from 'fs/promises'
 
+/**
+ * Сервис для управления файловой системой
+ * Предоставляет методы для загрузки, получения и удаления изображений,
+ * а также управления аватарами пользователей
+ */
 @Injectable()
 export class FileSystemService {
+	/**
+	 * Конфигурационные параметры для работы с файлами
+	 * @private
+	 */
 	private readonly uploadDir: string
 	private readonly avatarDir: string
+	/** Максимальный размер файла (5MB) */
 	private readonly maxFileSize: number = 5 * 1024 * 1024
+	/** Разрешенные типы MIME для изображений */
 	private readonly allowedMimeTypes: string[] = [
 		'image/jpeg',
 		'image/png',
 		'image/webp',
 	]
 
+	/**
+	 * Конструктор сервиса файловой системы
+	 * @param configService - Сервис конфигурации
+	 * @param prismaService - Сервис для работы с базой данных
+	 */
 	constructor(
 		private readonly configService: ConfigService,
 		private readonly prismaService: PrismaService,
@@ -36,6 +52,13 @@ export class FileSystemService {
 		}
 	}
 
+	/**
+	 * Загружает и обрабатывает изображение
+	 * @param file - Загруженный файл
+	 * @param pictureDir - Директория для сохранения изображения
+	 * @returns Promise с именем сохраненного файла
+	 * @throws BadRequestException если файл не соответствует требованиям
+	 */
 	async uploadPicture(
 		file: Express.Multer.File,
 		pictureDir: string,
@@ -52,6 +75,13 @@ export class FileSystemService {
 		return `${filename}.${extension}`
 	}
 
+	/**
+	 * Получает изображение из файловой системы
+	 * @param pictureDir - Директория с изображением
+	 * @param filename - Имя файла
+	 * @returns Promise с буфером изображения
+	 * @throws NotFoundException если файл не найден
+	 */
 	async getPicture(pictureDir: string, filename: string): Promise<Buffer> {
 		const filePath = join(pictureDir, filename)
 
@@ -62,6 +92,11 @@ export class FileSystemService {
 		}
 	}
 
+	/**
+	 * Удаляет изображение из файловой системы
+	 * @param path - Путь к директории с изображением
+	 * @param filename - Имя файла
+	 */
 	async deletePicture(path: string, filename: string): Promise<void> {
 		const filePath = join(path, filename)
 
@@ -74,6 +109,11 @@ export class FileSystemService {
 		}
 	}
 
+	/**
+	 * Удаляет файл аватара из файловой системы
+	 * @param filename - Имя файла аватара
+	 * @private
+	 */
 	private async deleteAvatarFile(filename: string): Promise<void> {
 		const filePath = join(this.avatarDir, filename)
 
@@ -86,6 +126,11 @@ export class FileSystemService {
 		}
 	}
 
+	/**
+	 * Удаляет аватар пользователя
+	 * @param userId - ID пользователя
+	 * @throws NotFoundException если пользователь не найден
+	 */
 	async removeUserAvatar(userId: string): Promise<void> {
 		const user = await this.prismaService.user.findUnique({
 			where: { id: userId },
@@ -108,6 +153,13 @@ export class FileSystemService {
 		}
 	}
 
+	/**
+	 * Обрабатывает и сохраняет изображение
+	 * Изменяет размер до 300x300 и конвертирует в формат WebP
+	 * @param buffer - Буфер с исходным изображением
+	 * @param outputPath - Путь для сохранения обработанного изображения
+	 * @private
+	 */
 	private async processAndSaveImage(
 		buffer: Buffer,
 		outputPath: string,
@@ -123,6 +175,12 @@ export class FileSystemService {
 			.toFile(outputPath)
 	}
 
+	/**
+	 * Проверяет загруженный файл на соответствие требованиям
+	 * @param file - Загруженный файл
+	 * @throws BadRequestException если файл не соответствует требованиям
+	 * @private
+	 */
 	private validateFile(file: Express.Multer.File): void {
 		if (!file) {
 			throw new BadRequestException('Файл не загружен')
@@ -141,6 +199,12 @@ export class FileSystemService {
 		}
 	}
 
+	/**
+	 * Получает расширение файла по его MIME-типу
+	 * @param mimetype - MIME-тип файла
+	 * @returns Расширение файла
+	 * @private
+	 */
 	private getExtension(mimetype: string): string {
 		const extensions = {
 			'image/jpeg': 'jpg',

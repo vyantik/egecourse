@@ -24,7 +24,7 @@ export class RolesGuard implements CanActivate {
 		if (!roles) return true
 
 		if (!roles.includes(request.user.role)) {
-			throw new ForbiddenException('Not enough rights.')
+			throw new ForbiddenException('Недостаточно прав')
 		}
 
 		return true
