@@ -1,27 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { ApplicationCategory } from '@prisma/__generated__'
-import {
-	IsEnum,
-	IsNotEmpty,
-	IsPhoneNumber,
-	IsString,
-	MaxLength,
-	MinLength,
-} from 'class-validator'
+import { IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator'
 
 export class ApplicationDto {
-	@ApiProperty({
-		description: 'Имя заявителя',
-		example: 'Иван Иванов Иванович',
-	})
-	@IsNotEmpty({ message: 'Имя заявителя обязательно' })
-	@IsString({ message: 'Имя заявителя должно быть строкой' })
-	@MinLength(2, { message: 'Имя заявителя должно быть не менее 2 символов' })
-	@MaxLength(100, {
-		message: 'Имя заявителя должно быть не более 100 символов',
-	})
-	name: string
-
 	@ApiProperty({
 		description: 'Телефон заявителя',
 		example: '+79991234567',

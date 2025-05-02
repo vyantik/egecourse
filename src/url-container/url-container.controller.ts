@@ -51,6 +51,7 @@ export class UrlContainerController {
 		status: 400,
 		description: 'Неверные данные для создания URL',
 	})
+	@ApiResponse({ status: 403, description: 'Доступ запрещен' })
 	@Post()
 	@Authorization(UserRole.ADMIN)
 	public async createUrlContainer(@Body() dto: CreateUrlContainerDto) {
@@ -79,6 +80,7 @@ export class UrlContainerController {
 	})
 	@ApiResponse({ status: 200, description: 'URL успешно обновлен' })
 	@ApiResponse({ status: 404, description: 'URL не найден' })
+	@ApiResponse({ status: 403, description: 'Доступ запрещен' })
 	@ApiResponse({
 		status: 400,
 		description: 'Неверные данные для обновления URL',

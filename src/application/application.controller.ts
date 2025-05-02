@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
+import { Authorized } from '@/auth/decorators/authorized.decorator'
 
 import { ApplicationService } from './application.service'
 import { ApplicationDto } from './dto/application.dto'
@@ -16,7 +17,10 @@ export class ApplicationController {
 	@ApiOperation({ summary: 'Создание заявки' })
 	@ApiResponse({ status: 201, description: 'Заявка успешно создана' })
 	@ApiBody({ type: ApplicationDto })
-	public async createApplication(@Body() dto: ApplicationDto) {
-		return this.applicationService.createApplication(dto)
+	public async createApplication(
+		@Body() dto: ApplicationDto,
+		@Authorized() id: string,
+	) {
+		return this.applicationService.createApplication(dto, id)
 	}
 }
