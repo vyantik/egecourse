@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { AuthMethod } from '@prisma/__generated__'
 import { hash } from 'argon2'
@@ -124,6 +128,12 @@ export class UserService {
 	 * @throws NotFoundException если пользователь не найден
 	 */
 	public async update(userId: string, dto: UpdateUserDto) {
+		if (Object.values(dto).every(value => value === null)) {
+			throw new BadRequestException(
+				'Необходимо указать хотя бы одно поле для обновления',
+			)
+		}
+
 		const user = await this.findById(userId)
 
 		const updatedUser = await this.prismaService.user.update({
@@ -131,8 +141,7 @@ export class UserService {
 				id: user.id,
 			},
 			data: {
-				email: dto.email,
-				isTwoFactorEnabled: dto.isTwoFactorEnabled,
+				...dto,
 			},
 		})
 
