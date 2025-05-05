@@ -27,7 +27,10 @@ model User {
 
   method AuthMethod
 
-  Review Review[]
+  reviews Review[]
+
+  course   Course? @relation(fields: [courseId], references: [id])
+  courseId String? @map("course_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -91,6 +94,8 @@ model Course {
   studyFormat String @map("study_format")
   document    String
   studyStart  String @map("study_start")
+
+  users User[]
 
   priceOptions Json? @map("price_options")
 

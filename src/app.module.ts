@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 
+import { AdminModule } from './admin/admin.module'
 import { ApplicationModule } from './application/application.module'
 import { AuthModule } from './auth/auth.module'
 import { EmailConfirmationModule } from './auth/email-confirmation/email-confirmation.module'
@@ -39,6 +40,7 @@ import { WebinarModule } from './webinar/webinar.module'
 		UrlContainerModule,
 		ApplicationModule,
 		WebinarModule,
+		AdminModule,
 	],
 })
 export class AppModule {}

@@ -9,5 +9,6 @@ import { TeacherService } from './teacher.service'
 	imports: [FileSystemModule],
 	controllers: [TeacherController],
 	providers: [TeacherService],
+	exports: [TeacherService],
 })
 export class TeacherModule {}

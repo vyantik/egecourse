@@ -6,5 +6,6 @@ import { UrlContainerService } from './url-container.service'
 @Module({
 	controllers: [UrlContainerController],
 	providers: [UrlContainerService],
+	exports: [UrlContainerService],
 })
 export class UrlContainerModule {}

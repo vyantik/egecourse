@@ -6,5 +6,6 @@ import { FaqService } from './faq.service'
 @Module({
 	controllers: [FaqController],
 	providers: [FaqService],
+	exports: [FaqService],
 })
 export class FaqModule {}
