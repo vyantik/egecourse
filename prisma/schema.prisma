@@ -139,6 +139,19 @@ model Application {
   @@map("applications")
 }
 
+model Webinar {
+  id String @id @default(uuid())
+
+  title       String
+  description String
+  date        DateTime
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("webinars")
+}
+
 enum UserRole {
   REGULAR
   ADMIN

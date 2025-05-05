@@ -16,6 +16,7 @@ import { ReviewModule } from './review/review.module'
 import { TeacherModule } from './teacher/teacher.module'
 import { UrlContainerModule } from './url-container/url-container.module'
 import { UserModule } from './user/user.module'
+import { WebinarModule } from './webinar/webinar.module'
 
 @Module({
 	imports: [
@@ -37,6 +38,7 @@ import { UserModule } from './user/user.module'
 		ReviewModule,
 		UrlContainerModule,
 		ApplicationModule,
+		WebinarModule,
 	],
 })
 export class AppModule {}
