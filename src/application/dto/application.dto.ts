@@ -17,6 +17,7 @@ export class ApplicationDto {
 	@ApiProperty({
 		description: 'Категория заявки',
 		example: 'EXAM_PREPARATION',
+		enum: ApplicationCategory,
 	})
 	@IsNotEmpty({ message: 'Категория заявки обязательна' })
 	@IsEnum(ApplicationCategory)

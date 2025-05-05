@@ -22,11 +22,13 @@ export class ReviewResponseEntity {
 	@ApiProperty({
 		description: 'Категория отзыва',
 		example: 'EXAM',
+		enum: ReviewCategory,
 	})
 	category: ReviewCategory
 
 	@ApiProperty({
 		description: 'Пользователь, создавший отзыв',
+		type: () => UserResponseEntity,
 	})
 	@Type(() => UserResponseEntity)
 	@Transform(({ value }) => {

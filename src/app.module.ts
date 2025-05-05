@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { APP_GUARD } from '@nestjs/core'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 
 import { AdminModule } from './admin/admin.module'
 import { ApplicationModule } from './application/application.module'
@@ -25,6 +27,12 @@ import { WebinarModule } from './webinar/webinar.module'
 			ignoreEnvFile: !IS_DEV_ENV,
 			isGlobal: true,
 		}),
+		ThrottlerModule.forRoot([
+			{
+				ttl: 60000,
+				limit: 20,
+			},
+		]),
 		PrismaModule,
 		AuthModule,
 		UserModule,
@@ -41,6 +49,12 @@ import { WebinarModule } from './webinar/webinar.module'
 		ApplicationModule,
 		WebinarModule,
 		AdminModule,
+	],
+	providers: [
+		{
+			provide: APP_GUARD,
+			useClass: ThrottlerGuard,
+		},
 	],
 })
 export class AppModule {}

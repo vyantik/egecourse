@@ -38,7 +38,7 @@ export class UserEntity {
 	patronymic: string
 
 	@ApiProperty({
-		description: 'User profile picture URL',
+		description: 'URL изображения профиля пользователя',
 		example: 'https://example.com/avatar.jpg',
 		required: false,
 		nullable: true,
@@ -46,7 +46,7 @@ export class UserEntity {
 	picture?: string
 
 	@ApiProperty({
-		description: 'User role in the system',
+		description: 'Роль пользователя в системе',
 		enum: UserRole,
 		example: UserRole.REGULAR,
 		default: UserRole.REGULAR,
@@ -54,34 +54,34 @@ export class UserEntity {
 	role: UserRole
 
 	@ApiProperty({
-		description: 'Email verification status',
+		description: 'Статус верификации email',
 		example: true,
 		default: false,
 	})
 	isVerified: boolean
 
 	@ApiProperty({
-		description: 'Two-factor authentication status',
+		description: 'Двухфакторная аутентификация',
 		example: false,
 		default: false,
 	})
 	isTwoFactorEnabled: boolean
 
 	@ApiProperty({
-		description: 'User authentication method',
+		description: 'Метод аутентификации',
 		enum: AuthMethod,
 		example: AuthMethod.CREDENTIALS,
 	})
 	method: AuthMethod
 
 	@ApiProperty({
-		description: 'Account creation date',
+		description: 'Дата создания аккаунта',
 		example: '2023-01-01T00:00:00.000Z',
 	})
 	createdAt: Date
 
 	@ApiProperty({
-		description: 'Account last update date',
+		description: 'Дата последнего обновления аккаунта',
 		example: '2023-01-01T00:00:00.000Z',
 	})
 	updatedAt: Date

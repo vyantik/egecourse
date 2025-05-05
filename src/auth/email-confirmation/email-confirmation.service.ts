@@ -1,7 +1,5 @@
 import {
 	BadRequestException,
-	forwardRef,
-	Inject,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common'
@@ -13,7 +11,7 @@ import { MailService } from '@/libs/mail/mail.service'
 import { PrismaService } from '@/prisma/prisma.service'
 import { UserService } from '@/user/user.service'
 
-import { AuthService } from '../auth.service'
+import { SessionService } from '../session/session.service'
 
 import { ConfirmationDto } from './dto/confirmation.dto'
 
@@ -27,8 +25,7 @@ export class EmailConfirmationService {
 		private readonly prismaService: PrismaService,
 		private readonly mailService: MailService,
 		private readonly userService: UserService,
-		@Inject(forwardRef(() => AuthService))
-		private readonly authService: AuthService,
+		private readonly sessionService: SessionService,
 	) {}
 
 	public async newVerification(req: Request, dto: ConfirmationDto) {
@@ -73,7 +70,7 @@ export class EmailConfirmationService {
 			},
 		})
 
-		return this.authService.saveSession(req, existingUser)
+		return this.sessionService.saveSession(req, existingUser)
 	}
 
 	public async sendVerificationToken(email: string) {

@@ -4,23 +4,21 @@ import {
 	forwardRef,
 	Inject,
 	Injectable,
-	InternalServerErrorException,
 	NotFoundException,
 	UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { AuthMethod, User } from '@prisma/__generated__'
+import { AuthMethod } from '@prisma/__generated__'
 import { verify } from 'argon2'
-import { plainToInstance } from 'class-transformer'
 import validate from 'deep-email-validator'
 import { Request, Response } from 'express'
 
-import { UserResponseEntity } from '@/user/entities/user-response.entity'
 import { UserService } from '@/user/user.service'
 
 import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service'
+import { SessionService } from './session/session.service'
 import { TwoFactorAuthService } from './two-factor-auth/two-factor-auth.service'
 
 /**
@@ -36,6 +34,7 @@ export class AuthService {
 	 * @param configService - Сервис конфигурации
 	 * @param emailConfirmationService - Сервис подтверждения email
 	 * @param twoFactorAuthService - Сервис двухфакторной аутентификации
+	 * @param sessionService - Сервис управления сессиями
 	 */
 	public constructor(
 		@Inject(forwardRef(() => UserService))
@@ -43,6 +42,7 @@ export class AuthService {
 		private readonly configService: ConfigService,
 		private readonly emailConfirmationService: EmailConfirmationService,
 		private readonly twoFactorAuthService: TwoFactorAuthService,
+		private readonly sessionService: SessionService,
 	) {}
 
 	/**
@@ -133,64 +133,15 @@ export class AuthService {
 			)
 		}
 
-		return this.saveSession(req, user)
+		return this.sessionService.saveSession(req, user)
 	}
 
 	/**
 	 * Выход пользователя из системы
 	 * @param req - Объект запроса Express
 	 * @param res - Объект ответа Express
-	 * @throws InternalServerErrorException если не удалось удалить сессию
 	 */
 	public async logout(req: Request, res: Response): Promise<void> {
-		return new Promise((resolve, reject) => {
-			req.session.destroy(err => {
-				if (err) {
-					return reject(
-						new InternalServerErrorException(
-							'Не удалось удалить сессию',
-						),
-					)
-				}
-
-				res.clearCookie(
-					this.configService.getOrThrow<string>('SESSION_NAME'),
-				)
-				resolve()
-			})
-		})
-	}
-
-	/**
-	 * Сохранение сессии пользователя
-	 * @param req - Объект запроса Express
-	 * @param user - Объект пользователя
-	 * @returns Promise с преобразованными данными пользователя
-	 * @throws InternalServerErrorException если не удалось сохранить сессию
-	 */
-	public async saveSession(req: Request, user: User) {
-		return new Promise((resolve, reject) => {
-			req.session.userId = user.id
-
-			req.session.save(err => {
-				if (err) {
-					return reject(
-						new InternalServerErrorException(
-							'Не удалось сохранить сессию',
-						),
-					)
-				}
-
-				const transformedUser = plainToInstance(
-					UserResponseEntity,
-					user,
-					{
-						excludeExtraneousValues: false,
-					},
-				)
-
-				resolve(transformedUser)
-			})
-		})
+		return this.sessionService.logout(req, res)
 	}
 }

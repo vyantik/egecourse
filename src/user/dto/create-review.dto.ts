@@ -14,6 +14,7 @@ export class CreateReviewDto {
 	@ApiProperty({
 		description: 'Категория отзыва',
 		example: 'EXAM',
+		enum: ReviewCategory,
 	})
 	@IsEnum(ReviewCategory, {
 		message:
