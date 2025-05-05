@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsOptional, IsString } from 'class-validator'
+import { IsOptional, IsString, Matches } from 'class-validator'
 
 export class UpdateUserDto {
 	@ApiProperty({
@@ -7,6 +7,9 @@ export class UpdateUserDto {
 		example: 'Иван',
 	})
 	@IsString({ message: 'Имя должно быть строкой' })
+	@Matches(/^[А-ЯЁ][а-яё]*$/, {
+		message: 'Имя должно содержать только русские буквы.',
+	})
 	@IsOptional()
 	name: string
 
@@ -15,6 +18,9 @@ export class UpdateUserDto {
 		example: 'Иванов',
 	})
 	@IsString({ message: 'Фамилия должна быть строкой' })
+	@Matches(/^[А-ЯЁ][а-яё]*$/, {
+		message: 'Фамилия должна содержать только русские буквы.',
+	})
 	@IsOptional()
 	surname: string
 
@@ -23,6 +29,9 @@ export class UpdateUserDto {
 		example: 'Иванович',
 	})
 	@IsString({ message: 'Отчество должно быть строкой' })
+	@Matches(/^[А-ЯЁ][а-яё]*$/, {
+		message: 'Отчество должно содержать только русские буквы.',
+	})
 	@IsOptional()
 	patronymic: string
 }
