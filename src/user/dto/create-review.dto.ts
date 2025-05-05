@@ -17,7 +17,7 @@ export class CreateReviewDto {
 	})
 	@IsEnum(ReviewCategory, {
 		message:
-			'Категория отзыва должна быть одной из следующих: EXAM, EDUCATION, RAINBOW',
+			'Категория отзыва должна быть одной из следующих: EXAM, EDUCATION, RAINBOW, OTHER',
 	})
 	category: ReviewCategory
 }

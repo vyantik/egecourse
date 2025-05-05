@@ -165,6 +165,11 @@ export class UserController {
 		status: 404,
 		description: 'Пользователь не найден',
 	})
+	@ApiResponse({
+		status: 400,
+		description: 'Некорректные данные',
+	})
+	@ApiBody({ type: CreateReviewDto })
 	@Authorization()
 	@HttpCode(HttpStatus.CREATED)
 	@Post('/profile/review')

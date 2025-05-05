@@ -1,11 +1,24 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
 import {
+	Body,
+	Controller,
+	Get,
+	HttpCode,
+	HttpStatus,
+	Param,
+	Post,
+	Query,
+} from '@nestjs/common'
+import {
+	ApiBody,
 	ApiOperation,
 	ApiParam,
 	ApiQuery,
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
+import { UserRole } from '@prisma/__generated__'
+
+import { Authorization } from '@/auth/decorators/auth.decorator'
 
 import { CreateWebinarDto } from './dto/create-webinar.dto'
 import { WebinarPaginationResponseDto } from './dto/webinar-pagination-response.dto'
@@ -55,12 +68,28 @@ export class WebinarController {
 		description: 'Вебинар успешно получен',
 		type: Webinar,
 	})
+	@ApiResponse({
+		status: 404,
+		description: 'Вебинар не найден',
+	})
 	@Get(':id')
 	async getWebinarById(@Param('id') id: string) {
 		return this.webinarService.getWebinarById(id)
 	}
 
 	@ApiOperation({ summary: 'Создать вебинар' })
+	@ApiBody({ type: CreateWebinarDto })
+	@ApiResponse({
+		status: 201,
+		description: 'Вебинар успешно создан',
+		type: Webinar,
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Некорректные данные',
+	})
+	@Authorization(UserRole.ADMIN)
+	@HttpCode(HttpStatus.CREATED)
 	@Post()
 	async createWebinar(@Body() dto: CreateWebinarDto) {
 		return this.webinarService.createWebinar(dto)

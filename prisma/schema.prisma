@@ -177,6 +177,7 @@ enum ReviewCategory {
   EXAM
   EDUCATION
   RAINBOW
+  OTHER
 }
 
 enum ApplicationCategory {
