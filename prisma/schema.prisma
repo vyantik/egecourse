@@ -103,7 +103,8 @@ model Course {
 model Review {
   id String @id @default(uuid())
 
-  text String
+  text     String
+  category ReviewCategory
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
@@ -170,6 +171,12 @@ enum TokenType {
 enum TeacherCategory {
   EGE
   BEFORE_EGE
+}
+
+enum ReviewCategory {
+  EXAM
+  EDUCATION
+  RAINBOW
 }
 
 enum ApplicationCategory {

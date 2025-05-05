@@ -6,6 +6,7 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
+import { ReviewCategory } from '@prisma/__generated__'
 
 import { ReviewService } from './review.service'
 
@@ -43,11 +44,19 @@ export class ReviewController {
 		type: Number,
 		example: 10,
 	})
+	@ApiQuery({
+		name: 'category',
+		description: 'Категория отзыва',
+		required: false,
+		type: String,
+		example: 'EXAM',
+	})
 	@ApiResponse({ status: 200, description: 'Отзывы успешно получены' })
 	public async getReviews(
 		@Query('page') page?: number,
 		@Query('limit') limit?: number,
+		@Query('category') category?: ReviewCategory,
 	) {
-		return this.reviewService.getReviews(page, limit)
+		return this.reviewService.getReviews(page, limit, category)
 	}
 }

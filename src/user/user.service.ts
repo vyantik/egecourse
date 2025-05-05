@@ -15,6 +15,7 @@ import { PrismaService } from '@/prisma/prisma.service'
 
 import { ReviewResponseEntity } from '../review/entities/review-response.entity'
 
+import { CreateReviewDto } from './dto/create-review.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserResponseEntity } from './entities/user-response.entity'
 
@@ -219,11 +220,11 @@ export class UserService {
 	/**
 	 * Создает новый отзыв от пользователя
 	 * @param userId - ID пользователя
-	 * @param text - Текст отзыва
+	 * @param dto - DTO с данными отзыва
 	 * @returns Promise с созданным отзывом
 	 * @throws NotFoundException если пользователь не найден
 	 */
-	public async createReview(userId: string, text: string) {
+	public async createReview(userId: string, dto: CreateReviewDto) {
 		const user = await this.prismaService.user.findUnique({
 			where: { id: userId },
 		})
@@ -234,7 +235,8 @@ export class UserService {
 
 		const review = await this.prismaService.review.create({
 			data: {
-				text,
+				text: dto.text,
+				category: dto.category,
 				userId,
 			},
 			include: {

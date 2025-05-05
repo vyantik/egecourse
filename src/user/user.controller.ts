@@ -172,6 +172,6 @@ export class UserController {
 		@Authorized('id') userId: string,
 		@Body() dto: CreateReviewDto,
 	) {
-		return this.userService.createReview(userId, dto.text)
+		return this.userService.createReview(userId, dto)
 	}
 }

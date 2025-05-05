@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { ReviewCategory } from '@prisma/__generated__'
 import { Exclude, Transform, Type } from 'class-transformer'
 
 import { omit } from '@/libs/common/utils/omit'
@@ -17,6 +18,12 @@ export class ReviewResponseEntity {
 		example: 'Отличный курс, я многому научился!',
 	})
 	text: string
+
+	@ApiProperty({
+		description: 'Категория отзыва',
+		example: 'EXAM',
+	})
+	category: ReviewCategory
 
 	@ApiProperty({
 		description: 'Пользователь, создавший отзыв',

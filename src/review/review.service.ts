@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Review } from '@prisma/__generated__'
+import { Review, ReviewCategory } from '@prisma/__generated__'
 import { plainToInstance } from 'class-transformer'
 
 import { Meta } from '@/libs/common/utils/meta'
@@ -66,16 +66,38 @@ export class ReviewService {
 	public async getReviews(
 		page?: number,
 		limit?: number,
+		category?: ReviewCategory,
 	): Promise<ReviewResponseEntity[] | PaginatedReviews> {
 		if (!page || !limit) {
-			const reviews = await this.prismaService.review.findMany({
-				orderBy: {
-					createdAt: 'desc',
-				},
-				include: {
-					user: true,
-				},
-			})
+			let reviews: Review[]
+			if (category) {
+				reviews = await this.prismaService.review.findMany({
+					where: {
+						category,
+					},
+					orderBy: {
+						createdAt: 'desc',
+					},
+					include: {
+						user: true,
+					},
+				})
+
+				return reviews.map(review =>
+					plainToInstance(ReviewResponseEntity, review, {
+						excludeExtraneousValues: false,
+					}),
+				)
+			} else {
+				reviews = await this.prismaService.review.findMany({
+					orderBy: {
+						createdAt: 'desc',
+					},
+					include: {
+						user: true,
+					},
+				})
+			}
 
 			return reviews.map(review =>
 				plainToInstance(ReviewResponseEntity, review, {
@@ -86,19 +108,45 @@ export class ReviewService {
 
 		const skip = (page - 1) * limit
 
-		const [reviews, total] = await Promise.all([
-			this.prismaService.review.findMany({
-				skip,
-				take: limit,
-				orderBy: {
-					createdAt: 'desc',
-				},
-				include: {
-					user: true,
-				},
-			}),
-			this.prismaService.review.count(),
-		])
+		let reviews: Review[]
+		let total: number
+
+		if (category) {
+			;[reviews, total] = await Promise.all([
+				this.prismaService.review.findMany({
+					where: {
+						category,
+					},
+					skip,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
+					},
+					include: {
+						user: true,
+					},
+				}),
+				this.prismaService.review.count({
+					where: {
+						category,
+					},
+				}),
+			])
+		} else {
+			;[reviews, total] = await Promise.all([
+				this.prismaService.review.findMany({
+					skip,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
+					},
+					include: {
+						user: true,
+					},
+				}),
+				this.prismaService.review.count(),
+			])
+		}
 
 		return {
 			data: reviews.map(review =>
