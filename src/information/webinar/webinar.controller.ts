@@ -12,7 +12,7 @@ import { Webinar } from './entities/webinar.entity'
 import { WebinarService } from './webinar.service'
 
 @ApiTags('Вебинары')
-@Controller('webinar')
+@Controller('webinars')
 export class WebinarController {
 	constructor(private readonly webinarService: WebinarService) {}
 
