@@ -6,7 +6,7 @@ import {
 import { ConfigService } from '@nestjs/config'
 import { existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
-import * as sharp from 'sharp'
+import sharp from 'sharp'
 import { v4 as uuidv4 } from 'uuid'
 
 import { PrismaService } from '@/prisma/prisma.service'
@@ -164,7 +164,8 @@ export class FileSystemService {
 		buffer: Buffer,
 		outputPath: string,
 	): Promise<void> {
-		await sharp(buffer)
+		const image = sharp(buffer)
+		await image
 			.resize({
 				width: 300,
 				height: 300,
