@@ -126,4 +126,38 @@ export class AdminCourseController {
 	) {
 		return this.adminService.subscribeToCourse(id, userId)
 	}
+
+	@ApiOperation({ summary: 'Отклонить отзыв' })
+	@ApiParam({
+		name: 'id',
+		required: true,
+		description: 'ID отзыва',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Отзыв успешно отклонен',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Post(':id/reject')
+	public async rejectReview(@Param('id') id: string) {
+		return this.adminService.rejectReview(id)
+	}
+
+	@ApiOperation({ summary: 'Одобрить отзыв' })
+	@ApiParam({
+		name: 'id',
+		required: true,
+		description: 'ID отзыва',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Отзыв успешно одобрен',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Post(':id/approve')
+	public async approveReview(@Param('id') id: string) {
+		return this.adminService.approveReview(id)
+	}
 }

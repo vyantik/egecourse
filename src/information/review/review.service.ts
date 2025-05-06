@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Review, ReviewCategory } from '@prisma/__generated__'
+import { Review, ReviewCategory, ReviewStatus } from '@prisma/__generated__'
 import { plainToInstance } from 'class-transformer'
 
 import { ReviewResponseEntity } from '@/information/review/entities/review-response.entity'
@@ -78,6 +78,7 @@ export class ReviewService {
 				reviews = await this.prismaService.review.findMany({
 					where: {
 						category: category as ReviewCategory,
+						status: ReviewStatus.APPROVED,
 					},
 					orderBy: {
 						createdAt: 'desc',
@@ -98,6 +99,9 @@ export class ReviewService {
 				)
 			} else {
 				reviews = await this.prismaService.review.findMany({
+					where: {
+						status: ReviewStatus.APPROVED,
+					},
 					orderBy: {
 						createdAt: 'desc',
 					},
@@ -128,6 +132,7 @@ export class ReviewService {
 				this.prismaService.review.findMany({
 					where: {
 						category,
+						status: ReviewStatus.APPROVED,
 					},
 					skip,
 					take: limit,
@@ -145,6 +150,7 @@ export class ReviewService {
 				this.prismaService.review.count({
 					where: {
 						category,
+						status: ReviewStatus.APPROVED,
 					},
 				}),
 			])
@@ -156,6 +162,9 @@ export class ReviewService {
 					orderBy: {
 						createdAt: 'desc',
 					},
+					where: {
+						status: ReviewStatus.APPROVED,
+					},
 					include: {
 						user: {
 							include: {
@@ -164,7 +173,11 @@ export class ReviewService {
 						},
 					},
 				}),
-				this.prismaService.review.count(),
+				this.prismaService.review.count({
+					where: {
+						status: ReviewStatus.APPROVED,
+					},
+				}),
 			])
 		}
 
@@ -181,5 +194,83 @@ export class ReviewService {
 				lastPage: Math.ceil(total / limit),
 			},
 		}
+	}
+
+	/**
+	 * Одобряет отзыв
+	 * @param reviewId - ID отзыва
+	 * @returns Promise с обновленным отзывом
+	 * @throws NotFoundException если отзыв не найден
+	 */
+	public async approveReview(
+		reviewId: string,
+	): Promise<ReviewResponseEntity> {
+		const review = await this.prismaService.review.findUnique({
+			where: {
+				id: reviewId,
+			},
+		})
+
+		if (!review) {
+			throw new NotFoundException('Отзыв не найден')
+		}
+
+		await this.prismaService.review.update({
+			where: {
+				id: reviewId,
+			},
+			data: {
+				status: ReviewStatus.APPROVED,
+			},
+			include: {
+				user: {
+					include: {
+						course: true,
+					},
+				},
+			},
+		})
+
+		return plainToInstance(ReviewResponseEntity, review, {
+			excludeExtraneousValues: false,
+		})
+	}
+
+	/**
+	 * Отклоняет отзыв
+	 * @param reviewId - ID отзыва
+	 * @returns Promise с обновленным отзывом
+	 * @throws NotFoundException если отзыв не найден
+	 */
+	public async rejectReview(reviewId: string): Promise<ReviewResponseEntity> {
+		const review = await this.prismaService.review.findUnique({
+			where: {
+				id: reviewId,
+			},
+		})
+
+		if (!review) {
+			throw new NotFoundException('Отзыв не найден')
+		}
+
+		await this.prismaService.review.update({
+			where: {
+				id: reviewId,
+			},
+			data: {
+				status: ReviewStatus.REJECTED,
+			},
+			include: {
+				user: {
+					include: {
+						course: true,
+					},
+				},
+			},
+		})
+
+		return plainToInstance(ReviewResponseEntity, review, {
+			excludeExtraneousValues: false,
+		})
 	}
 }

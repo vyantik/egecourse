@@ -113,6 +113,7 @@ model Review {
 
   text     String
   category ReviewCategory
+  status   ReviewStatus   @default(PENDING)
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
@@ -190,6 +191,12 @@ enum ReviewCategory {
   EDUCATION
   RAINBOW
   OTHER
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum ApplicationCategory {

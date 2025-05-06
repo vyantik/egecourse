@@ -8,6 +8,7 @@ import { FaqDto } from '@/information/faq/dto/faq.dto'
 import { UpdateFullFaqDto } from '@/information/faq/dto/update-faq.dto'
 import { UpdateFaqDto } from '@/information/faq/dto/update-faq.dto'
 import { FaqService } from '@/information/faq/faq.service'
+import { ReviewService } from '@/information/review/review.service'
 import { CreateTeacherDto } from '@/information/teacher/dto/teacher.dto'
 import { UpdateTeacherDto } from '@/information/teacher/dto/update-teacher.dto'
 import { TeacherService } from '@/information/teacher/teacher.service'
@@ -28,6 +29,7 @@ export class AdminService {
 		private readonly teacherService: TeacherService,
 		private readonly faqService: FaqService,
 		private readonly courseService: CourseService,
+		private readonly reviewService: ReviewService,
 	) {}
 
 	public async createCourse(dto: CourseDto) {
@@ -98,5 +100,21 @@ export class AdminService {
 
 	public async subscribeToCourse(courseId: string, userId: string) {
 		return this.courseService.subscribeToCourse(courseId, userId)
+	}
+
+	/**
+	 * Одобряет отзыв
+	 * @param reviewId - ID отзыва
+	 */
+	public async approveReview(reviewId: string) {
+		return this.reviewService.approveReview(reviewId)
+	}
+
+	/**
+	 * Отклоняет отзыв
+	 * @param reviewId - ID отзыва
+	 */
+	public async rejectReview(reviewId: string) {
+		return this.reviewService.rejectReview(reviewId)
 	}
 }
