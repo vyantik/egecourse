@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common'
 
-import { CourseService } from '@/course/course.service'
-import { CourseDto } from '@/course/dto/course.dto'
-import { UpdateCourseDto } from '@/course/dto/update-course.dto'
-import { FaqDto } from '@/faq/dto/faq.dto'
-import { UpdateFullFaqDto } from '@/faq/dto/update-faq.dto'
-import { UpdateFaqDto } from '@/faq/dto/update-faq.dto'
-import { FaqService } from '@/faq/faq.service'
-import { CreateTeacherDto } from '@/teacher/dto/teacher.dto'
-import { UpdateTeacherDto } from '@/teacher/dto/update-teacher.dto'
-import { TeacherService } from '@/teacher/teacher.service'
+import { CourseService } from '@/information/course/course.service'
+import { CourseDto } from '@/information/course/dto/course.dto'
+import { UpdateCourseDto } from '@/information/course/dto/update-course.dto'
+import { FaqDto } from '@/information/faq/dto/faq.dto'
+import { UpdateFullFaqDto } from '@/information/faq/dto/update-faq.dto'
+import { UpdateFaqDto } from '@/information/faq/dto/update-faq.dto'
+import { FaqService } from '@/information/faq/faq.service'
+import { CreateTeacherDto } from '@/information/teacher/dto/teacher.dto'
+import { UpdateTeacherDto } from '@/information/teacher/dto/update-teacher.dto'
+import { TeacherService } from '@/information/teacher/teacher.service'
 import {
 	CreateUrlContainerDto,
 	UpdateUrlContainerDto,
-} from '@/url-container/dto/url-container.dto'
-import { UrlContainerService } from '@/url-container/url-container.service'
+} from '@/information/url-container/dto/url-container.dto'
+import { UrlContainerService } from '@/information/url-container/url-container.service'
+import { CreateWebinarDto } from '@/information/webinar/dto/create-webinar.dto'
+import { WebinarService } from '@/information/webinar/webinar.service'
 import { UserService } from '@/user/user.service'
-import { CreateWebinarDto } from '@/webinar/dto/create-webinar.dto'
-import { WebinarService } from '@/webinar/webinar.service'
 
 @Injectable()
 export class AdminService {

@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { Review, ReviewCategory } from '@prisma/__generated__'
 import { plainToInstance } from 'class-transformer'
 
+import { ReviewResponseEntity } from '@/information/review/entities/review-response.entity'
 import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
-import { ReviewResponseEntity } from '@/review/entities/review-response.entity'
 
 /**
  * Интерфейс для пагинированного списка отзывов

@@ -12,7 +12,7 @@ import { Authorization } from '@/auth/decorators/auth.decorator'
 import {
 	CreateUrlContainerDto,
 	UpdateUrlContainerDto,
-} from '@/url-container/dto/url-container.dto'
+} from '@/information/url-container/dto/url-container.dto'
 
 import { AdminService } from './admin.service'
 

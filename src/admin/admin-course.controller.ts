@@ -9,9 +9,9 @@ import {
 import { UserRole } from '@prisma/__generated__/client'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
-import { CourseTransferDto } from '@/course/dto/course-transfer.dto'
-import { CourseDto } from '@/course/dto/course.dto'
-import { UpdateCourseDto } from '@/course/dto/update-course.dto'
+import { CourseTransferDto } from '@/information/course/dto/course-transfer.dto'
+import { CourseDto } from '@/information/course/dto/course.dto'
+import { UpdateCourseDto } from '@/information/course/dto/update-course.dto'
 
 import { AdminService } from './admin.service'
 

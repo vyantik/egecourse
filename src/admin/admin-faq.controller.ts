@@ -9,9 +9,12 @@ import {
 import { UserRole } from '@prisma/__generated__/client'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
-import { FaqTransferDto } from '@/faq/dto/faq-transfer.dto'
-import { FaqDto } from '@/faq/dto/faq.dto'
-import { UpdateFaqDto, UpdateFullFaqDto } from '@/faq/dto/update-faq.dto'
+import { FaqTransferDto } from '@/information/faq/dto/faq-transfer.dto'
+import { FaqDto } from '@/information/faq/dto/faq.dto'
+import {
+	UpdateFaqDto,
+	UpdateFullFaqDto,
+} from '@/information/faq/dto/update-faq.dto'
 
 import { AdminService } from './admin.service'
 

@@ -13,7 +13,7 @@ import { join } from 'path'
 import { FileSystemService } from '@/file-system/file-system.service'
 import { PrismaService } from '@/prisma/prisma.service'
 
-import { ReviewResponseEntity } from '../review/entities/review-response.entity'
+import { ReviewResponseEntity } from '../information/review/entities/review-response.entity'
 
 import { CreateReviewDto } from './dto/create-review.dto'
 import { UpdateUserDto } from './dto/update-user.dto'

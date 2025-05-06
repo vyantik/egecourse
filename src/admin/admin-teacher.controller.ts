@@ -23,10 +23,10 @@ import { UserRole } from '@prisma/__generated__/client'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
 import { parseFileConfig } from '@/config/parse-file.config'
+import { TeacherTransferDto } from '@/information/teacher/dto/teacher-transfer.dto'
+import { CreateTeacherDto } from '@/information/teacher/dto/teacher.dto'
+import { UpdateTeacherDto } from '@/information/teacher/dto/update-teacher.dto'
 import { TransformTeacherDtoPipe } from '@/libs/common/pipes/transform-teacher-dto.pipe'
-import { TeacherTransferDto } from '@/teacher/dto/teacher-transfer.dto'
-import { CreateTeacherDto } from '@/teacher/dto/teacher.dto'
-import { UpdateTeacherDto } from '@/teacher/dto/update-teacher.dto'
 
 import { AdminService } from './admin.service'
 

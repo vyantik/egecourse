@@ -3,8 +3,8 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__/client'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
-import { CreateWebinarDto } from '@/webinar/dto/create-webinar.dto'
-import { Webinar } from '@/webinar/entities/webinar.entity'
+import { CreateWebinarDto } from '@/information/webinar/dto/create-webinar.dto'
+import { Webinar } from '@/information/webinar/entities/webinar.entity'
 
 import { AdminService } from './admin.service'
 
