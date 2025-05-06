@@ -104,7 +104,7 @@ export class TeacherController {
 		}
 
 		res.setHeader('Content-Type', mimeTypes[extension] || 'image/webp')
-		res.setHeader('Cache-Control', 'max-age=31536000')
+		res.setHeader('Cache-Control', 'max-age=600')
 
 		return res.send(file)
 	}
