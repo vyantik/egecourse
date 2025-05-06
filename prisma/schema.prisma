@@ -158,6 +158,8 @@ model Webinar {
   description String
   date        DateTime
 
+  status WebinarStatus @default(OPEN)
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -203,4 +205,9 @@ enum ApplicationCategory {
   EXAM_PREPARATION
   ADVANCED_TRAINING
   SUNDAY_SCHOOL
+}
+
+enum WebinarStatus {
+  OPEN
+  CLOSED
 }

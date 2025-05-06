@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Webinar } from '@prisma/__generated__'
+import { Webinar, WebinarStatus } from '@prisma/__generated__'
 
 import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
@@ -61,6 +61,24 @@ export class WebinarService {
 	async createWebinar(dto: CreateWebinarDto): Promise<Webinar> {
 		return this.prismaService.webinar.create({
 			data: dto,
+		})
+	}
+
+	async updateWebinarStatus(
+		id: string,
+		status: WebinarStatus,
+	): Promise<Webinar> {
+		const webinar = await this.prismaService.webinar.findUnique({
+			where: { id },
+		})
+
+		if (!webinar) {
+			throw new NotFoundException('Вебинар не найден')
+		}
+
+		return this.prismaService.webinar.update({
+			where: { id },
+			data: { status },
 		})
 	}
 }

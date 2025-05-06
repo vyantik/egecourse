@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { WebinarStatus } from '@prisma/__generated__'
 
 import { UserService } from '@/core/user/user.service'
 import { CourseService } from '@/information/course/course.service'
@@ -96,6 +97,10 @@ export class AdminService {
 
 	public async createWebinar(dto: CreateWebinarDto) {
 		return this.webinarService.createWebinar(dto)
+	}
+
+	public async updateWebinarStatus(id: string, status: WebinarStatus) {
+		return this.webinarService.updateWebinarStatus(id, status)
 	}
 
 	public async subscribeToCourse(courseId: string, userId: string) {

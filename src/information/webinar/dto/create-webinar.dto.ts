@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { WebinarStatus } from '@prisma/__generated__/client'
 import { Transform } from 'class-transformer'
-import { IsDate, IsNotEmpty, IsString } from 'class-validator'
+import { IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateWebinarDto {
 	@ApiProperty({
-		description: ' вебинара',
+		description: 'Название вебинара',
 		example: 'Вебинар по React',
 	})
 	@IsString()
@@ -27,4 +28,13 @@ export class CreateWebinarDto {
 	@IsDate()
 	@IsNotEmpty()
 	date: Date
+
+	@ApiProperty({
+		description: 'Статус вебинара',
+		enum: WebinarStatus,
+		example: WebinarStatus.OPEN,
+	})
+	@IsEnum(WebinarStatus)
+	@IsNotEmpty()
+	status: WebinarStatus
 }
