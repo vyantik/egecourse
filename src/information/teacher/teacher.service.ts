@@ -4,7 +4,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Teacher } from '@prisma/__generated__'
+import { Teacher, TeacherCategory } from '@prisma/__generated__'
 import { existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 
@@ -97,18 +97,35 @@ export class TeacherService {
 	 * Получает список всех преподавателей с опциональной пагинацией
 	 * @param page - Номер страницы (опционально)
 	 * @param limit - Количество элементов на странице (опционально)
+	 * @param category - Категория преподавателя (опционально)
 	 * @returns Promise с массивом преподавателей или объектом с данными и метаинформацией
 	 */
 	public async getTeachers(
 		page?: number,
 		limit?: number,
+		category?: string,
 	): Promise<Teacher[] | { data: Teacher[]; meta: Meta }> {
 		if (!page || !limit) {
-			return this.prismaService.teacher.findMany({
-				orderBy: {
-					createdAt: 'desc',
-				},
-			})
+			let teachers: Teacher[]
+
+			if (category) {
+				teachers = await this.prismaService.teacher.findMany({
+					where: {
+						category: category as TeacherCategory,
+					},
+					orderBy: {
+						createdAt: 'desc',
+					},
+				})
+			} else {
+				teachers = await this.prismaService.teacher.findMany({
+					orderBy: {
+						createdAt: 'desc',
+					},
+				})
+			}
+
+			return teachers
 		}
 
 		const skip = (page - 1) * limit

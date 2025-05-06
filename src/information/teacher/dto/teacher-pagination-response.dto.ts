@@ -12,7 +12,7 @@ export class TeacherPaginationResponseDto {
 				name: 'Иван',
 				surname: 'Иванов',
 				patronymic: 'Иванович',
-				category: 'EGE',
+				category: 'EXAM',
 				picture: 'https://example.com/teacher-photo.jpg',
 				experience: '5 лет',
 				egeScore: 95,

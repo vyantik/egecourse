@@ -180,8 +180,9 @@ enum TokenType {
 }
 
 enum TeacherCategory {
-  EGE
-  BEFORE_EGE
+  EXAM
+  EDUCATION
+  RAINBOW
 }
 
 enum ReviewCategory {

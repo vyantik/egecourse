@@ -6,6 +6,7 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
+import { TeacherCategory } from '@prisma/__generated__'
 import { Response } from 'express'
 
 import { TeacherPaginationResponseDto } from './dto/teacher-pagination-response.dto'
@@ -32,6 +33,13 @@ export class TeacherController {
 		description: 'Количество элементов на странице',
 		example: 10,
 	})
+	@ApiQuery({
+		name: 'category',
+		required: false,
+		type: String,
+		enum: TeacherCategory,
+		description: 'Категория преподавателя',
+	})
 	@ApiResponse({
 		status: 200,
 		description: 'Возвращает преподавателей с метаданными пагинации',
@@ -41,8 +49,9 @@ export class TeacherController {
 	public async getTeachers(
 		@Query('page') page?: number,
 		@Query('limit') limit?: number,
+		@Query('category') category?: string,
 	) {
-		return this.teacherService.getTeachers(page, limit)
+		return this.teacherService.getTeachers(page, limit, category)
 	}
 
 	@ApiOperation({ summary: 'Получить преподавателя по ID' })

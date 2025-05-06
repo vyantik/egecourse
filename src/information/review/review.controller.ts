@@ -49,6 +49,7 @@ export class ReviewController {
 		description: 'Категория отзыва',
 		required: false,
 		type: String,
+		enum: ReviewCategory,
 		example: 'EXAM',
 	})
 	@ApiResponse({ status: 200, description: 'Отзывы успешно получены' })
