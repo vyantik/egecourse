@@ -17,7 +17,6 @@ import { MailModule } from './libs/mail/mail.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { ReviewModule } from './review/review.module'
 import { TeacherModule } from './teacher/teacher.module'
-import { TestModule } from './test/test.module'
 import { UrlContainerModule } from './url-container/url-container.module'
 import { UserModule } from './user/user.module'
 import { WebinarModule } from './webinar/webinar.module'
@@ -50,7 +49,6 @@ import { WebinarModule } from './webinar/webinar.module'
 		ApplicationModule,
 		WebinarModule,
 		AdminModule,
-		TestModule,
 	],
 	providers: [
 		{
