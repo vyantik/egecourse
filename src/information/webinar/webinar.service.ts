@@ -17,7 +17,7 @@ export class WebinarService {
 		if (!page || !limit) {
 			return this.prismaService.webinar.findMany({
 				orderBy: {
-					createdAt: 'desc',
+					date: 'desc',
 				},
 			})
 		}
@@ -29,7 +29,7 @@ export class WebinarService {
 				skip,
 				take: limit,
 				orderBy: {
-					createdAt: 'desc',
+					date: 'desc',
 				},
 			}),
 			this.prismaService.webinar.count(),
