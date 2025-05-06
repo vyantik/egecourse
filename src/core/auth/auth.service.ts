@@ -13,7 +13,7 @@ import { verify } from 'argon2'
 import validate from 'deep-email-validator'
 import { Request, Response } from 'express'
 
-import { UserService } from '@/user/user.service'
+import { UserService } from '@/core/user/user.service'
 
 import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'

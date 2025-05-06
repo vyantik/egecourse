@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
 
+import { UserModule } from '@/core/user/user.module'
 import { CourseModule } from '@/information/course/course.module'
 import { FaqModule } from '@/information/faq/faq.module'
 import { TeacherModule } from '@/information/teacher/teacher.module'
 import { UrlContainerModule } from '@/information/url-container/url-container.module'
 import { WebinarModule } from '@/information/webinar/webinar.module'
-import { UserModule } from '@/user/user.module'
 
 import { AdminCourseController } from './admin-course.controller'
 import { AdminFaqController } from './admin-faq.controller'

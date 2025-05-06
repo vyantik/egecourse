@@ -7,9 +7,9 @@ import { TokenType } from '@prisma/__generated__'
 import { Request } from 'express'
 import { v4 } from 'uuid'
 
+import { UserService } from '@/core/user/user.service'
 import { MailService } from '@/libs/mail/mail.service'
 import { PrismaService } from '@/prisma/prisma.service'
-import { UserService } from '@/user/user.service'
 
 import { SessionService } from '../session/session.service'
 

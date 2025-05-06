@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__/client'
 
-import { Authorization } from '@/auth/decorators/auth.decorator'
+import { Authorization } from '@/core/auth/decorators/auth.decorator'
 import { CourseTransferDto } from '@/information/course/dto/course-transfer.dto'
 import { CourseDto } from '@/information/course/dto/course.dto'
 import { UpdateCourseDto } from '@/information/course/dto/update-course.dto'

@@ -10,7 +10,7 @@ import {
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
-import { UserEntity } from '@/user/entities/user.entity'
+import { UserEntity } from '@/core/user/entities/user.entity'
 
 import { AuthService } from './auth.service'
 import { LoginDto } from './dto/login.dto'

@@ -4,7 +4,7 @@ import { User } from '@prisma/__generated__'
 import { plainToInstance } from 'class-transformer'
 import { Request, Response } from 'express'
 
-import { UserResponseEntity } from '@/user/entities/user-response.entity'
+import { UserResponseEntity } from '@/core/user/entities/user-response.entity'
 
 @Injectable()
 export class SessionService {

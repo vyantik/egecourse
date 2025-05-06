@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__/client'
 
-import { Authorization } from '@/auth/decorators/auth.decorator'
+import { Authorization } from '@/core/auth/decorators/auth.decorator'
 import { FaqTransferDto } from '@/information/faq/dto/faq-transfer.dto'
 import { FaqDto } from '@/information/faq/dto/faq.dto'
 import {

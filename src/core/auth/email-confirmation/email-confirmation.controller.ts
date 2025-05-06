@@ -9,7 +9,7 @@ import {
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request } from 'express'
 
-import { UserResponseEntity } from '@/user/entities/user-response.entity'
+import { UserResponseEntity } from '@/core/user/entities/user-response.entity'
 
 import { ConfirmationDto } from './dto/confirmation.dto'
 import { EmailConfirmationService } from './email-confirmation.service'

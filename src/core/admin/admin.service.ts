@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
+import { UserService } from '@/core/user/user.service'
 import { CourseService } from '@/information/course/course.service'
 import { CourseDto } from '@/information/course/dto/course.dto'
 import { UpdateCourseDto } from '@/information/course/dto/update-course.dto'
@@ -17,7 +18,6 @@ import {
 import { UrlContainerService } from '@/information/url-container/url-container.service'
 import { CreateWebinarDto } from '@/information/webinar/dto/create-webinar.dto'
 import { WebinarService } from '@/information/webinar/webinar.service'
-import { UserService } from '@/user/user.service'
 
 @Injectable()
 export class AdminService {

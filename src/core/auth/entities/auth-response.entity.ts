@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { UserResponseEntity } from '@/user/entities/user-response.entity'
+import { UserResponseEntity } from '@/core/user/entities/user-response.entity'
 
 export class AuthResponseEntity {
 	@ApiProperty({

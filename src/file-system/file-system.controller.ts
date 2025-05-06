@@ -2,7 +2,7 @@ import { Controller, Delete, Param } from '@nestjs/common'
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__'
 
-import { Authorization } from '@/auth/decorators/auth.decorator'
+import { Authorization } from '@/core/auth/decorators/auth.decorator'
 
 import { FileSystemService } from './file-system.service'
 

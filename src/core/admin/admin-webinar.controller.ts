@@ -2,7 +2,7 @@ import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__/client'
 
-import { Authorization } from '@/auth/decorators/auth.decorator'
+import { Authorization } from '@/core/auth/decorators/auth.decorator'
 import { CreateWebinarDto } from '@/information/webinar/dto/create-webinar.dto'
 import { Webinar } from '@/information/webinar/entities/webinar.entity'
 

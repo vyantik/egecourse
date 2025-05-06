@@ -1,8 +1,8 @@
 import { forwardRef, Module } from '@nestjs/common'
 
+import { UserModule } from '@/core/user/user.module'
 import { MailModule } from '@/libs/mail/mail.module'
 import { PrismaModule } from '@/prisma/prisma.module'
-import { UserModule } from '@/user/user.module'
 
 import { SessionModule } from '../session/session.module'
 

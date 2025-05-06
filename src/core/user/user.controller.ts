@@ -23,9 +23,9 @@ import {
 import { UserRole } from '@prisma/__generated__'
 import { Response } from 'express'
 
-import { Authorization } from '@/auth/decorators/auth.decorator'
-import { Authorized } from '@/auth/decorators/authorized.decorator'
 import { parseFileConfig } from '@/config/parse-file.config'
+import { Authorization } from '@/core/auth/decorators/auth.decorator'
+import { Authorized } from '@/core/auth/decorators/authorized.decorator'
 
 import { CreateReviewDto } from './dto/create-review.dto'
 import { UpdateUserDto } from './dto/update-user.dto'

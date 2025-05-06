@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { Authorization } from '@/auth/decorators/auth.decorator'
-import { Authorized } from '@/auth/decorators/authorized.decorator'
+import { Authorization } from '@/core/auth/decorators/auth.decorator'
+import { Authorized } from '@/core/auth/decorators/authorized.decorator'
 
 import { ApplicationService } from './application.service'
 import { ApplicationDto } from './dto/application.dto'

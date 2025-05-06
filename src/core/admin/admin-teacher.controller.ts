@@ -21,8 +21,8 @@ import {
 } from '@nestjs/swagger'
 import { UserRole } from '@prisma/__generated__/client'
 
-import { Authorization } from '@/auth/decorators/auth.decorator'
 import { parseFileConfig } from '@/config/parse-file.config'
+import { Authorization } from '@/core/auth/decorators/auth.decorator'
 import { TeacherTransferDto } from '@/information/teacher/dto/teacher-transfer.dto'
 import { CreateTeacherDto } from '@/information/teacher/dto/teacher.dto'
 import { UpdateTeacherDto } from '@/information/teacher/dto/update-teacher.dto'
