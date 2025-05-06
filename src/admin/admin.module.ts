@@ -7,6 +7,11 @@ import { UrlContainerModule } from '@/url-container/url-container.module'
 import { UserModule } from '@/user/user.module'
 import { WebinarModule } from '@/webinar/webinar.module'
 
+import { AdminCourseController } from './admin-course.controller'
+import { AdminFaqController } from './admin-faq.controller'
+import { AdminTeacherController } from './admin-teacher.controller'
+import { AdminUrlController } from './admin-url.controller'
+import { AdminWebinarController } from './admin-webinar.controller'
 import { AdminController } from './admin.controller'
 import { AdminService } from './admin.service'
 
@@ -19,7 +24,14 @@ import { AdminService } from './admin.service'
 		FaqModule,
 		CourseModule,
 	],
-	controllers: [AdminController],
+	controllers: [
+		AdminController,
+		AdminCourseController,
+		AdminFaqController,
+		AdminTeacherController,
+		AdminUrlController,
+		AdminWebinarController,
+	],
 	providers: [AdminService],
 	exports: [AdminService],
 })
