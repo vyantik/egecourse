@@ -227,10 +227,17 @@ export class UserService {
 	public async createReview(userId: string, dto: CreateReviewDto) {
 		const user = await this.prismaService.user.findUnique({
 			where: { id: userId },
+			include: {
+				course: true,
+			},
 		})
 
 		if (!user) {
 			throw new NotFoundException('Пользователь не найден')
+		}
+
+		if (!user.course) {
+			throw new NotFoundException('Курс не найден')
 		}
 
 		const review = await this.prismaService.review.create({

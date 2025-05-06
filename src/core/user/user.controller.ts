@@ -163,7 +163,7 @@ export class UserController {
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Пользователь не найден',
+		description: 'Пользователь не найден или курс не найден',
 	})
 	@ApiResponse({
 		status: 400,
