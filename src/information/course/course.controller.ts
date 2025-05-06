@@ -8,8 +8,8 @@ import {
 } from '@nestjs/swagger'
 
 import { CourseService } from './course.service'
-import { CoursePaginationResponseDto } from './dto/course-pagination-response.dto'
 import { CourseTransferDto } from './dto/course-transfer.dto'
+import { CourseResponseEntity } from './entities/course-response.entity'
 
 @ApiTags('Курсы')
 @Controller('courses')
@@ -33,7 +33,8 @@ export class CourseController {
 	@ApiResponse({
 		status: 200,
 		description: 'Возвращает курсы с метаданными пагинации',
-		type: CoursePaginationResponseDto,
+		type: CourseResponseEntity,
+		isArray: true,
 	})
 	@Get()
 	public async getCourses(

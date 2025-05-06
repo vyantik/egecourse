@@ -2,14 +2,13 @@ import { ApiProperty } from '@nestjs/swagger'
 import { ReviewCategory, ReviewStatus } from '@prisma/__generated__'
 import { Exclude, Transform, Type } from 'class-transformer'
 
-import { UserResponseEntity } from '@/core/user/entities/user-response.entity'
-import { CourseResponseEntity } from '@/information/course/entities/course-response.entity'
+import { UserResponseCourseEntity } from '@/core/user/entities/user-response-course.entity'
 import { omit } from '@/libs/common/utils/omit'
 
 export class ReviewResponseEntity {
 	@ApiProperty({
 		description: 'Уникальный идентификатор отзыва',
-		example: '550e8400-e29b-41d4-a716-446655440000',
+		example: '5b09501b-b33c-4a93-88b7-810541aa5644',
 	})
 	id: string
 
@@ -27,10 +26,17 @@ export class ReviewResponseEntity {
 	category: ReviewCategory
 
 	@ApiProperty({
-		description: 'Пользователь, создавший отзыв',
-		type: () => UserResponseEntity,
+		description: 'Статус модерации отзыва',
+		enum: ReviewStatus,
+		example: ReviewStatus.APPROVED,
 	})
-	@Type(() => UserResponseEntity)
+	status: ReviewStatus
+
+	@ApiProperty({
+		description: 'Пользователь, создавший отзыв',
+		type: () => UserResponseCourseEntity,
+	})
+	@Type(() => UserResponseCourseEntity)
 	@Transform(({ value }) => {
 		if (value) {
 			const rest = omit(value, [
@@ -44,21 +50,7 @@ export class ReviewResponseEntity {
 		}
 		return value
 	})
-	user: UserResponseEntity
-
-	@ApiProperty({
-		description: 'Курс пользователя',
-		type: () => CourseResponseEntity,
-	})
-	@Type(() => CourseResponseEntity)
-	course: CourseResponseEntity
-
-	@ApiProperty({
-		description: 'Статус модерации отзыва',
-		enum: ReviewStatus,
-		example: ReviewStatus.PENDING,
-	})
-	status: ReviewStatus
+	user: UserResponseCourseEntity
 
 	@Exclude()
 	userId: string

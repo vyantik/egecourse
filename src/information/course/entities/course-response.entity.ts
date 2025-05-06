@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
+import { IsOptional } from 'class-validator'
+import { IsObject } from 'class-validator'
 
 export class CourseResponseEntity {
 	@ApiProperty({
@@ -46,15 +48,26 @@ export class CourseResponseEntity {
 	studyStart: string
 
 	@ApiProperty({
-		description: 'Варианты цены',
 		example: {
-			monthly: 15000,
-			quarterly: 40000,
-			yearly: 150000,
+			basic: {
+				price: 15000,
+				features: ['Доступ к материалам', 'Проверка домашних заданий'],
+			},
+			premium: {
+				price: 25000,
+				features: [
+					'Доступ к материалам',
+					'Проверка домашних заданий',
+					'Индивидуальные консультации',
+				],
+			},
 		},
+		description: 'Варианты цен и их особенности',
 		required: false,
 	})
-	priceOptions?: Record<string, number>
+	@IsObject({ message: 'Ценовые опции должны быть объектом' })
+	@IsOptional()
+	public priceOptions?: Record<string, any>
 
 	@Exclude()
 	createdAt: Date

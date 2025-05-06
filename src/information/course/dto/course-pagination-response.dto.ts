@@ -1,14 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { CourseTransferDto } from './course-transfer.dto'
-
 export class CoursePaginationResponseDto {
-	@ApiProperty({
-		type: [CourseTransferDto],
-		description: 'Массив курсов',
-	})
-	data: CourseTransferDto[]
-
 	@ApiProperty({
 		type: 'object',
 		properties: {

@@ -215,7 +215,7 @@ export class ReviewService {
 			throw new NotFoundException('Отзыв не найден')
 		}
 
-		await this.prismaService.review.update({
+		const updatedReview = await this.prismaService.review.update({
 			where: {
 				id: reviewId,
 			},
@@ -231,7 +231,7 @@ export class ReviewService {
 			},
 		})
 
-		return plainToInstance(ReviewResponseEntity, review, {
+		return plainToInstance(ReviewResponseEntity, updatedReview, {
 			excludeExtraneousValues: false,
 		})
 	}
@@ -253,7 +253,7 @@ export class ReviewService {
 			throw new NotFoundException('Отзыв не найден')
 		}
 
-		await this.prismaService.review.update({
+		const updatedReview = await this.prismaService.review.update({
 			where: {
 				id: reviewId,
 			},
@@ -269,7 +269,7 @@ export class ReviewService {
 			},
 		})
 
-		return plainToInstance(ReviewResponseEntity, review, {
+		return plainToInstance(ReviewResponseEntity, updatedReview, {
 			excludeExtraneousValues: false,
 		})
 	}

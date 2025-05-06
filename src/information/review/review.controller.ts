@@ -8,6 +8,7 @@ import {
 } from '@nestjs/swagger'
 import { ReviewCategory } from '@prisma/__generated__'
 
+import { ReviewResponseEntity } from './entities/review-response.entity'
 import { ReviewService } from './review.service'
 
 @ApiTags('Отзывы')
@@ -52,7 +53,13 @@ export class ReviewController {
 		enum: ReviewCategory,
 		example: 'EXAM',
 	})
-	@ApiResponse({ status: 200, description: 'Отзывы успешно получены' })
+	@ApiResponse({ status: 400, description: 'Неверный параметр category' })
+	@ApiResponse({
+		status: 200,
+		description: 'Отзывы успешно получены',
+		type: ReviewResponseEntity,
+		isArray: true,
+	})
 	public async getReviews(
 		@Query('page') page?: number,
 		@Query('limit') limit?: number,
