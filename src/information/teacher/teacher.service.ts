@@ -103,52 +103,57 @@ export class TeacherService {
 	public async getTeachers(
 		page?: number,
 		limit?: number,
-		category?: string,
+		category?: TeacherCategory,
 	): Promise<Teacher[] | { data: Teacher[]; meta: Meta }> {
-		if (!page || !limit) {
-			let teachers: Teacher[]
+		try {
+			if (!page || !limit) {
+				let teachers: Teacher[]
 
-			if (category) {
-				teachers = await this.prismaService.teacher.findMany({
-					where: {
-						category: category as TeacherCategory,
-					},
-					orderBy: {
-						createdAt: 'desc',
-					},
-				})
-			} else {
-				teachers = await this.prismaService.teacher.findMany({
-					orderBy: {
-						createdAt: 'desc',
-					},
-				})
+				if (category) {
+					teachers = await this.prismaService.teacher.findMany({
+						where: {
+							category,
+						},
+						orderBy: {
+							createdAt: 'desc',
+						},
+					})
+				} else {
+					teachers = await this.prismaService.teacher.findMany({
+						orderBy: {
+							createdAt: 'desc',
+						},
+					})
+				}
+
+				return teachers
 			}
 
-			return teachers
-		}
+			const skip = (page - 1) * limit
 
-		const skip = (page - 1) * limit
+			const [teachers, total] = await Promise.all([
+				this.prismaService.teacher.findMany({
+					skip,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
+					},
+				}),
+				this.prismaService.teacher.count(),
+			])
 
-		const [teachers, total] = await Promise.all([
-			this.prismaService.teacher.findMany({
-				skip,
-				take: limit,
-				orderBy: {
-					createdAt: 'desc',
+			return {
+				data: teachers,
+				meta: {
+					total,
+					page,
+					limit,
+					lastPage: Math.ceil(total / limit),
 				},
-			}),
-			this.prismaService.teacher.count(),
-		])
-
-		return {
-			data: teachers,
-			meta: {
-				total,
-				page,
-				limit,
-				lastPage: Math.ceil(total / limit),
-			},
+			}
+		} catch (error) {
+			console.log(error)
+			throw new BadRequestException('Неверный параметр category')
 		}
 	}
 

@@ -9,6 +9,7 @@ import {
 import { TeacherCategory } from '@prisma/__generated__'
 import { Response } from 'express'
 
+import { GetTeachersQueryDto } from './dto/get-teachers-query.dto'
 import { TeacherPaginationResponseDto } from './dto/teacher-pagination-response.dto'
 import { TeacherTransferDto } from './dto/teacher-transfer.dto'
 import { TeacherService } from './teacher.service'
@@ -46,12 +47,12 @@ export class TeacherController {
 		type: TeacherPaginationResponseDto,
 	})
 	@Get()
-	public async getTeachers(
-		@Query('page') page?: number,
-		@Query('limit') limit?: number,
-		@Query('category') category?: string,
-	) {
-		return this.teacherService.getTeachers(page, limit, category)
+	public async getTeachers(@Query() query: GetTeachersQueryDto) {
+		return this.teacherService.getTeachers(
+			query.page,
+			query.limit,
+			query.category,
+		)
 	}
 
 	@ApiOperation({ summary: 'Получить преподавателя по ID' })

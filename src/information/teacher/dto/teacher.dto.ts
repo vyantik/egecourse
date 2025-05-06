@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { TeacherCategory } from '@prisma/__generated__'
+import { Transform } from 'class-transformer'
 import {
 	IsEnum,
 	IsInt,
@@ -36,7 +37,7 @@ export class CreateTeacherDto {
 	public patronymic: string
 
 	@ApiProperty({
-		example: 'EGE',
+		example: 'EXAM',
 		description: 'Категория преподавателя',
 		enum: TeacherCategory,
 	})
@@ -44,6 +45,7 @@ export class CreateTeacherDto {
 		message: 'Некорректная категория преподавателя',
 	})
 	@IsNotEmpty({ message: 'Категория обязательна' })
+	@Transform(({ value }) => value?.toUpperCase())
 	public category: TeacherCategory
 
 	@ApiProperty({
@@ -72,6 +74,7 @@ export class CreateTeacherDto {
 	@IsInt({ message: 'Балл ЕГЭ должен быть целым числом' })
 	@Min(0, { message: 'Балл ЕГЭ не может быть меньше 0' })
 	@Max(100, { message: 'Балл ЕГЭ не может быть больше 100' })
+	@Transform(({ value }) => parseInt(value, 10))
 	public egeScore: number
 
 	@ApiProperty({
