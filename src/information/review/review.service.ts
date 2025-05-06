@@ -73,7 +73,7 @@ export class ReviewService {
 			if (category) {
 				reviews = await this.prismaService.review.findMany({
 					where: {
-						category,
+						category: category as ReviewCategory,
 					},
 					orderBy: {
 						createdAt: 'desc',
