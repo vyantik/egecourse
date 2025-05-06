@@ -19,7 +19,7 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
-import { UserRole } from '@prisma/__generated__/client'
+import { TeacherCategory, UserRole } from '@prisma/__generated__'
 
 import { parseFileConfig } from '@/config/parse-file.config'
 import { Authorization } from '@/core/auth/decorators/auth.decorator'
@@ -209,7 +209,37 @@ export class AdminTeacherController {
 		description: 'Неверный запрос - ошибка валидации',
 	})
 	@ApiConsumes('multipart/form-data')
-	@ApiBody({ type: CreateTeacherDto })
+	@ApiBody({
+		schema: {
+			type: 'object',
+			properties: {
+				name: { type: 'string', example: 'Иван' },
+				surname: { type: 'string', example: 'Иванов' },
+				patronymic: { type: 'string', example: 'Иванович' },
+				experience: { type: 'string', example: '10 лет' },
+				egeScore: { type: 'number', example: 95 },
+				category: {
+					type: 'string',
+					enum: Object.values(TeacherCategory),
+					example: 'EXAM',
+				},
+				direction: { type: 'string', example: 'Математика' },
+				file: {
+					type: 'string',
+					format: 'binary',
+					description: 'Фотография преподавателя (JPG, PNG, WebP)',
+				},
+			},
+			required: [
+				'name',
+				'surname',
+				'patronymic',
+				'experience',
+				'egeScore',
+				'direction',
+			],
+		},
+	})
 	@Authorization(UserRole.ADMIN)
 	@UseInterceptors(FileInterceptor('file'))
 	@Post()
