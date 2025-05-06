@@ -95,4 +95,8 @@ export class AdminService {
 	public async createWebinar(dto: CreateWebinarDto) {
 		return this.webinarService.createWebinar(dto)
 	}
+
+	public async subscribeToCourse(courseId: string, userId: string) {
+		return this.courseService.subscribeToCourse(courseId, userId)
+	}
 }

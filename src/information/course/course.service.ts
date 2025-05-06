@@ -179,4 +179,27 @@ export class CourseService {
 			},
 		})
 	}
+
+	public async subscribeToCourse(courseId: string, userId: string) {
+		const course = await this.prismaService.course.findUnique({
+			where: { id: courseId },
+		})
+
+		if (!course) {
+			throw new NotFoundException('Курс не найден')
+		}
+
+		const user = await this.prismaService.user.findUnique({
+			where: { id: userId },
+		})
+
+		if (!user) {
+			throw new NotFoundException('Пользователь не найден')
+		}
+
+		return this.prismaService.course.update({
+			where: { id: courseId },
+			data: { users: { connect: { id: userId } } },
+		})
+	}
 }

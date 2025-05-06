@@ -96,4 +96,34 @@ export class AdminCourseController {
 	) {
 		return this.adminService.replaceCourse(id, dto)
 	}
+
+	@ApiOperation({ summary: 'Подписать человека на курс' })
+	@ApiParam({
+		name: 'id',
+		required: true,
+		description: 'ID курса',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiParam({
+		name: 'userId',
+		required: true,
+		description: 'ID пользователя',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Человек успешно подписан на курс',
+	})
+	@ApiResponse({
+		status: 404,
+		description: 'Курс или пользователь не найден',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Post(':id/subscribe/:userId')
+	public async subscribeToCourse(
+		@Param('id') id: string,
+		@Param('userId') userId: string,
+	) {
+		return this.adminService.subscribeToCourse(id, userId)
+	}
 }

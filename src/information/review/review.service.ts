@@ -40,7 +40,11 @@ export class ReviewService {
 				id: reviewId,
 			},
 			include: {
-				user: true,
+				user: {
+					include: {
+						course: true,
+					},
+				},
 			},
 		})
 
@@ -79,7 +83,11 @@ export class ReviewService {
 						createdAt: 'desc',
 					},
 					include: {
-						user: true,
+						user: {
+							include: {
+								course: true,
+							},
+						},
 					},
 				})
 
@@ -94,7 +102,11 @@ export class ReviewService {
 						createdAt: 'desc',
 					},
 					include: {
-						user: true,
+						user: {
+							include: {
+								course: true,
+							},
+						},
 					},
 				})
 			}
@@ -123,7 +135,11 @@ export class ReviewService {
 						createdAt: 'desc',
 					},
 					include: {
-						user: true,
+						user: {
+							include: {
+								course: true,
+							},
+						},
 					},
 				}),
 				this.prismaService.review.count({
@@ -141,7 +157,11 @@ export class ReviewService {
 						createdAt: 'desc',
 					},
 					include: {
-						user: true,
+						user: {
+							include: {
+								course: true,
+							},
+						},
 					},
 				}),
 				this.prismaService.review.count(),
