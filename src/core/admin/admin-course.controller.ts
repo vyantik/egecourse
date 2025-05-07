@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Patch, Post, Put } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Delete,
+	Param,
+	Patch,
+	Post,
+	Put,
+} from '@nestjs/common'
 import {
 	ApiBody,
 	ApiOperation,
@@ -159,5 +167,22 @@ export class AdminCourseController {
 	@Post(':id/approve')
 	public async approveReview(@Param('id') id: string) {
 		return this.adminService.approveReview(id)
+	}
+
+	@ApiOperation({ summary: 'Удалить курс' })
+	@ApiParam({
+		name: 'id',
+		required: true,
+		description: 'ID курса',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Курс успешно удален',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Delete(':id')
+	public async deleteCourse(@Param('id') id: string) {
+		return this.adminService.deleteCourse(id)
 	}
 }

@@ -1,17 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { CourseCategory } from '@prisma/__generated__'
 import { Type } from 'class-transformer'
 import {
 	ArrayMinSize,
 	IsArray,
+	IsEnum,
 	IsNotEmpty,
 	IsNumber,
-	IsObject,
 	IsOptional,
 	IsString,
 	ValidateNested,
 } from 'class-validator'
 
 export class PriceOptionStructureDto {
+	@ApiProperty({
+		example: 'basic',
+		description: 'Название тарифного плана',
+	})
+	@IsString({ message: 'Название тарифа должно быть строкой' })
+	@IsNotEmpty({ message: 'Название тарифа обязательно' })
+	name: string
+
 	@ApiProperty({
 		example: 15000,
 		description: 'Цена за указанный период обучения',
@@ -82,6 +91,15 @@ export class CourseDto {
 	public document: string
 
 	@ApiProperty({
+		example: 'EXAM',
+		description: 'Категория курса',
+		enum: CourseCategory,
+	})
+	@IsEnum(CourseCategory, { message: 'Категория курса должна быть строкой' })
+	@IsNotEmpty({ message: 'Категория курса обязательна' })
+	public category: CourseCategory
+
+	@ApiProperty({
 		example: 'Сентябрь 2024',
 		description: 'Дата начала обучения',
 	})
@@ -90,13 +108,15 @@ export class CourseDto {
 	public studyStart: string
 
 	@ApiProperty({
-		example: {
-			basic: {
+		example: [
+			{
+				name: 'basic',
 				price: 15000,
 				features: ['Доступ к материалам', 'Проверка домашних заданий'],
 				duration: 3,
 			},
-			premium: {
+			{
+				name: 'premium',
 				price: 25000,
 				features: [
 					'Доступ к материалам',
@@ -105,13 +125,13 @@ export class CourseDto {
 				],
 				duration: 6,
 			},
-		},
+		],
 		description: 'Варианты цен и их особенности',
 		required: false,
 	})
-	@IsObject({ message: 'Ценовые опции должны быть объектом' })
+	@IsArray({ message: 'Ценовые опции должны быть массивом' })
 	@ValidateNested({ each: true })
 	@Type(() => PriceOptionStructureDto)
 	@IsOptional()
-	public priceOptions?: Record<string, PriceOptionStructureDto>
+	public priceOptions?: PriceOptionStructureDto[]
 }

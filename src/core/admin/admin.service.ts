@@ -122,4 +122,12 @@ export class AdminService {
 	public async rejectReview(reviewId: string) {
 		return this.reviewService.rejectReview(reviewId)
 	}
+
+	/**
+	 * Удаляет курс по его идентификатору
+	 * @param id - ID курса
+	 */
+	public async deleteCourse(id: string) {
+		return this.courseService.deleteCourse(id)
+	}
 }

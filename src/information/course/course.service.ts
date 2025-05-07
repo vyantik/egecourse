@@ -78,7 +78,8 @@ export class CourseService {
 
 		const skip = (page - 1) * limit
 
-		let [courses, total] = [[], 0]
+		let courses: Course[]
+		let total: number
 
 		if (category) {
 			;[courses, total] = await Promise.all([
@@ -252,5 +253,29 @@ export class CourseService {
 				},
 			})
 		})
+	}
+
+	/**
+	 * Удаляет курс по его идентификатору
+	 * @param id - Уникальный идентификатор курса
+	 * @returns Promise с сообщением об удалении курса
+	 * @throws NotFoundException если курс не найден
+	 */
+	public async deleteCourse(id: string) {
+		const course = await this.prismaService.course.findUnique({
+			where: { id },
+		})
+
+		if (!course) {
+			throw new NotFoundException('Курс не найден')
+		}
+
+		await this.prismaService.course.delete({
+			where: { id },
+		})
+
+		return {
+			message: 'Курс удален',
+		}
 	}
 }
