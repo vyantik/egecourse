@@ -2,6 +2,7 @@ import {
 	Body,
 	Controller,
 	Delete,
+	Get,
 	Param,
 	Patch,
 	Post,
@@ -184,5 +185,16 @@ export class AdminCourseController {
 	@Delete(':id')
 	public async deleteCourse(@Param('id') id: string) {
 		return this.adminService.deleteCourse(id)
+	}
+
+	@ApiOperation({ summary: 'Получить все заявки' })
+	@ApiResponse({
+		status: 200,
+		description: 'Заявки успешно получены',
+	})
+	@Authorization(UserRole.ADMIN)
+	@Get('applications')
+	public async getApplications() {
+		return this.adminService.getApplications()
 	}
 }

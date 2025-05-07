@@ -53,4 +53,12 @@ export class ApplicationService {
 			},
 		})
 	}
+
+	public async getApplications() {
+		return this.prismaService.application.findMany({
+			include: {
+				course: true,
+			},
+		})
+	}
 }

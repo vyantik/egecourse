@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 
+import { ApplicationModule } from '@/application/application.module'
 import { UserModule } from '@/core/user/user.module'
 import { CourseModule } from '@/information/course/course.module'
 import { FaqModule } from '@/information/faq/faq.module'
@@ -25,6 +26,7 @@ import { AdminService } from './admin.service'
 		FaqModule,
 		CourseModule,
 		ReviewModule,
+		ApplicationModule,
 	],
 	controllers: [
 		AdminController,

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { WebinarStatus } from '@prisma/__generated__'
 
+import { ApplicationService } from '@/application/application.service'
 import { UserService } from '@/core/user/user.service'
 import { CourseService } from '@/information/course/course.service'
 import { CourseDto } from '@/information/course/dto/course.dto'
@@ -31,6 +32,7 @@ export class AdminService {
 		private readonly faqService: FaqService,
 		private readonly courseService: CourseService,
 		private readonly reviewService: ReviewService,
+		private readonly applicationService: ApplicationService,
 	) {}
 
 	public async createCourse(dto: CourseDto) {
@@ -129,5 +131,12 @@ export class AdminService {
 	 */
 	public async deleteCourse(id: string) {
 		return this.courseService.deleteCourse(id)
+	}
+
+	/**
+	 * Получает все заявки
+	 */
+	public async getApplications() {
+		return this.applicationService.getApplications()
 	}
 }
