@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { ReviewCategory } from '@prisma/__generated__'
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
+import { IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateReviewDto {
 	@ApiProperty({
@@ -12,13 +11,10 @@ export class CreateReviewDto {
 	text: string
 
 	@ApiProperty({
-		description: 'Категория отзыва',
-		example: 'EXAM',
-		enum: ReviewCategory,
+		description: 'ID курса',
+		example: '550e8400-e29b-41d4-a716-446655440000',
 	})
-	@IsEnum(ReviewCategory, {
-		message:
-			'Категория отзыва должна быть одной из следующих: EXAM, EDUCATION, RAINBOW, OTHER',
-	})
-	category: ReviewCategory
+	@IsString({ message: 'ID курса должен быть строкой' })
+	@IsNotEmpty({ message: 'ID курса обязателен' })
+	courseId: string
 }

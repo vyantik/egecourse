@@ -243,10 +243,22 @@ export class UserService {
 			throw new NotFoundException('Курсы не найдены')
 		}
 
+		for (let i = 0; i < user.courses.length; i++) {
+			if (user.courses[i].id === dto.courseId) {
+				break
+			}
+
+			if (i === user.courses.length - 1) {
+				throw new BadRequestException(
+					'Вы не можете оставить отзыв не на своем курсе',
+				)
+			}
+		}
+
 		const review = await this.prismaService.review.create({
 			data: {
 				text: dto.text,
-				category: dto.category,
+				courseId: dto.courseId,
 				userId,
 			},
 			include: {

@@ -11,7 +11,7 @@ import { PrismaService } from '@/prisma/prisma.service'
  */
 export interface PaginatedReviews {
 	/** Массив отзывов */
-	data: Review[]
+	data: ReviewResponseEntity[]
 	/** Метаданные пагинации */
 	meta: Meta
 }
@@ -45,6 +45,7 @@ export class ReviewService {
 						courses: true,
 					},
 				},
+				course: true,
 			},
 		})
 
@@ -77,7 +78,6 @@ export class ReviewService {
 			if (category) {
 				reviews = await this.prismaService.review.findMany({
 					where: {
-						category: category as ReviewCategory,
 						status: ReviewStatus.APPROVED,
 					},
 					orderBy: {
@@ -89,6 +89,7 @@ export class ReviewService {
 								courses: true,
 							},
 						},
+						course: true,
 					},
 				})
 
@@ -111,6 +112,7 @@ export class ReviewService {
 								courses: true,
 							},
 						},
+						course: true,
 					},
 				})
 			}
@@ -131,7 +133,6 @@ export class ReviewService {
 			;[reviews, total] = await Promise.all([
 				this.prismaService.review.findMany({
 					where: {
-						category,
 						status: ReviewStatus.APPROVED,
 					},
 					skip,
@@ -145,11 +146,11 @@ export class ReviewService {
 								courses: true,
 							},
 						},
+						course: true,
 					},
 				}),
 				this.prismaService.review.count({
 					where: {
-						category,
 						status: ReviewStatus.APPROVED,
 					},
 				}),
@@ -171,6 +172,7 @@ export class ReviewService {
 								courses: true,
 							},
 						},
+						course: true,
 					},
 				}),
 				this.prismaService.review.count({

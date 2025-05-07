@@ -99,6 +99,7 @@ model Course {
 
   users        User[]
   applications Application[]
+  reviews      Review[]
 
   priceOptions Json? @map("price_options")
 
@@ -118,9 +119,12 @@ enum CourseCategory {
 model Review {
   id String @id @default(uuid())
 
-  text     String
-  category ReviewCategory
-  status   ReviewStatus   @default(PENDING)
+  text String
+
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String @map("course_id")
+
+  status ReviewStatus @default(PENDING)
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
