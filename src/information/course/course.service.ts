@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+	ConflictException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common'
 import { Course, CourseCategory } from '@prisma/__generated__'
 
 import { Meta } from '@/libs/common/utils/meta'
@@ -238,7 +242,9 @@ export class CourseService {
 			}
 
 			if (user.courses.some(c => c.id === courseId)) {
-				throw new Error('Пользователь уже подписан на этот курс')
+				throw new ConflictException(
+					'Пользователь уже подписан на этот курс',
+				)
 			}
 
 			return prisma.course.update({

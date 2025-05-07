@@ -27,7 +27,8 @@ import { parseFileConfig } from '@/config/parse-file.config'
 import { Authorization } from '@/core/auth/decorators/auth.decorator'
 import { Authorized } from '@/core/auth/decorators/authorized.decorator'
 
-import { CreateReviewDto } from './dto/create-review.dto'
+import { CreateReviewDto } from '../../information/review/dto/create-review.dto'
+
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserResponseEntity } from './entities/user-response.entity'
 import { UserService } from './user.service'
