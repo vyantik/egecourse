@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Course } from '@prisma/__generated__'
+import { Course, CourseCategory } from '@prisma/__generated__'
 
 import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
@@ -54,27 +54,56 @@ export class CourseService {
 	public async getCourses(
 		page?: number,
 		limit?: number,
+		category?: CourseCategory,
 	): Promise<Course[] | { data: Course[]; meta: Meta }> {
 		if (!page || !limit) {
-			return this.prismaService.course.findMany({
-				orderBy: {
-					createdAt: 'desc',
-				},
-			})
+			let courses: Course[]
+			if (category) {
+				courses = await this.prismaService.course.findMany({
+					where: { category },
+					orderBy: {
+						createdAt: 'desc',
+					},
+				})
+			} else {
+				courses = await this.prismaService.course.findMany({
+					orderBy: {
+						createdAt: 'desc',
+					},
+				})
+			}
+
+			return courses
 		}
 
 		const skip = (page - 1) * limit
 
-		const [courses, total] = await Promise.all([
-			this.prismaService.course.findMany({
-				skip,
-				take: limit,
-				orderBy: {
-					createdAt: 'desc',
-				},
-			}),
-			this.prismaService.course.count(),
-		])
+		let [courses, total] = [[], 0]
+
+		if (category) {
+			;[courses, total] = await Promise.all([
+				this.prismaService.course.findMany({
+					where: { category },
+					skip,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
+					},
+				}),
+				this.prismaService.course.count({ where: { category } }),
+			])
+		} else {
+			;[courses, total] = await Promise.all([
+				this.prismaService.course.findMany({
+					skip,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
+					},
+				}),
+				this.prismaService.course.count(),
+			])
+		}
 
 		return {
 			data: courses,
@@ -180,26 +209,48 @@ export class CourseService {
 		})
 	}
 
+	/**
+	 * Подписывает пользователя на курс
+	 * @param courseId - Идентификатор курса
+	 * @param userId - Идентификатор пользователя
+	 * @returns Promise с обновленным курсом
+	 * @throws NotFoundException если курс или пользователь не найдены
+	 */
 	public async subscribeToCourse(courseId: string, userId: string) {
-		const course = await this.prismaService.course.findUnique({
-			where: { id: courseId },
-		})
+		return this.prismaService.$transaction(async prisma => {
+			const course = await prisma.course.findUnique({
+				where: { id: courseId },
+				include: { users: true },
+			})
 
-		if (!course) {
-			throw new NotFoundException('Курс не найден')
-		}
+			if (!course) {
+				throw new NotFoundException('Курс не найден')
+			}
 
-		const user = await this.prismaService.user.findUnique({
-			where: { id: userId },
-		})
+			const user = await prisma.user.findUnique({
+				where: { id: userId },
+				include: { courses: true },
+			})
 
-		if (!user) {
-			throw new NotFoundException('Пользователь не найден')
-		}
+			if (!user) {
+				throw new NotFoundException('Пользователь не найден')
+			}
 
-		return this.prismaService.course.update({
-			where: { id: courseId },
-			data: { users: { connect: { id: userId } } },
+			if (user.courses.some(c => c.id === courseId)) {
+				throw new Error('Пользователь уже подписан на этот курс')
+			}
+
+			return prisma.course.update({
+				where: { id: courseId },
+				data: {
+					users: {
+						connect: { id: userId },
+					},
+				},
+				include: {
+					users: true,
+				},
+			})
 		})
 	}
 }

@@ -29,13 +29,11 @@ model User {
 
   reviews Review[]
 
-  course   Course? @relation(fields: [courseId], references: [id])
-  courseId String? @map("course_id")
+  courses Course[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@index([courseId])
   @@map("users")
 }
 
@@ -97,6 +95,8 @@ model Course {
   document    String
   studyStart  String @map("study_start")
 
+  category CourseCategory @default(EXAM)
+
   users User[]
 
   priceOptions Json? @map("price_options")
@@ -106,6 +106,12 @@ model Course {
 
   @@index([studyFormat, studyStart])
   @@map("courses")
+}
+
+enum CourseCategory {
+  EXAM
+  EDUCATION
+  RAINBOW
 }
 
 model Review {

@@ -1,22 +1,43 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator'
+import { Type } from 'class-transformer'
+import {
+	ArrayMinSize,
+	IsArray,
+	IsNotEmpty,
+	IsNumber,
+	IsObject,
+	IsOptional,
+	IsString,
+	ValidateNested,
+} from 'class-validator'
 
-export class PriceOptionDto {
+export class PriceOptionStructureDto {
 	@ApiProperty({
-		example: '3 месяца',
-		description: 'Продолжительность периода обучения',
-	})
-	@IsString({ message: 'Время обучения должно быть строкой' })
-	@IsNotEmpty({ message: 'Время обучения обязательно' })
-	studyTime: string
-
-	@ApiProperty({
-		example: '10000',
+		example: 15000,
 		description: 'Цена за указанный период обучения',
 	})
-	@IsString({ message: 'Цена должна быть строкой' })
+	@IsNumber({}, { message: 'Цена должна быть числом' })
 	@IsNotEmpty({ message: 'Цена обязательна' })
-	price: string
+	price: number
+
+	@ApiProperty({
+		example: ['Доступ к материалам', 'Проверка домашних заданий'],
+		description: 'Список возможностей/особенностей тарифа',
+	})
+	@IsArray({ message: 'Особенности должны быть массивом' })
+	@ArrayMinSize(1, {
+		message: 'Должна быть указана хотя бы одна особенность',
+	})
+	@IsString({ each: true, message: 'Каждая особенность должна быть строкой' })
+	features: string[]
+
+	@ApiProperty({
+		example: 3,
+		description: 'Продолжительность обучения в месяцах',
+	})
+	@IsNumber({}, { message: 'Продолжительность должна быть числом' })
+	@IsNotEmpty({ message: 'Продолжительность обязательна' })
+	duration: number
 }
 
 export class CourseDto {
@@ -73,6 +94,7 @@ export class CourseDto {
 			basic: {
 				price: 15000,
 				features: ['Доступ к материалам', 'Проверка домашних заданий'],
+				duration: 3,
 			},
 			premium: {
 				price: 25000,
@@ -81,12 +103,15 @@ export class CourseDto {
 					'Проверка домашних заданий',
 					'Индивидуальные консультации',
 				],
+				duration: 6,
 			},
 		},
 		description: 'Варианты цен и их особенности',
 		required: false,
 	})
 	@IsObject({ message: 'Ценовые опции должны быть объектом' })
+	@ValidateNested({ each: true })
+	@Type(() => PriceOptionStructureDto)
 	@IsOptional()
-	public priceOptions?: Record<string, any>
+	public priceOptions?: Record<string, PriceOptionStructureDto>
 }

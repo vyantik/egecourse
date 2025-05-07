@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsObject, IsOptional, IsString } from 'class-validator'
+import { Type } from 'class-transformer'
+import { IsObject, IsOptional, IsString, ValidateNested } from 'class-validator'
+
+import { PriceOptionStructureDto } from './course.dto'
 
 export class UpdateCourseDto {
 	@ApiProperty({
@@ -61,6 +64,7 @@ export class UpdateCourseDto {
 			basic: {
 				price: 15000,
 				features: ['Доступ к материалам', 'Проверка домашних заданий'],
+				duration: 3,
 			},
 			premium: {
 				price: 25000,
@@ -69,12 +73,15 @@ export class UpdateCourseDto {
 					'Проверка домашних заданий',
 					'Индивидуальные консультации',
 				],
+				duration: 6,
 			},
 		},
 		description: 'Варианты цен и их особенности',
 		required: false,
 	})
 	@IsObject({ message: 'Ценовые опции должны быть объектом' })
+	@ValidateNested({ each: true })
+	@Type(() => PriceOptionStructureDto)
 	@IsOptional()
-	public priceOptions?: Record<string, any>
+	public priceOptions?: Record<string, PriceOptionStructureDto>
 }

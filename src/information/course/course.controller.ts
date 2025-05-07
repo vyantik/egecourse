@@ -6,6 +6,7 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
+import { CourseCategory } from '@prisma/__generated__'
 
 import { CourseService } from './course.service'
 import { CourseTransferDto } from './dto/course-transfer.dto'
@@ -30,6 +31,14 @@ export class CourseController {
 		description: 'Количество элементов на странице',
 		example: 10,
 	})
+	@ApiQuery({
+		name: 'category',
+		required: false,
+		type: String,
+		enum: CourseCategory,
+		description: 'Категория курса',
+		example: 'EXAM',
+	})
 	@ApiResponse({
 		status: 200,
 		description: 'Возвращает курсы с метаданными пагинации',
@@ -40,8 +49,9 @@ export class CourseController {
 	public async getCourses(
 		@Query('page') page?: number,
 		@Query('limit') limit?: number,
+		@Query('category') category?: CourseCategory,
 	) {
-		return this.courseService.getCourses(page, limit)
+		return this.courseService.getCourses(page, limit, category)
 	}
 
 	@ApiOperation({ summary: 'Получить курс по ID' })
