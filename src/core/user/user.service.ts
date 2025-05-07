@@ -59,6 +59,9 @@ export class UserService {
 	public async findById(id: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: { id },
+			include: {
+				courses: true,
+			},
 		})
 
 		if (!user) {
@@ -228,7 +231,7 @@ export class UserService {
 		const user = await this.prismaService.user.findUnique({
 			where: { id: userId },
 			include: {
-				course: true,
+				courses: true,
 			},
 		})
 
@@ -236,8 +239,8 @@ export class UserService {
 			throw new NotFoundException('Пользователь не найден')
 		}
 
-		if (!user.course) {
-			throw new NotFoundException('Курс не найден')
+		if (user.courses.length === 0) {
+			throw new NotFoundException('Курсы не найдены')
 		}
 
 		const review = await this.prismaService.review.create({

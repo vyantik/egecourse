@@ -42,7 +42,7 @@ export class ReviewService {
 			include: {
 				user: {
 					include: {
-						course: true,
+						courses: true,
 					},
 				},
 			},
@@ -86,7 +86,7 @@ export class ReviewService {
 					include: {
 						user: {
 							include: {
-								course: true,
+								courses: true,
 							},
 						},
 					},
@@ -108,7 +108,7 @@ export class ReviewService {
 					include: {
 						user: {
 							include: {
-								course: true,
+								courses: true,
 							},
 						},
 					},
@@ -142,7 +142,7 @@ export class ReviewService {
 					include: {
 						user: {
 							include: {
-								course: true,
+								courses: true,
 							},
 						},
 					},
@@ -168,7 +168,7 @@ export class ReviewService {
 					include: {
 						user: {
 							include: {
-								course: true,
+								courses: true,
 							},
 						},
 					},
@@ -225,7 +225,7 @@ export class ReviewService {
 			include: {
 				user: {
 					include: {
-						course: true,
+						courses: true,
 					},
 				},
 			},
@@ -263,7 +263,7 @@ export class ReviewService {
 			include: {
 				user: {
 					include: {
-						course: true,
+						courses: true,
 					},
 				},
 			},
