@@ -16,10 +16,18 @@ export class ApplicationDto {
 
 	@ApiProperty({
 		description: 'Категория заявки',
-		example: 'EXAM_PREPARATION',
+		example: 'EXAM',
 		enum: ApplicationCategory,
 	})
 	@IsNotEmpty({ message: 'Категория заявки обязательна' })
 	@IsEnum(ApplicationCategory)
 	category: ApplicationCategory
+
+	@ApiProperty({
+		description: 'ID курса',
+		example: '550e8400-e29b-41d4-a716-446655440000',
+	})
+	@IsNotEmpty({ message: 'ID курса обязателен' })
+	@IsString({ message: 'ID курса должен быть строкой' })
+	courseId?: string
 }

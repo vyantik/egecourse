@@ -97,7 +97,8 @@ model Course {
 
   category CourseCategory @default(EXAM)
 
-  users User[]
+  users        User[]
+  applications Application[]
 
   priceOptions Json? @map("price_options")
 
@@ -146,9 +147,13 @@ model UrlContainer {
 model Application {
   id String @id @default(uuid())
 
-  name     String
-  phone    String
+  name  String
+  phone String
+
   category ApplicationCategory
+
+  course   Course? @relation(fields: [courseId], references: [id])
+  courseId String? @map("course_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -208,9 +213,9 @@ enum ReviewStatus {
 }
 
 enum ApplicationCategory {
-  EXAM_PREPARATION
-  ADVANCED_TRAINING
-  SUNDAY_SCHOOL
+  EXAM
+  EDUCATION
+  RAINBOW
 }
 
 enum WebinarStatus {

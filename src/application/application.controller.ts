@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { Authorization } from '@/core/auth/decorators/auth.decorator'
@@ -12,14 +12,15 @@ import { ApplicationDto } from './dto/application.dto'
 export class ApplicationController {
 	constructor(private readonly applicationService: ApplicationService) {}
 
-	@Post()
-	@Authorization()
 	@ApiOperation({ summary: 'Создание заявки' })
 	@ApiResponse({ status: 201, description: 'Заявка успешно создана' })
 	@ApiBody({ type: ApplicationDto })
+	@Authorization()
+	@HttpCode(HttpStatus.CREATED)
+	@Post()
 	public async createApplication(
 		@Body() dto: ApplicationDto,
-		@Authorized() id: string,
+		@Authorized('id') id: string,
 	) {
 		return this.applicationService.createApplication(dto, id)
 	}
