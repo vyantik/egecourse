@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString, IsUrl, MinLength } from 'class-validator'
 export class CreateUrlContainerDto {
 	@IsString({ message: 'URL должен быть строкой' })
 	@IsNotEmpty({ message: 'URL обязателен' })
-	@IsUrl()
+	@IsUrl({ protocols: ['http', 'https'] })
 	url: string
 
 	@IsString({ message: 'Ключ должен быть строкой' })
@@ -15,6 +15,6 @@ export class CreateUrlContainerDto {
 export class UpdateUrlContainerDto {
 	@IsString({ message: 'URL должен быть строкой' })
 	@IsNotEmpty({ message: 'URL обязателен' })
-	@IsUrl()
+	@IsUrl({ protocols: ['http', 'https'] })
 	url: string
 }
