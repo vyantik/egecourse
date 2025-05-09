@@ -28,12 +28,12 @@ import { CreateTeacherDto } from '@/information/teacher/dto/teacher.dto'
 import { UpdateTeacherDto } from '@/information/teacher/dto/update-teacher.dto'
 import { TransformTeacherDtoPipe } from '@/libs/common/pipes/transform-teacher-dto.pipe'
 
-import { AdminService } from './admin.service'
+import { AdminTeacherService } from './admin-teacher.service'
 
 @ApiTags('Админка - Преподаватели')
 @Controller('admin/teachers')
 export class AdminTeacherController {
-	constructor(private readonly adminService: AdminService) {}
+	constructor(private readonly adminService: AdminTeacherService) {}
 
 	@ApiOperation({
 		summary:

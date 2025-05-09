@@ -9,13 +9,16 @@ import { TeacherModule } from '@/information/teacher/teacher.module'
 import { UrlContainerModule } from '@/information/url-container/url-container.module'
 import { WebinarModule } from '@/information/webinar/webinar.module'
 
-import { AdminCourseController } from './admin-course.controller'
-import { AdminFaqController } from './admin-faq.controller'
-import { AdminTeacherController } from './admin-teacher.controller'
-import { AdminUrlController } from './admin-url.controller'
-import { AdminWebinarController } from './admin-webinar.controller'
-import { AdminController } from './admin.controller'
-import { AdminService } from './admin.service'
+import { AdminCourseController } from './course/admin-course.controller'
+import { AdminCourseService } from './course/admin-course.service'
+import { AdminFaqController } from './faq/admin-faq.controller'
+import { AdminFaqService } from './faq/admin-faq.service'
+import { AdminTeacherController } from './teacher/admin-teacher.controller'
+import { AdminTeacherService } from './teacher/admin-teacher.service'
+import { AdminUrlController } from './url/admin-url.controller'
+import { AdminUrlContainerService } from './url/admin-url.service'
+import { AdminWebinarController } from './webinar/admin-webinar.controller'
+import { AdminWebinarService } from './webinar/admin-webinar.service'
 
 @Module({
 	imports: [
@@ -29,14 +32,18 @@ import { AdminService } from './admin.service'
 		ApplicationModule,
 	],
 	controllers: [
-		AdminController,
 		AdminCourseController,
 		AdminFaqController,
 		AdminTeacherController,
 		AdminUrlController,
 		AdminWebinarController,
 	],
-	providers: [AdminService],
-	exports: [AdminService],
+	providers: [
+		AdminCourseService,
+		AdminFaqService,
+		AdminTeacherService,
+		AdminUrlContainerService,
+		AdminWebinarService,
+	],
 })
 export class AdminModule {}

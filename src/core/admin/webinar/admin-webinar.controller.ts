@@ -20,12 +20,12 @@ import { Authorization } from '@/core/auth/decorators/auth.decorator'
 import { CreateWebinarDto } from '@/information/webinar/dto/create-webinar.dto'
 import { Webinar } from '@/information/webinar/entities/webinar.entity'
 
-import { AdminService } from './admin.service'
+import { AdminWebinarService } from './admin-webinar.service'
 
 @ApiTags('Админка - Вебинары')
 @Controller('admin/webinars')
 export class AdminWebinarController {
-	constructor(private readonly adminService: AdminService) {}
+	constructor(private readonly adminService: AdminWebinarService) {}
 
 	@ApiOperation({ summary: 'Создать вебинар' })
 	@ApiBody({ type: CreateWebinarDto })

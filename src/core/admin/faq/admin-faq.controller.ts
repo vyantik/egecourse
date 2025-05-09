@@ -16,12 +16,12 @@ import {
 	UpdateFullFaqDto,
 } from '@/information/faq/dto/update-faq.dto'
 
-import { AdminService } from './admin.service'
+import { AdminFaqService } from './admin-faq.service'
 
 @ApiTags('Админка - FAQ')
 @Controller('admin/faq')
 export class AdminFaqController {
-	constructor(private readonly adminService: AdminService) {}
+	constructor(private readonly adminService: AdminFaqService) {}
 
 	@ApiOperation({ summary: 'Создать новый FAQ' })
 	@ApiResponse({

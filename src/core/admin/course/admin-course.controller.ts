@@ -22,12 +22,12 @@ import { CourseTransferDto } from '@/information/course/dto/course-transfer.dto'
 import { CourseDto } from '@/information/course/dto/course.dto'
 import { UpdateCourseDto } from '@/information/course/dto/update-course.dto'
 
-import { AdminService } from './admin.service'
+import { AdminCourseService } from './admin-course.service'
 
 @ApiTags('Админка - Курсы')
 @Controller('admin/courses')
 export class AdminCourseController {
-	constructor(private readonly adminService: AdminService) {}
+	constructor(private readonly adminService: AdminCourseService) {}
 
 	@ApiOperation({ summary: 'Создать новый курс' })
 	@ApiBody({ type: CourseDto })

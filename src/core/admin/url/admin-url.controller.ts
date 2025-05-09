@@ -14,12 +14,12 @@ import {
 	UpdateUrlContainerDto,
 } from '@/information/url-container/dto/url-container.dto'
 
-import { AdminService } from './admin.service'
+import { AdminUrlContainerService } from './admin-url.service'
 
 @ApiTags('Админка - URL')
 @Controller('admin/urls')
 export class AdminUrlController {
-	constructor(private readonly adminService: AdminService) {}
+	constructor(private readonly adminService: AdminUrlContainerService) {}
 
 	@ApiOperation({ summary: 'Создать URL', description: 'Создать новый URL' })
 	@ApiBody({
