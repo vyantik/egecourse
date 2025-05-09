@@ -4,12 +4,15 @@ import {
 	NotFoundException,
 } from '@nestjs/common'
 import { Course, CourseCategory } from '@prisma/__generated__'
+import { plainToInstance } from 'class-transformer'
 
+import { UserService } from '@/core/user/user.service'
 import { Meta } from '@/libs/common/utils/meta'
 import { PrismaService } from '@/prisma/prisma.service'
 
 import { CourseDto } from './dto/course.dto'
 import { UpdateCourseDto } from './dto/update-course.dto'
+import { CourseResponseEntity } from './entities/course-response.entity'
 
 /**
  * Сервис для управления курсами
@@ -22,7 +25,24 @@ export class CourseService {
 	 * Конструктор сервиса курсов
 	 * @param prismaService - Сервис для работы с базой данных
 	 */
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly userService: UserService,
+	) {}
+
+	public async findById(id: string) {
+		const course = await this.prismaService.course.findUnique({
+			where: { id },
+		})
+
+		if (!course) {
+			throw new NotFoundException('Курс не найден')
+		}
+
+		return plainToInstance(CourseResponseEntity, course, {
+			excludeExtraneousValues: false,
+		})
+	}
 
 	/**
 	 * Создает новый курс
@@ -159,13 +179,7 @@ export class CourseService {
 	): Promise<Course> {
 		if (!id) throw new NotFoundException('Идентификатор курса обязателен')
 
-		const course = await this.prismaService.course.findUnique({
-			where: { id },
-		})
-
-		if (!course) {
-			throw new NotFoundException('Курс не найден')
-		}
+		await this.findById(id)
 
 		const { priceOptions, ...courseData } = dto
 
@@ -193,13 +207,7 @@ export class CourseService {
 	public async replaceCourse(id: string, dto: CourseDto): Promise<Course> {
 		if (!id) throw new NotFoundException('Идентификатор курса обязателен')
 
-		const course = await this.prismaService.course.findUnique({
-			where: { id },
-		})
-
-		if (!course) {
-			throw new NotFoundException('Курс не найден')
-		}
+		await this.findById(id)
 
 		const { priceOptions, ...courseData } = dto
 
@@ -232,10 +240,7 @@ export class CourseService {
 				throw new NotFoundException('Курс не найден')
 			}
 
-			const user = await prisma.user.findUnique({
-				where: { id: userId },
-				include: { courses: true },
-			})
+			const user = await this.userService.findByIdWithCourses(userId)
 
 			if (!user) {
 				throw new NotFoundException('Пользователь не найден')
@@ -268,13 +273,7 @@ export class CourseService {
 	 * @throws NotFoundException если курс не найден
 	 */
 	public async deleteCourse(id: string) {
-		const course = await this.prismaService.course.findUnique({
-			where: { id },
-		})
-
-		if (!course) {
-			throw new NotFoundException('Курс не найден')
-		}
+		await this.findById(id)
 
 		await this.prismaService.course.delete({
 			where: { id },

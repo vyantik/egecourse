@@ -58,7 +58,7 @@ model Teacher {
   surname    String
   patronymic String
 
-  category TeacherCategory
+  category CourseCategory
 
   picture String?
 
@@ -110,12 +110,6 @@ model Course {
   @@map("courses")
 }
 
-enum CourseCategory {
-  EXAM
-  EDUCATION
-  RAINBOW
-}
-
 model Review {
   id String @id @default(uuid())
 
@@ -154,7 +148,7 @@ model Application {
   name  String
   phone String
 
-  category ApplicationCategory
+  category CourseCategory
 
   course   Course? @relation(fields: [courseId], references: [id])
   courseId String? @map("course_id")
@@ -197,29 +191,16 @@ enum TokenType {
   PASSWORD_RESET
 }
 
-enum TeacherCategory {
+enum CourseCategory {
   EXAM
   EDUCATION
   RAINBOW
-}
-
-enum ReviewCategory {
-  EXAM
-  EDUCATION
-  RAINBOW
-  OTHER
 }
 
 enum ReviewStatus {
   PENDING
   APPROVED
   REJECTED
-}
-
-enum ApplicationCategory {
-  EXAM
-  EDUCATION
-  RAINBOW
 }
 
 enum WebinarStatus {

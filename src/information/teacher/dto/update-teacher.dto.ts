@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { TeacherCategory } from '@prisma/__generated__'
+import { CourseCategory } from '@prisma/__generated__'
 import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
 
 export class UpdateTeacherDto {
@@ -33,14 +33,14 @@ export class UpdateTeacherDto {
 	@ApiProperty({
 		example: 'EGE',
 		description: 'Категория преподавателя',
-		enum: TeacherCategory,
+		enum: CourseCategory,
 		required: false,
 	})
-	@IsEnum(TeacherCategory, {
+	@IsEnum(CourseCategory, {
 		message: 'Некорректная категория преподавателя',
 	})
 	@IsOptional()
-	public category?: TeacherCategory
+	public category?: CourseCategory
 
 	@ApiProperty({
 		example: 'https://example.com/teacher-photo.jpg',

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { TeacherCategory } from '@prisma/__generated__'
+import { CourseCategory } from '@prisma/__generated__'
 import { Transform } from 'class-transformer'
 import {
 	IsEnum,
@@ -39,14 +39,14 @@ export class CreateTeacherDto {
 	@ApiProperty({
 		example: 'EXAM',
 		description: 'Категория преподавателя',
-		enum: TeacherCategory,
+		enum: CourseCategory,
 	})
-	@IsEnum(TeacherCategory, {
+	@IsEnum(CourseCategory, {
 		message: 'Некорректная категория преподавателя',
 	})
 	@IsNotEmpty({ message: 'Категория обязательна' })
 	@Transform(({ value }) => value?.toUpperCase())
-	public category: TeacherCategory
+	public category: CourseCategory
 
 	@ApiProperty({
 		example: 'https://example.com/teacher-photo.jpg',

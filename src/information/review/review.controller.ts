@@ -6,7 +6,7 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
-import { ReviewCategory } from '@prisma/__generated__'
+import { CourseCategory } from '@prisma/__generated__'
 
 import { ReviewResponseEntity } from './entities/review-response.entity'
 import { ReviewService } from './review.service'
@@ -50,7 +50,7 @@ export class ReviewController {
 		description: 'Категория отзыва',
 		required: false,
 		type: String,
-		enum: ReviewCategory,
+		enum: CourseCategory,
 		example: 'EXAM',
 	})
 	@ApiResponse({ status: 400, description: 'Неверный параметр category' })
@@ -63,7 +63,7 @@ export class ReviewController {
 	public async getReviews(
 		@Query('page') page?: number,
 		@Query('limit') limit?: number,
-		@Query('category') category?: ReviewCategory,
+		@Query('category') category?: CourseCategory,
 	) {
 		return this.reviewService.getReviews(page, limit, category)
 	}

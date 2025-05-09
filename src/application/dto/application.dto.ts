@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { ApplicationCategory } from '@prisma/__generated__'
+import { CourseCategory } from '@prisma/__generated__'
 import { IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator'
 
 export class ApplicationDto {
@@ -17,11 +17,11 @@ export class ApplicationDto {
 	@ApiProperty({
 		description: 'Категория заявки',
 		example: 'EXAM',
-		enum: ApplicationCategory,
+		enum: CourseCategory,
 	})
 	@IsNotEmpty({ message: 'Категория заявки обязательна' })
-	@IsEnum(ApplicationCategory)
-	category: ApplicationCategory
+	@IsEnum(CourseCategory)
+	category: CourseCategory
 
 	@ApiProperty({
 		description: 'ID курса',

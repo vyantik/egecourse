@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { CourseCategory } from '@prisma/__generated__'
 import { Exclude } from 'class-transformer'
 import { Type } from 'class-transformer'
-import { IsObject, IsOptional, ValidateNested } from 'class-validator'
+import { IsArray, IsEnum, IsOptional, ValidateNested } from 'class-validator'
 
 import { PriceOptionStructureDto } from '../dto/course.dto'
 
@@ -50,13 +51,24 @@ export class CourseResponseEntity {
 	studyStart: string
 
 	@ApiProperty({
-		example: {
-			basic: {
+		description: 'Категория курса',
+		example: 'EXAM',
+		enum: ['EXAM', 'EDUCATION', 'RAINBOW'],
+		type: 'string',
+	})
+	@IsEnum(CourseCategory)
+	category: CourseCategory
+
+	@ApiProperty({
+		example: [
+			{
+				name: 'basic',
 				price: 15000,
 				features: ['Доступ к материалам', 'Проверка домашних заданий'],
 				duration: 3,
 			},
-			premium: {
+			{
+				name: 'premium',
 				price: 25000,
 				features: [
 					'Доступ к материалам',
@@ -65,15 +77,16 @@ export class CourseResponseEntity {
 				],
 				duration: 6,
 			},
-		},
+		],
 		description: 'Варианты цен и их особенности',
 		required: false,
+		type: () => [PriceOptionStructureDto],
 	})
-	@IsObject({ message: 'Ценовые опции должны быть объектом' })
+	@IsArray({ message: 'Ценовые опции должны быть массивом' })
 	@ValidateNested({ each: true })
 	@Type(() => PriceOptionStructureDto)
 	@IsOptional()
-	public priceOptions?: Record<string, PriceOptionStructureDto>
+	public priceOptions?: PriceOptionStructureDto[]
 
 	@Exclude()
 	createdAt: Date

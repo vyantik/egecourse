@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { TeacherCategory } from '@prisma/__generated__'
+import { CourseCategory } from '@prisma/__generated__'
 
 export class TeacherTransferDto {
 	@ApiProperty({
@@ -27,11 +27,12 @@ export class TeacherTransferDto {
 	public patronymic: string
 
 	@ApiProperty({
-		example: 'EGE',
+		example: 'EXAM',
 		description: 'Категория преподавателя',
-		enum: TeacherCategory,
+		enum: CourseCategory,
+		type: () => CourseCategory,
 	})
-	public category: TeacherCategory
+	public category: CourseCategory
 
 	@ApiProperty({
 		example: 'https://example.com/teacher-photo.jpg',

@@ -1,16 +1,18 @@
-import {
-	BadRequestException,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
+import { UserService } from '@/core/user/user.service'
+import { CourseService } from '@/information/course/course.service'
 import { PrismaService } from '@/prisma/prisma.service'
 
 import { ApplicationDto } from './dto/application.dto'
 
 @Injectable()
 export class ApplicationService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly userService: UserService,
+		private readonly courseService: CourseService,
+	) {}
 
 	/**
 	 * Создает заявку
@@ -20,25 +22,9 @@ export class ApplicationService {
 	 * @throws NotFoundException если пользователь не найден
 	 */
 	public async createApplication(dto: ApplicationDto, id: string) {
-		const user = await this.prismaService.user.findUnique({
-			where: {
-				id,
-			},
-		})
+		const user = await this.userService.findById(id)
 
-		if (!user) {
-			throw new NotFoundException('User not found')
-		}
-
-		const course = await this.prismaService.course.findUnique({
-			where: {
-				id: dto.courseId,
-			},
-		})
-
-		if (!course) {
-			throw new NotFoundException('Course not found')
-		}
+		const course = await this.courseService.findById(dto.courseId)
 
 		if (course.category !== dto.category) {
 			throw new BadRequestException(

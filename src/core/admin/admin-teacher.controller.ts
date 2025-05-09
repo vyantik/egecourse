@@ -19,7 +19,7 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
-import { TeacherCategory, UserRole } from '@prisma/__generated__'
+import { CourseCategory, UserRole } from '@prisma/__generated__'
 
 import { parseFileConfig } from '@/config/parse-file.config'
 import { Authorization } from '@/core/auth/decorators/auth.decorator'
@@ -220,7 +220,7 @@ export class AdminTeacherController {
 				egeScore: { type: 'number', example: 95 },
 				category: {
 					type: 'string',
-					enum: Object.values(TeacherCategory),
+					enum: Object.values(CourseCategory),
 					example: 'EXAM',
 				},
 				direction: { type: 'string', example: 'Математика' },

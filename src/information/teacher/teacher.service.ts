@@ -4,7 +4,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Teacher, TeacherCategory } from '@prisma/__generated__'
+import { CourseCategory, Teacher } from '@prisma/__generated__'
 import { existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 
@@ -103,7 +103,7 @@ export class TeacherService {
 	public async getTeachers(
 		page?: number,
 		limit?: number,
-		category?: TeacherCategory,
+		category?: CourseCategory,
 	): Promise<Teacher[] | { data: Teacher[]; meta: Meta }> {
 		try {
 			if (!page || !limit) {

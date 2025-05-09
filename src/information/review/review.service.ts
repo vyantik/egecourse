@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Review, ReviewCategory, ReviewStatus } from '@prisma/__generated__'
+import { CourseCategory, Review, ReviewStatus } from '@prisma/__generated__'
 import { plainToInstance } from 'class-transformer'
 
 import { ReviewResponseEntity } from '@/information/review/entities/review-response.entity'
@@ -71,7 +71,7 @@ export class ReviewService {
 	public async getReviews(
 		page?: number,
 		limit?: number,
-		category?: ReviewCategory,
+		category?: CourseCategory,
 	): Promise<ReviewResponseEntity[] | PaginatedReviews> {
 		if (!page || !limit) {
 			let reviews: Review[]

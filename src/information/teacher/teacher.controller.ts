@@ -6,7 +6,7 @@ import {
 	ApiResponse,
 	ApiTags,
 } from '@nestjs/swagger'
-import { TeacherCategory } from '@prisma/__generated__'
+import { CourseCategory } from '@prisma/__generated__'
 import { Response } from 'express'
 
 import { GetTeachersQueryDto } from './dto/get-teachers-query.dto'
@@ -38,7 +38,7 @@ export class TeacherController {
 		name: 'category',
 		required: false,
 		type: String,
-		enum: TeacherCategory,
+		enum: CourseCategory,
 		description: 'Категория преподавателя',
 	})
 	@ApiResponse({

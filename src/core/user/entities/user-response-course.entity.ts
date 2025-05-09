@@ -70,7 +70,7 @@ export class UserResponseCourseEntity {
 		type: () => CourseResponseEntity,
 	})
 	@Type(() => CourseResponseEntity)
-	course: CourseResponseEntity
+	courses: CourseResponseEntity[]
 
 	constructor(partial: Partial<UserResponseCourseEntity>) {
 		Object.assign(this, partial)

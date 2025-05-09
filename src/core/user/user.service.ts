@@ -17,6 +17,7 @@ import { CreateReviewDto } from '../../information/review/dto/create-review.dto'
 import { ReviewResponseEntity } from '../../information/review/entities/review-response.entity'
 
 import { UpdateUserDto } from './dto/update-user.dto'
+import { UserResponseCourseEntity } from './entities/user-response-course.entity'
 import { UserResponseEntity } from './entities/user-response.entity'
 
 @Injectable()
@@ -59,9 +60,6 @@ export class UserService {
 	public async findById(id: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: { id },
-			include: {
-				courses: true,
-			},
 		})
 
 		if (!user) {
@@ -69,6 +67,27 @@ export class UserService {
 		}
 
 		return plainToInstance(UserResponseEntity, user, {
+			excludeExtraneousValues: false,
+		})
+	}
+
+	/**
+	 * Находит пользователя по ID с включенными курсами
+	 * @param id - ID пользователя
+	 * @returns Promise с найденным пользователем
+	 * @throws NotFoundException если пользователь не найден
+	 */
+	public async findByIdWithCourses(id: string) {
+		const user = await this.prismaService.user.findUnique({
+			where: { id },
+			include: { courses: true },
+		})
+
+		if (!user) {
+			throw new NotFoundException('Пользователь не найден')
+		}
+
+		return plainToInstance(UserResponseCourseEntity, user, {
 			excludeExtraneousValues: false,
 		})
 	}
@@ -160,13 +179,7 @@ export class UserService {
 	 * @throws NotFoundException если пользователь не найден
 	 */
 	public async updateAvatar(userId: string, file: Express.Multer.File) {
-		const user = await this.prismaService.user.findUnique({
-			where: { id: userId },
-		})
-
-		if (!user) {
-			throw new NotFoundException('Пользователь не найден')
-		}
+		const user = await this.findById(userId)
 
 		if (user.picture) {
 			await this.fileService.deletePicture(
@@ -205,13 +218,7 @@ export class UserService {
 		userId: string,
 		pictureName: string,
 	): Promise<Buffer> {
-		const user = await this.prismaService.user.findUnique({
-			where: { id: userId },
-		})
-
-		if (!user) {
-			throw new NotFoundException('Пользователь не найден')
-		}
+		const user = await this.findById(userId)
 
 		if (!user.picture) {
 			throw new NotFoundException('Аватар не найден')
@@ -228,16 +235,7 @@ export class UserService {
 	 * @throws NotFoundException если пользователь не найден
 	 */
 	public async createReview(userId: string, dto: CreateReviewDto) {
-		const user = await this.prismaService.user.findUnique({
-			where: { id: userId },
-			include: {
-				courses: true,
-			},
-		})
-
-		if (!user) {
-			throw new NotFoundException('Пользователь не найден')
-		}
+		const user = await this.findByIdWithCourses(userId)
 
 		if (user.courses.length === 0) {
 			throw new NotFoundException('Курсы не найдены')
