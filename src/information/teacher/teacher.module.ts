@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common'
 
-import { FileSystemModule } from '@/file-system/file-system.module'
+import { FileSystemService } from '@/file-system/file-system.service'
 
 import { TeacherController } from './teacher.controller'
 import { TeacherService } from './teacher.service'
 
 @Module({
-	imports: [FileSystemModule],
+	imports: [],
 	controllers: [TeacherController],
-	providers: [TeacherService],
+	providers: [TeacherService, FileSystemService],
 	exports: [TeacherService],
 })
 export class TeacherModule {}
