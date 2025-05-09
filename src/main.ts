@@ -55,6 +55,8 @@ async function bootstrap() {
 		credentials: true,
 	})
 
+	app.setGlobalPrefix('api')
+
 	if (isDev(config)) {
 		const documentConfig = new DocumentBuilder()
 			.setTitle('EgeCourses')
