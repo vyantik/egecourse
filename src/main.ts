@@ -8,7 +8,6 @@ import session from 'express-session'
 import IORedis from 'ioredis'
 
 import { AppModule } from './app.module'
-import { isDev } from './libs/common/utils/is-dev.util'
 import { ms, StringValue } from './libs/common/utils/ms.util'
 import { parseBoolean } from './libs/common/utils/parse-boolean.util'
 
@@ -57,18 +56,16 @@ async function bootstrap() {
 
 	app.setGlobalPrefix('api')
 
-	if (isDev(config)) {
-		const documentConfig = new DocumentBuilder()
-			.setTitle('EgeCourses')
-			.setDescription('EgeCourses API')
-			.setVersion('1.0')
-			.build()
-		const document = SwaggerModule.createDocument(app, documentConfig)
-		SwaggerModule.setup('docs', app, document)
-		app.getHttpAdapter().get('/', (req, res) => {
-			res.redirect('/docs')
-		})
-	}
+	const documentConfig = new DocumentBuilder()
+		.setTitle('EgeCourses')
+		.setDescription('EgeCourses API')
+		.setVersion('1.0')
+		.build()
+	const document = SwaggerModule.createDocument(app, documentConfig)
+	SwaggerModule.setup('docs', app, document)
+	app.getHttpAdapter().get('/', (req, res) => {
+		res.redirect('/docs')
+	})
 
 	await app.listen(config.getOrThrow<number>('APPLICATION_PORT'))
 }
