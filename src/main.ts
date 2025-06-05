@@ -62,7 +62,7 @@ async function bootstrap() {
 		.setVersion('1.0')
 		.build()
 	const document = SwaggerModule.createDocument(app, documentConfig)
-	SwaggerModule.setup('docs', app, document)
+	SwaggerModule.setup('/api/docs', app, document)
 	app.getHttpAdapter().get('/', (req, res) => {
 		res.redirect('/docs')
 	})
