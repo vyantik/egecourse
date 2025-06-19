@@ -32,16 +32,16 @@ services:
 
             POSTGRES_USER: '${POSTGRES_USER}'
             POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
-            POSTGRES_HOST: 'db' # Переопределяем, чтобы использовать имя сервиса
-            POSTGRES_PORT: '5432' # Используем стандартный порт контейнера DB
+            POSTGRES_HOST: '${POSTGRES_HOST}' # Переопределяем, чтобы использовать имя сервиса
+            POSTGRES_PORT: '${POSTGRES_PORT}' # Используем стандартный порт контейнера DB
             POSTGRES_DB: '${POSTGRES_DB}'
             # Собираем DATABASE_URL из переменных, которые будут в контейнере
             DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}'
 
             REDIS_USER: '${REDIS_USER}'
             REDIS_PASSWORD: '${REDIS_PASSWORD}'
-            REDIS_HOST: 'redis' # Переопределяем, чтобы использовать имя сервиса
-            REDIS_PORT: '6379' # Используем стандартный порт контейнера Redis
+            REDIS_HOST: '${REDIS_HOST}' # Переопределяем, чтобы использовать имя сервиса
+            REDIS_PORT: '${REDIS_PORT}' # Используем стандартный порт контейнера Redis
             # Собираем REDIS_URI из переменных, которые будут в контейнере
             REDIS_URI: 'redis://:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}'
 
