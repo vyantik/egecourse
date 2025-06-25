@@ -1,6 +1,6 @@
 services:
     app:
-        build: .
+        image: egecourse:latest
         restart: always
         ports:
             - '${APPLICATION_PORT:-3000}:${APPLICATION_PORT:-3000}'
