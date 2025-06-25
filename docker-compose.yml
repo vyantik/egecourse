@@ -1,6 +1,6 @@
 services:
     app:
-        image: egecourse:latest
+        image: vyantik/egecourse:latest
         restart: always
         ports:
             - '${APPLICATION_PORT:-3000}:${APPLICATION_PORT:-3000}'
