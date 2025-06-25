@@ -1,6 +1,6 @@
 FROM node:20.17.0-alpine AS base
 
-RUN apk add --no-cache bash curl
+RUN apk add --no-cache bash curl netcat-openbsd
 RUN apk add --no-cache libc6-compat
 
 RUN curl -fsSL https://bun.sh/install | bash && \
@@ -33,7 +33,18 @@ RUN bun install
 
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma/__generated__ ./prisma/__generated__
+COPY --from=build /app/prisma ./prisma
+
+# Создаем директорию для uploads
+RUN mkdir -p /app/uploads
 
 VOLUME /app/uploads
 
-CMD ["node", "dist/main"]
+# Указываем порт, который будет использоваться приложением
+EXPOSE 10001
+
+# Создаем скрипт запуска
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+CMD ["/app/start.sh"]

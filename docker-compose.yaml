@@ -1,30 +1,68 @@
-version: '3.7'
-
 services:
+    app:
+        build: .
+        restart: always
+        ports:
+            - '${APPLICATION_PORT:-3000}:${APPLICATION_PORT:-3000}'
+        environment:
+            - NODE_ENV=production
+            - APPLICATION_PORT=${APPLICATION_PORT:-3000}
+            - APPLICATION_URL=${APPLICATION_URL:-http://localhost:3000}
+            - ALLOWED_ORIGIN=${ALLOWED_ORIGIN:-http://localhost:3000}
+            - POSTGRES_USER=${POSTGRES_USER:-postgres}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+            - POSTGRES_HOST=db
+            - POSTGRES_PORT=5432
+            - POSTGRES_DB=${POSTGRES_DB:-egecourses}
+            - POSTGRES_URI=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-egecourses}
+            - REDIS_PASSWORD=${REDIS_PASSWORD:-redis_password}
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+            - REDIS_URI=redis://:${REDIS_PASSWORD:-redis_password}@redis:6379
+            - COOKIES_SECRET=${COOKIES_SECRET:-your_cookies_secret_here}
+            - SESSION_SECRET=${SESSION_SECRET:-your_session_secret_here}
+            - SESSION_NAME=${SESSION_NAME:-session}
+            - SESSION_DOMAIN=${SESSION_DOMAIN:-localhost}
+            - SESSION_MAX_AGE=${SESSION_MAX_AGE:-86400000}
+            - SESSION_HTTP_ONLY=${SESSION_HTTP_ONLY:-true}
+            - SESSION_SECURE=${SESSION_SECURE:-false}
+            - SESSION_FOLDER=${SESSION_FOLDER:-./sessions}
+            - MAIL_HOST=${MAIL_HOST}
+            - MAIL_PORT=${MAIL_PORT}
+            - MAIL_LOGIN=${MAIL_LOGIN}
+            - MAIL_PASSWORD=${MAIL_PASSWORD}
+        depends_on:
+            - db
+            - redis
+        volumes:
+            - ./uploads:/app/uploads
+        networks:
+            - backend
+
     db:
         image: postgres:15.2
         restart: always
         environment:
-            - POSTGRES_USER=${POSTGRES_USER}
-            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER:-postgres}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+            - POSTGRES_DB=${POSTGRES_DB:-egecourse}
         ports:
-            - ${POSTGRES_PORT}:5432
+            - ${POSTGRES_PORT:-5439}:5432
         volumes:
             - postgres_data:/var/lib/postgresql/data
         networks:
             - backend
-            
+
     redis:
         image: redis:5.0
         restart: always
         environment:
             # Пароль для Redis, используется в команде запуска
-            REDIS_PASSWORD: '${REDIS_PASSWORD}'
+            REDIS_PASSWORD: '${REDIS_PASSWORD:-redis_password}'
         # Порт для доступа к Redis с хоста, загружается из .env
         ports:
-            - '${REDIS_PORT}:6379'
-        command: redis-server --requirepass "${REDIS_PASSWORD}" # Используем переменную из .env
+            - '${REDIS_PORT:-6354}:6379'
+        command: redis-server --requirepass "${REDIS_PASSWORD:-redis_password}" # Используем переменную из .env
         volumes:
             - redis_data:/data
         networks:
