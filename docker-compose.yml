@@ -3,18 +3,18 @@ services:
         image: vyantik/egecourse:latest
         restart: always
         ports:
-            - '${APPLICATION_PORT:-3000}:${APPLICATION_PORT:-3000}'
+            - '${APPLICATION_PORT:-10001}:${APPLICATION_PORT:-10001}'
         environment:
             - NODE_ENV=production
-            - APPLICATION_PORT=${APPLICATION_PORT:-3000}
-            - APPLICATION_URL=${APPLICATION_URL:-http://localhost:3000}
-            - ALLOWED_ORIGIN=${ALLOWED_ORIGIN:-http://localhost:3000}
+            - APPLICATION_PORT=${APPLICATION_PORT:-10001}
+            - APPLICATION_URL=${APPLICATION_URL:-http://localhost:10001}
+            - ALLOWED_ORIGIN=${ALLOWED_ORIGIN:-http://localhost:10001}
             - POSTGRES_USER=${POSTGRES_USER:-postgres}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
             - POSTGRES_HOST=db
             - POSTGRES_PORT=5432
-            - POSTGRES_DB=${POSTGRES_DB:-egecourses}
-            - POSTGRES_URI=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-egecourses}
+            - POSTGRES_DB=${POSTGRES_DB:-egecourse}
+            - POSTGRES_URI=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-egecourse}
             - REDIS_PASSWORD=${REDIS_PASSWORD:-redis_password}
             - REDIS_HOST=redis
             - REDIS_PORT=6379

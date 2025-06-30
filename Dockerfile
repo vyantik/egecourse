@@ -49,8 +49,20 @@ VOLUME /app/uploads
 # Указываем порт
 EXPOSE 10001
 
-# Копируем и настраиваем скрипт запуска
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
-
-CMD ["/app/start.sh"]
+# Создаем скрипт запуска прямо в Dockerfile
+CMD ["sh", "-c", "\
+echo 'Starting application initialization...' && \
+echo 'Waiting for database to be ready...' && \
+while ! nc -z db 5432; do \
+  echo 'Database not ready, waiting...' && \
+  sleep 2; \
+done && \
+echo 'Database is ready!' && \
+echo 'Applying database migrations...' && \
+npx prisma db push --accept-data-loss && \
+echo 'Migrations applied successfully!' && \
+echo 'Seeding database...' && \
+bun run prisma:seed && \
+echo 'Database seeded successfully!' && \
+echo 'Starting application...' && \
+node dist/main"]
