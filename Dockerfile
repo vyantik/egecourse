@@ -41,6 +41,9 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma/__generated__ ./prisma/__generated__
 COPY --from=build /app/prisma ./prisma
 
+# Копируем схему Prisma для production
+COPY prisma/schema.prisma ./prisma/schema.prisma
+
 # Создаем директорию для uploads
 RUN mkdir -p /app/uploads
 
