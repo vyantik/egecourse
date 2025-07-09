@@ -45,7 +45,7 @@ export function ConfirmationTemplate({
 										'text-2xl font-bold text-blue-600 mb-4',
 									key: 'heading',
 								},
-								'Добро пожаловать в Образовательный Центр!',
+								'Добро пожаловать в Центр дополнительного образования ЮФУ!',
 							),
 							React.createElement(
 								Text,
@@ -53,7 +53,7 @@ export function ConfirmationTemplate({
 									className: 'text-gray-700 mb-4',
 									key: 'text1',
 								},
-								'Спасибо за регистрацию на нашей платформе подготовки к ЕГЭ и довузовским экзаменам.',
+								'Благодарим за регистрацию на сайте.',
 							),
 							React.createElement(
 								Text,
@@ -61,7 +61,7 @@ export function ConfirmationTemplate({
 									className: 'text-gray-700 mb-4',
 									key: 'text2',
 								},
-								'Для активации вашего аккаунта и доступа к курсам, пожалуйста, подтвердите ваш email:',
+								'Для активации Вашего аккаунта и доступа к курсам, пожалуйста, подтвердите Ваш E-mail:',
 							),
 							React.createElement(
 								Link,
@@ -71,7 +71,7 @@ export function ConfirmationTemplate({
 										'bg-blue-600 text-white py-3 px-6 rounded-md font-medium inline-block hover:bg-blue-700 transition-colors',
 									key: 'link',
 								},
-								'Подтвердить email',
+								'Подтвердить E-mail',
 							),
 							React.createElement(
 								Text,
@@ -79,7 +79,7 @@ export function ConfirmationTemplate({
 									className: 'text-sm text-gray-500 mt-6',
 									key: 'text3',
 								},
-								'Если вы не регистрировались на нашем сайте, просто проигнорируйте это письмо.',
+								'Если Вы не регистрировались на нашем сайте, проигнорируйте это письмо.',
 							),
 						],
 					),
