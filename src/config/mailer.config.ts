@@ -16,6 +16,6 @@ export const getMailerConfig = async (
 		},
 	},
 	defaults: {
-		from: `"vyantik team" ${configService.getOrThrow<string>('MAIL_LOGIN')}`,
+		from: `"ЦДО ЮФУ" ${configService.getOrThrow<string>('MAIL_LOGIN')}`,
 	},
 })

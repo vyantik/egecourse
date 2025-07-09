@@ -128,6 +128,35 @@ docker-compose logs -f app
     docker-compose exec app bun run prisma:seed
     ```
 
+### Ошибка SSL при отправке email
+
+Если вы видите ошибку `SSL routines:ssl3_get_record:wrong version number`, это означает проблему с настройкой SMTP:
+
+1. **Проверьте настройки SMTP сервера:**
+
+    - Убедитесь, что `MAIL_HOST` и `MAIL_PORT` указаны правильно
+    - Для Gmail используйте порт 587 (STARTTLS) или 465 (SSL)
+    - Для Yandex используйте порт 587
+    - Для Outlook используйте порт 587
+
+2. **Проверьте пароль приложения:**
+
+    - Для Gmail используйте пароль приложения, а не обычный пароль
+    - Включите двухфакторную аутентификацию в Google аккаунте
+    - Создайте пароль приложения в настройках безопасности
+
+3. **Проверьте переменные окружения:**
+
+    ```bash
+    docker-compose exec app env | grep MAIL
+    ```
+
+4. **Перезапустите приложение после изменения настроек:**
+
+    ```bash
+    docker-compose restart app
+    ```
+
 ### Тестовые данные
 
 После успешного запуска в базе данных будут созданы:
@@ -178,7 +207,25 @@ SESSION_HTTP_ONLY=true
 SESSION_SECURE=false
 SESSION_FOLDER=./sessions
 
-# Mail (заполните своими данными)
+# Mail Configuration
+# Для Gmail используйте:
+# MAIL_HOST=smtp.gmail.com
+# MAIL_PORT=587 (для STARTTLS) или 465 (для SSL)
+# MAIL_LOGIN=your_email@gmail.com
+# MAIL_PASSWORD=your_app_password (используйте пароль приложения, не обычный пароль)
+
+# Для Yandex используйте:
+# MAIL_HOST=smtp.yandex.ru
+# MAIL_PORT=587
+# MAIL_LOGIN=your_email@yandex.ru
+# MAIL_PASSWORD=your_app_password
+
+# Для Outlook/Hotmail используйте:
+# MAIL_HOST=smtp-mail.outlook.com
+# MAIL_PORT=587
+# MAIL_LOGIN=your_email@outlook.com
+# MAIL_PASSWORD=your_password
+
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=587
 MAIL_LOGIN=your_email@gmail.com

@@ -20,27 +20,32 @@ export class MailService {
 		const domain = this.configService.getOrThrow<string>('ALLOWED_ORIGIN')
 		const html = await render(ConfirmationTemplate({ domain, token }))
 
-		return this.sendMail(email, 'Email confirmation', html)
+		return await this.sendMail(email, 'Email confirmation', html)
 	}
 
 	public async sendPasswordResetEmail(email: string, token: string) {
 		const domain = this.configService.getOrThrow<string>('ALLOWED_ORIGIN')
 		const html = await render(ResetPasswordTemplate({ domain, token }))
 
-		return this.sendMail(email, 'Password reset', html)
+		return await this.sendMail(email, 'Password reset', html)
 	}
 
 	public async sendTwoFactorTokenEmail(email: string, token: string) {
 		const html = await render(TwoFactorAuthTemplate({ token }))
 
-		return this.sendMail(email, 'Confirming your identity', html)
+		return await this.sendMail(email, 'Confirming your identity', html)
 	}
 
-	private sendMail(email: string, subject: string, html: string) {
-		return this.mailerService.sendMail({
-			to: email,
-			subject,
-			html,
-		})
+	private async sendMail(email: string, subject: string, html: string) {
+		try {
+			return await this.mailerService.sendMail({
+				to: email,
+				subject,
+				html,
+			})
+		} catch (error) {
+			console.error(`Failed to send email to ${email}:`, error.message)
+			throw new Error(`Failed to send email: ${error.message}`)
+		}
 	}
 }
