@@ -4,7 +4,6 @@ import {
 	Heading,
 	Link,
 	Section,
-	Tailwind,
 	Text,
 } from '@react-email/components'
 import { Html } from '@react-email/html'
@@ -20,71 +19,99 @@ export function ConfirmationTemplate({
 	token,
 }: ConfirmationTemplateProps) {
 	return React.createElement(
-		Tailwind,
+		Html,
 		null,
 		React.createElement(
-			Html,
-			null,
+			Body,
+			{ style: body },
 			React.createElement(
-				Body,
-				{ className: 'bg-gray-50' },
-				React.createElement(
-					Container,
-					{ className: 'max-w-xl mx-auto py-8' },
+				Container,
+				{ style: container },
+				React.createElement(Section, { style: section }, [
 					React.createElement(
-						Section,
-						{
-							className:
-								'bg-white p-6 rounded-lg shadow-md border border-gray-200',
-						},
-						[
-							React.createElement(
-								Heading,
-								{
-									className:
-										'text-2xl font-bold text-blue-600 mb-4',
-									key: 'heading',
-								},
-								'Добро пожаловать в Центр дополнительного образования ЮФУ!',
-							),
-							React.createElement(
-								Text,
-								{
-									className: 'text-gray-700 mb-4',
-									key: 'text1',
-								},
-								'Благодарим за регистрацию на сайте.',
-							),
-							React.createElement(
-								Text,
-								{
-									className: 'text-gray-700 mb-4',
-									key: 'text2',
-								},
-								'Для активации Вашего аккаунта и доступа к курсам, пожалуйста, подтвердите Ваш E-mail:',
-							),
-							React.createElement(
-								Link,
-								{
-									href: `${domain}/auth/email-confirmation/${token}`,
-									className:
-										'bg-blue-600 text-white py-3 px-6 rounded-md font-medium inline-block hover:bg-blue-700 transition-colors',
-									key: 'link',
-								},
-								'Подтвердить E-mail',
-							),
-							React.createElement(
-								Text,
-								{
-									className: 'text-sm text-gray-500 mt-6',
-									key: 'text3',
-								},
-								'Если Вы не регистрировались на нашем сайте, проигнорируйте это письмо.',
-							),
-						],
+						Heading,
+						{ style: heading, key: 'heading' },
+						'Добро пожаловать в Центр дополнительного образования ЮФУ!',
 					),
-				),
+					React.createElement(
+						Text,
+						{ style: paragraph, key: 'text1' },
+						'Благодарим за регистрацию на сайте.',
+					),
+					React.createElement(
+						Text,
+						{ style: paragraph, key: 'text2' },
+						'Для активации Вашего аккаунта и доступа к курсам, пожалуйста, подтвердите Ваш E-mail:',
+					),
+					React.createElement(
+						Link,
+						{
+							href: `${domain}/auth/email-confirmation/${token}`,
+							style: button,
+							key: 'link',
+						},
+						'Подтвердить E-mail',
+					),
+					React.createElement(
+						Text,
+						{ style: footer, key: 'text3' },
+						'Если Вы не регистрировались на нашем сайте, проигнорируйте это письмо.',
+					),
+				]),
 			),
 		),
 	)
+}
+
+const body = {
+	backgroundColor: '#f9fafb',
+	fontFamily:
+		'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+	margin: 0,
+	padding: 0,
+}
+
+const container = {
+	maxWidth: '36rem',
+	margin: '0 auto',
+	padding: '2rem 0',
+}
+
+const section = {
+	backgroundColor: '#ffffff',
+	padding: '1.5rem',
+	borderRadius: '0.5rem',
+	border: '1px solid #e5e7eb',
+}
+
+const heading = {
+	fontSize: '1.5rem',
+	lineHeight: '2rem',
+	fontWeight: '700',
+	color: '#2563eb',
+	marginBottom: '1rem',
+}
+
+const paragraph = {
+	color: '#374151',
+	fontSize: '14px',
+	lineHeight: '24px',
+	margin: '16px 0',
+}
+
+const button = {
+	backgroundColor: '#2563eb',
+	color: '#ffffff',
+	padding: '12px 24px',
+	borderRadius: '0.375rem',
+	fontWeight: 500,
+	display: 'inline-block',
+	textDecoration: 'none',
+}
+
+const footer = {
+	fontSize: '0.875rem',
+	lineHeight: '1.25rem',
+	color: '#6b7280',
+	marginTop: '1.5rem',
 }
